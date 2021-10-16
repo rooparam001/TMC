@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/css/loadingcurtain.css" rel="stylesheet" />
     <script src="https://kit.fontawesome.com/c4bda478c8.js" crossorigin="anonymous"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/loadingcurtain.js"></script>
 </head>
 <body>
     <div class="loadingcurtain-main">
@@ -30,7 +34,7 @@
     <div class="main-body-content">
         <header>
             <nav class="navbar navbar-dark bg-dark navbar-expand-sm">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="/home/index/">
                     <img src="~/TMC/Images/White logo.png" width="30" height="30" class="d-inline-block align-top" alt="TMC-Logo" />
                 </a>
                 <div class="d-flex flex-row order-2 order-lg-3">
@@ -48,8 +52,8 @@
                 </div>
                 <div class="collapse navbar-collapse order-3 order-lg-2" id="navbarColor01">
                     <ul class="navbar-nav mx-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Directors <span class="sr-only">(current)</span></a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Directors</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Our Team</a>
@@ -67,7 +71,7 @@
                             <a class="nav-link" href="#">Account</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Plays</a>
+                            <a class="nav-link" href="/home/allplays/">Plays</a>
                         </li>
                     </ul>
                     <form class="form-inline">
@@ -88,10 +92,6 @@
             </div>
         </footer>
     </div>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/loadingcurtain.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

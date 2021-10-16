@@ -1,4 +1,5 @@
 ﻿@import url('https://fonts.googleapis.com/css?family=Roboto');
+
 body {
     font-family: 'Roboto', sans-serif;
 }
@@ -6,4 +7,23 @@ body {
 * {
     margin: 0;
     padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-family: "Montserrat", sans-serif;
+}
+
+p {
+    font-family: "Montserrat", sans-serif;
+    color: #8d97ad;
+    font-weight: 300;
+}
+
+.bg-light-blue {
+    background-color: rgb(198, 228, 255,1);
+}
+
+.bg-light-pink {
+    background-color: #cae8e2;
 }
