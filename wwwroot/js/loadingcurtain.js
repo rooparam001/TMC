@@ -1,5 +1,4 @@
 ﻿$(document).ready(function () {
-    localStorage.setItem('SiteViewCount', 0);
     var viewCount = 0;
     if (localStorage.getItem("SiteViewCount") === null) {
         localStorage.setItem('SiteViewCount', 1);
