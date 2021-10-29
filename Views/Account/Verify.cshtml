@@ -26,25 +26,37 @@
             <input type="password" placeholder="Password" />
         </div>
         <div class="u-form-group">
-            <button>Log in</button>
+            <button id="btnLogin" type="submit">Log in</button>
         </div>
         <div class="u-form-group">
             <a href="#" class="forgot-password">Forgot password?</a>
         </div>
     </form>
-    <form asp-action="register" asp-controller="Account" class="email-signup">
+    <form asp-action="register" asp-controller="Account" class="email-signup" id="formRegister">
         <div class="u-form-group">
-            <input type="email" placeholder="Email" />
+            <input type="text" placeholder="Name" name="UserName" /><br />
+            <span class="is-invalid" id="errName"></span>
         </div>
         <div class="u-form-group">
-            <input type="password" placeholder="Password" />
+            <input type="email" placeholder="Email" name="Email" /><br />
+            <span class="is-invalid" id="errEmail"></span>
         </div>
         <div class="u-form-group">
-            <input type="password" placeholder="Confirm Password" />
+            <input type="tel" placeholder="Contact Number" name="ContactNumber" /><br />
+            <span class="is-invalid" id="errContactNo"></span>
         </div>
         <div class="u-form-group">
-            <button>Sign Up</button>
+            <input type="password" placeholder="Password" name="UPassword" /><br />
+            <span class="is-invalid" id="errPassword"></span>
+        </div>
+        <div class="u-form-group">
+            <input type="password" placeholder="Confirm Password" name="ConPassword" /><br />
+            <span class="is-invalid" id="errConfirmPassword"></span>
+        </div>
+        <div class="u-form-group">
+            <button id="btnRegister" type="submit">Sign Up</button>
         </div>
     </form>
 </div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/js/loginregister.js"></script>

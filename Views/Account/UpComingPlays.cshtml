@@ -1,0 +1,202 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+        $('button[name="btnAdd"]').click(function () {
+            $("#modalAddNew").modal();
+        });
+
+        $('#btnUpload').click(function () {
+
+            // Checking whether FormData is available in browser
+            if (window.FormData !== undefined) {
+
+                var fileUpload = $("#formFile").get(0);
+                var files = fileUpload.files;
+
+                // Create FormData object
+                var fileData = new FormData();
+
+                // Looping over all files and add it to FormData object
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append('files', files[i]);
+                }
+
+                // Adding one more key to FormData object
+                fileData.append('PLAYDATE', $('#txtplaydate').val());
+                fileData.append('PLAYTIME', $('#txtplaytime').val());
+                fileData.append('TICKETSBUYLINK', $('#txtplayeventbuylink').val());
+                fileData.append('TITLE', $('#txtplaytitle').val());
+                fileData.append('VIEWEVENTLINK', $('#txtplayeventlink').val());
+
+                $.ajax({
+                    url: '/Account/SaveUpcomingPlay',
+                    type: "post",
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    dataType: 'json',
+                    data: fileData,
+                    success: function (result) {
+                        alert(result.respmessage);
+                    },
+                    error: function (err) {
+                        alert(err.statusText);
+                    }
+                });
+            } else {
+                alert("FormData is not supported.");
+            }
+        });
+
+        $('#btnDeleteAll').click(function () {
+
+            $.ajax({
+                url: '/Account/DeleteAllUpcomingPlay',
+                type: "get",
+                contentType: false, // Not to set any content header
+                processData: false, // Not to process data
+                dataType: 'json',
+                success: function (result) {
+                    alert(result.respmessage);
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        });
+    });
+</script>
+<style type="text/css">
+    form {
+        margin-top: 2%;
+    }
+</style>
+<main role="main">
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">upload upcoming plays</h1>
+        </div>
+    </section>
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-group btn-group-sm pr-0" role="group" aria-label="Basic outlined example">
+                        <button type="button" class="btn btn-outline-success" name="btnAdd"><i class="bi bi-plus-circle-dotted"></i> &nbsp; Add New</button>
+                        <button type="button" id="btnDeleteAll" class="btn btn-outline-warning"><i class="bi bi-x-circle"></i> &nbsp; Delete All</button>
+                    </div>
+                    <table class="table table-light">
+                        <tr>
+                            <th>
+                                No.
+                            </th>
+                            <th>
+                                Title
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Time
+                            </th>
+                            <th>
+                                View Event Link
+                            </th>
+                            <th>
+                                Tickets Link
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                1
+                            </td>
+                            <td>
+                                Story Telling
+                            </td>
+                            <td>
+                                October 1
+                            </td>
+                            <td>
+                                8PM
+                            </td>
+                            <td>
+                                <a href="#">Link</a>
+                            </td>
+                            <td>
+                                <a href="#">Link</a>
+                            </td>
+                            <td>
+                                <i class="bi bi-trash" style="cursor:pointer;" data-bs-toggle="tooltip" title="Delete"></i>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<!-- Modal -->
+<div class="modal fade" id="modalAddNew" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h4>add new upcoming play</h4>
+                <hr />
+                <form>
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label class="text-inverse" for="txtplaytitle">Title</label>
+                                <input type="text" class="form-control form-control-sm" id="txtplaytitle" placeholder="play's title" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label class="text-inverse" for="txtplaydate">Date</label>
+                                <input type="text" class="form-control form-control-sm" id="txtplaydate" placeholder="play's date" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label class="text-inverse" for="txtplaytime">Time</label>
+                                <input type="text" class="form-control form-control-sm" id="txtplaytime" placeholder="play's time" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label class="text-inverse" for="txtplayeventlink">Event Link</label>
+                                <input type="text" class="form-control form-control-sm" id="txtplayeventlink" placeholder="play's event link" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label class="text-inverse" for="txtplayeventbuylink">Event Buy Link</label>
+                                <input type="text" class="form-control form-control-sm" id="txtplayeventbuylink" placeholder="play's buy link" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="formFile" class="form-label">Banner Image URL</label>
+                                <input class="form-control form-control-sm" type="file" id="formFile" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-file-earmark-plus"></i> &nbsp; Close</button>
+                <button type="button" id="btnUpload" class="btn btn-primary"><i class="bi bi-x"></i> &nbsp; add</button>
+            </div>
+        </div>
+    </div>
+</div>

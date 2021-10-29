@@ -1,4 +1,5 @@
 ﻿@import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&subset=devanagari,latin-ext');
+
 body {
     background-color: #1cbb9b;
     font-family: 'Poppins', sans-serif;
@@ -9,7 +10,7 @@ body {
     position: relative;
     margin: 10px auto;
     width: 500px;
-    height: 380px;
+    height: 470px;
     background-color: #fff;
     padding: 10px;
     border-radius: 3px;
@@ -99,7 +100,9 @@ body {
 }
 
     .u-form-group input[type="email"],
-    .u-form-group input[type="password"] {
+    .u-form-group input[type="password"],
+    .u-form-group input[type="text"],
+    .u-form-group input[type="tel"] {
         width: calc(50% - 22px);
         height: 45px;
         outline: none;
@@ -136,4 +139,10 @@ body {
     text-decoration: underline;
     color: #888;
     font-size: 0.75rem;
+}
+
+.is-invalid {
+    display: none;
+    color: red;
+    font-size: 10px;
 }
