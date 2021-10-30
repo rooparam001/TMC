@@ -1,8 +1,10 @@
 ﻿using EntitesInterfaces.AppModels;
 using EntitesInterfaces.DBEntities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace TMC.DBConnections
@@ -14,6 +16,20 @@ namespace TMC.DBConnections
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            string c = Directory.GetCurrentDirectory();
+            IConfigurationRoot configuration = new ConfigurationBuilder().SetBasePath(c).AddJsonFile("appsettings.json").Build();
+            string connectionStringIs = configuration.GetConnectionString("DefaultConnection");
+
+            if (string.IsNullOrWhiteSpace(connectionStringIs))
+            {
+                throw new InvalidOperationException("Could not find connection string.");
+            }
+
+            optionsBuilder.UseSqlServer(connectionString: connectionStringIs);
         }
 
         public DbSet<Tbl_AccountMaster> Tbl_AccountMaster { get; set; }
@@ -87,11 +103,16 @@ namespace TMC.DBConnections
             var resp = false;
             try
             {
-                this.TBL_UPCOMINGPLAYS.Add(obj);
-                this.SaveChanges();
+                using (var context = new TMCDBContext())
+                {
+                    context.TBL_UPCOMINGPLAYS.Add(obj);
+                    context.SaveChanges();
+                }
+                //this.TBL_UPCOMINGPLAYS.Add(obj);
+                //this.SaveChanges();
                 resp = true;
             }
-            catch(Exception ex) { resp = false; }
+            catch (Exception ex) { resp = false; }
             return resp;
         }
         public bool fn_DeleteUpcomingPlay(int objID)

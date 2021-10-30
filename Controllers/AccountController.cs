@@ -70,7 +70,8 @@ namespace TMC.Controllers
                     PLAYTIME = Request.Form["PLAYTIME"],
                     TICKETSBUYLINK = Request.Form["TICKETSBUYLINK"],
                     TITLE = Request.Form["TITLE"],
-                    VIEWEVENTLINK = Request.Form["VIEWEVENTLINK"]
+                    VIEWEVENTLINK = Request.Form["VIEWEVENTLINK"],
+                    ISENABLE = true
                 };
 
                 try
@@ -137,13 +138,20 @@ namespace TMC.Controllers
         }
 
         [HttpGet]
-        public JsonResult DeleteUpcomingPlay(int ID)
+        public JsonResult DeleteUpcomingPlay(string objID)
         {
-            var resp = new ajaxResponse();
-            if (ID > 0)
+            int modelID = 0;
+            int.TryParse(objID, out modelID);
+            var resp = new ajaxResponse()
             {
-                resp.data = Play.DeleteUpcomingPlay(ID);
+                respmessage = "Something went wrong.",
+                respstatus = ResponseStatus.error
+            };
+            if (modelID > 0)
+            {
+                resp.data = Play.DeleteUpcomingPlay(modelID);
                 resp.respstatus = ResponseStatus.success;
+                resp.respmessage = "Play deleted";
             }
             return Json(resp);
         }
@@ -158,6 +166,5 @@ namespace TMC.Controllers
             };
             return Json(resp);
         }
-
     }
 }

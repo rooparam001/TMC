@@ -1,69 +1,4 @@
-﻿<script type="text/javascript">
-    $(document).ready(function () {
-        $('button[name="btnAdd"]').click(function () {
-            $("#modalAddNew").modal();
-        });
-
-        $('#btnUpload').click(function () {
-
-            // Checking whether FormData is available in browser
-            if (window.FormData !== undefined) {
-
-                var fileUpload = $("#formFile").get(0);
-                var files = fileUpload.files;
-
-                // Create FormData object
-                var fileData = new FormData();
-
-                // Looping over all files and add it to FormData object
-                for (var i = 0; i < files.length; i++) {
-                    fileData.append('files', files[i]);
-                }
-
-                // Adding one more key to FormData object
-                fileData.append('PLAYDATE', $('#txtplaydate').val());
-                fileData.append('PLAYTIME', $('#txtplaytime').val());
-                fileData.append('TICKETSBUYLINK', $('#txtplayeventbuylink').val());
-                fileData.append('TITLE', $('#txtplaytitle').val());
-                fileData.append('VIEWEVENTLINK', $('#txtplayeventlink').val());
-
-                $.ajax({
-                    url: '/Account/SaveUpcomingPlay',
-                    type: "post",
-                    contentType: false, // Not to set any content header
-                    processData: false, // Not to process data
-                    dataType: 'json',
-                    data: fileData,
-                    success: function (result) {
-                        alert(result.respmessage);
-                    },
-                    error: function (err) {
-                        alert(err.statusText);
-                    }
-                });
-            } else {
-                alert("FormData is not supported.");
-            }
-        });
-
-        $('#btnDeleteAll').click(function () {
-
-            $.ajax({
-                url: '/Account/DeleteAllUpcomingPlay',
-                type: "get",
-                contentType: false, // Not to set any content header
-                processData: false, // Not to process data
-                dataType: 'json',
-                success: function (result) {
-                    alert(result.respmessage);
-                },
-                error: function (err) {
-                    alert(err.statusText);
-                }
-            });
-        });
-    });
-</script>
+﻿<script src="~/js/upcomingplays.js"></script>
 <style type="text/css">
     form {
         margin-top: 2%;
@@ -85,52 +20,32 @@
                         <button type="button" id="btnDeleteAll" class="btn btn-outline-warning"><i class="bi bi-x-circle"></i> &nbsp; Delete All</button>
                     </div>
                     <table class="table table-light">
-                        <tr>
-                            <th>
-                                No.
-                            </th>
-                            <th>
-                                Title
-                            </th>
-                            <th>
-                                Date
-                            </th>
-                            <th>
-                                Time
-                            </th>
-                            <th>
-                                View Event Link
-                            </th>
-                            <th>
-                                Tickets Link
-                            </th>
-                            <th>
-                                Action
-                            </th>
-                        </tr>
-                        <tr>
-                            <td>
-                                1
-                            </td>
-                            <td>
-                                Story Telling
-                            </td>
-                            <td>
-                                October 1
-                            </td>
-                            <td>
-                                8PM
-                            </td>
-                            <td>
-                                <a href="#">Link</a>
-                            </td>
-                            <td>
-                                <a href="#">Link</a>
-                            </td>
-                            <td>
-                                <i class="bi bi-trash" style="cursor:pointer;" data-bs-toggle="tooltip" title="Delete"></i>
-                            </td>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th>
+                                    No.
+                                </th>
+                                <th>
+                                    Title
+                                </th>
+                                <th>
+                                    Date
+                                </th>
+                                <th>
+                                    Time
+                                </th>
+                                <th>
+                                    View Event Link
+                                </th>
+                                <th>
+                                    Tickets Link
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -194,7 +109,6 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-file-earmark-plus"></i> &nbsp; Close</button>
                 <button type="button" id="btnUpload" class="btn btn-primary"><i class="bi bi-x"></i> &nbsp; add</button>
             </div>
         </div>
