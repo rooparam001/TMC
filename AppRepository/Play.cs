@@ -1,9 +1,9 @@
-﻿using EntitesInterfaces.DBEntities;
-using System;
+﻿using EntitesInterfaces.AppModels;
+using EntitesInterfaces.DBEntities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TMC.DBConnections;
+using System.Linq;
+using System.Globalization;
 
 namespace TMC.AppRepository
 {
@@ -14,9 +14,8 @@ namespace TMC.AppRepository
             bool resp = false;
 
             if (obj != null)
-            {
                 resp = new TMCDBContext().fn_SaveUpcomingPlay(obj);
-            }
+
             return resp;
         }
         public static bool DeleteUpcomingPlay(int objID)
@@ -24,9 +23,8 @@ namespace TMC.AppRepository
             bool resp = false;
 
             if (objID > 0)
-            {
                 resp = new TMCDBContext().fn_DeleteUpcomingPlay(objID);
-            }
+
             return resp;
         }
         public static bool DeleteAllUpcomingPlay()
@@ -36,6 +34,44 @@ namespace TMC.AppRepository
         public static List<TBL_UPCOMINGPLAYS> fn_GetAllPlays()
         {
             return new TMCDBContext().fn_GetAllPlays();
+        }
+
+        public static TBL_PLAYSMASTER fn_SavePlay(TBL_PLAYSMASTER obj)
+        {
+            var resp = new TBL_PLAYSMASTER();
+
+            if (obj != null)
+                resp = new TMCDBContext().fn_SavePlay(obj);
+
+            return resp;
+        }
+        public static bool DeletePlay(int objID)
+        {
+            bool resp = false;
+
+            if (objID > 0)
+                resp = new TMCDBContext().fn_DeletePlay(objID);
+
+            return resp;
+        }
+        public static bool fn_DeleteAllExistingPlays()
+        {
+            return new TMCDBContext().fn_DeleteAllExistingPlays();
+        }
+        public static List<accountPlayModel> fn_GetAllExistingPlays()
+        {
+            var resp = new List<accountPlayModel>();
+            resp = new TMCDBContext().fn_GetAllExistingPlays().Select(x => new accountPlayModel()
+            {
+                id = x.ID,
+                Actor = x.ACTOR,
+                DateCreated = x.DATECREATED.ToString("dddd dd MMMM", CultureInfo.CreateSpecificCulture("en-US")),
+                Director = x.DIRECTOR,
+                ImageURL = x.IMAGEURL,
+                Title = x.TITLE,
+                Writer = x.WRITER
+            }).ToList();
+            return resp;
         }
     }
 }

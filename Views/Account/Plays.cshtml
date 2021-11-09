@@ -1,0 +1,148 @@
+﻿<script src="~/js/accountplays.js"></script>
+<style type="text/css">
+    form {
+        margin-top: 2%;
+    }
+</style>
+<main role="main">
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">upload plays</h1>
+        </div>
+    </section>
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-group btn-group-sm pr-0" role="group" aria-label="Basic outlined example">
+                        <button type="button" class="btn btn-outline-success" name="btnAdd"><i class="bi bi-plus-circle-dotted"></i> &nbsp; Add New</button>
+                        <button type="button" id="btnDeleteAll" class="btn btn-outline-warning"><i class="bi bi-x-circle"></i> &nbsp; Delete All</button>
+                    </div>
+                    <table class="table table-light">
+                        <thead>
+                            <tr>
+                                <th>
+                                    No.
+                                </th>
+                                <th>
+                                    Title
+                                </th>
+                                <th>
+                                    Writer
+                                </th>
+                                <th>
+                                    Director
+                                </th>
+                                <th>
+                                    Actor
+                                </th>
+                                <th>
+                                    Date Created
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<!-- Modal -->
+<div class="modal fade" id="modalAddNew" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h4>add new play</h4>
+                <hr />
+                <form>
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label class="text-inverse" for="txtplaytitle">Title</label>
+                                <input type="text" class="form-control form-control-sm" id="txtplaytitle" placeholder="play's title" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label class="text-inverse" for="txtplayactor">Actor(s)</label>
+                                <input type="text" class="form-control form-control-sm" id="txtplayactor" placeholder="play's actor(s)" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label class="text-inverse" for="txtplaywriter">Writer</label>
+                                <input type="text" class="form-control form-control-sm" id="txtplaywriter" placeholder="play's writer" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label class="text-inverse" for="txtplaydirector">Director</label>
+                                <input type="text" class="form-control form-control-sm" id="txtplaydirector" placeholder="play's director" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label class="text-inverse" for="txtnumberofshow">Number of show(s)</label>
+                                <input type="number" class="form-control form-control-sm" id="txtnumberofshow" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label class="text-inverse" for="txtplaydate">Date</label>
+                                <input type="date" class="form-control form-control-sm" id="txtplaydate" placeholder="play's date" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label class="text-inverse" for="txtplaytrailerlink">Trailer Link</label>
+                                <input type="text" class="form-control form-control-sm" id="txtplaytrailerlink" placeholder="play's link" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label class="text-inverse" for="txtareasynopsis">Synopsis</label>
+                                <textarea id="txtareasynopsis" class="form-control form-control-sm" placeholder="play's synopsis" rows="4" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="formFile" class="form-label">Banner Image</label>
+                                <input class="form-control form-control-sm" type="file" id="formFile" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="sliderFile" class="form-label">Slider Image(s)</label>
+                                <input class="form-control form-control-sm" type="file" multiple id="sliderFile" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnUpload" class="btn btn-primary"><i class="bi bi-x"></i> &nbsp; add</button>
+            </div>
+        </div>
+    </div>
+</div>

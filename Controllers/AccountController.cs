@@ -1,4 +1,5 @@
-﻿using EntitesInterfaces.DBEntities;
+﻿using EntitesInterfaces.AppModels;
+using EntitesInterfaces.DBEntities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -35,11 +36,37 @@ namespace TMC.Controllers
         }
 
         public ActionResult UpComingPlays() => View();
+        public ActionResult Plays() => View();
+
+        #region UpComing Plays region
+        [HttpGet]
+        public JsonResult DeleteUpcomingPlay(string objID)
+        {
+            int modelID = 0;
+            int.TryParse(objID, out modelID);
+            var resp = new ajaxResponse()
+            {
+                respmessage = "Something went wrong.",
+                respstatus = ResponseStatus.error
+            };
+            if (modelID > 0)
+            {
+                resp.data = Play.DeleteUpcomingPlay(modelID);
+                resp.respstatus = ResponseStatus.success;
+                resp.respmessage = "Play deleted";
+            }
+            return Json(resp);
+        }
 
         [HttpGet]
-        public JsonResult validateUserEmail(string email)
+        public JsonResult GetAllUpcomingPlay()
         {
-            return Json(true);
+            var resp = new ajaxResponse()
+            {
+                data = Play.fn_GetAllPlays(),
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
         }
 
         [HttpGet]
@@ -79,7 +106,7 @@ namespace TMC.Controllers
                     IFormFile source = files[0];
                     string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
                     filename = this.EnsureCorrectFilename(filename);
-                    using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename)))
+                    using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "upcomingplays")))
                         await source.CopyToAsync(output);
 
                     relationModelObj.IMAGEURL = filename;
@@ -123,22 +150,11 @@ namespace TMC.Controllers
 
             return Json(resp);
         }
+        #endregion
 
-        private string EnsureCorrectFilename(string filename)
-        {
-            if (filename.Contains("\\"))
-                filename = filename.Substring(filename.LastIndexOf("\\") + 1);
-
-            return filename;
-        }
-
-        private string GetPathAndFilename(string filename)
-        {
-            return _webHostEnvironment.WebRootPath + "\\blogs\\UpcomingPlays\\" + filename;
-        }
-
+        #region Existing Plays region
         [HttpGet]
-        public JsonResult DeleteUpcomingPlay(string objID)
+        public JsonResult DeletePlay(string objID)
         {
             int modelID = 0;
             int.TryParse(objID, out modelID);
@@ -149,7 +165,7 @@ namespace TMC.Controllers
             };
             if (modelID > 0)
             {
-                resp.data = Play.DeleteUpcomingPlay(modelID);
+                resp.data = Play.DeletePlay(modelID);
                 resp.respstatus = ResponseStatus.success;
                 resp.respmessage = "Play deleted";
             }
@@ -157,14 +173,182 @@ namespace TMC.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetAllUpcomingPlay()
+        public JsonResult GetAllPlays()
         {
             var resp = new ajaxResponse()
             {
-                data = Play.fn_GetAllPlays(),
+                data = Play.fn_GetAllExistingPlays(),
                 respstatus = ResponseStatus.success
             };
             return Json(resp);
+        }
+
+        [HttpGet]
+        public JsonResult DeleteAllExistingPlays()
+        {
+            bool resp = false;
+            resp = Play.fn_DeleteAllExistingPlays();
+            return Json(new ajaxResponse()
+            {
+                data = null,
+                respmessage = (resp ? "All the plays are deleted" : "Something went wrong, please try again later."),
+                respstatus = (resp ? ResponseStatus.success : ResponseStatus.error)
+            }); ;
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> SavePlay(List<IFormFile> thumbnailfiles, List<IFormFile> sliderfiles)
+        {
+            var resp = new ajaxResponse();
+            var relationModelObj = new TBL_PLAYSMASTER();
+            try
+            {
+                resp.data = null;
+                int.TryParse(Request.Form["NUMBER_OF_SHOWS"], out int _noofshows);
+
+                relationModelObj = new TBL_PLAYSMASTER()
+                {
+                    TITLE = Request.Form["TITLE"],
+                    ISENABLE = true,
+                    //ABOUT_THEATRE_LINK = Request.Form["ABOUT_THEATRE_LINK"],
+                    ACTOR = Request.Form["ACTOR"],
+                    DIRECTOR = Request.Form["DIRECTOR"],
+                    NUMBER_OF_SHOWS = _noofshows,
+                    PREMIERDATE = Request.Form["PREMIERDATE"],
+                    SYNOPSIS = Request.Form["SYNOPSIS"],
+                    TRAILERLINK = Request.Form["TRAILERLINK"],
+                    WRITER = Request.Form["WRITER"],
+                    DATECREATED = DateTime.Now
+                };
+
+
+                try
+                {
+                    //saving play's thumbnail
+                    IFormFile source = thumbnailfiles[0];
+                    string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
+                    filename = this.EnsureCorrectFilename(filename);
+                    using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "allplays")))
+                        await source.CopyToAsync(output);
+
+                    relationModelObj.IMAGEURL = filename;
+                }
+                catch (Exception ex)
+                {
+                    resp = new ajaxResponse()
+                    {
+                        data = null,
+                        respmessage = ex.Message.ToString(),
+                        respstatus = ResponseStatus.error
+                    };
+                }
+
+                try
+                {
+                    relationModelObj = Play.fn_SavePlay(relationModelObj);
+                    if (relationModelObj != null)
+                    {
+                        if (relationModelObj.ID > 0)
+                        {
+                            //saving play's slider images
+                            foreach (IFormFile currsource in sliderfiles)
+                            {
+                                string filename = ContentDispositionHeaderValue.Parse(currsource.ContentDisposition).FileName.Trim('"');
+                                filename = this.EnsureCorrectFilename(filename);
+                                using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "sliders")))
+                                {
+                                    await currsource.CopyToAsync(output);
+                                    Slider.SaveSlider(new slider_inputoutputmodel()
+                                    {
+                                        OBJECTID = relationModelObj.ID,
+                                        ObjectType = SliderObjectType.Plays,
+                                        OBJECTURL = new string[] { filename }
+                                    });
+                                }
+                            }
+
+                            resp.respmessage = "Play saved";
+                            resp.respstatus = ResponseStatus.success;
+                        }
+                        else
+                            resp = new ajaxResponse()
+                            {
+                                data = null,
+                                respmessage = "Something went wrong.",
+                                respstatus = ResponseStatus.error
+                            };
+                    }
+                    else
+                        resp = new ajaxResponse()
+                        {
+                            data = null,
+                            respmessage = "Something went wrong.",
+                            respstatus = ResponseStatus.error
+                        };
+
+                }
+                catch (Exception ex)
+                {
+                    resp = new ajaxResponse()
+                    {
+                        data = null,
+                        respmessage = ex.Message.ToString(),
+                        respstatus = ResponseStatus.error
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                resp = new ajaxResponse()
+                {
+                    data = null,
+                    respmessage = ex.Message.ToString(),
+                    respstatus = ResponseStatus.error
+                };
+
+            }
+
+            return Json(resp);
+        }
+        #endregion
+
+        private string EnsureCorrectFilename(string filename)
+        {
+            if (filename.Contains("\\"))
+                filename = filename.Substring(filename.LastIndexOf("\\") + 1);
+
+            filename = DateTime.Now.Ticks.ToString() + filename;
+
+            return filename;
+        }
+
+        private string GetPathAndFilename(string filename, string fileType)
+        {
+            switch (fileType)
+            {
+                case "upcomingplays":
+                    {
+                        return _webHostEnvironment.WebRootPath + ApplicationStaticProps.appBasePath_UpcomingPlay_Image + filename;
+                    }
+                case "allplays":
+                    {
+                        return _webHostEnvironment.WebRootPath + ApplicationStaticProps.appBasePath_Play_Image + filename;
+                    }
+                case "sliders":
+                    {
+                        return _webHostEnvironment.WebRootPath + ApplicationStaticProps.appBasePath_Sliders_Image + filename;
+                    }
+                default:
+                    {
+                        return _webHostEnvironment.WebRootPath + filename;
+                    }
+            };
+        }
+
+        [HttpGet]
+        public JsonResult validateUserEmail(string email)
+        {
+            return Json(true);
         }
     }
 }

@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\Blogs\Images\" />
+    <Folder Include="wwwroot\Blogs\Sliders\" />
+    <Folder Include="wwwroot\Blogs\Plays\" />
     <Folder Include="wwwroot\Blogs\UpcomingPlays\" />
     <Folder Include="wwwroot\Carousel\" />
     <Folder Include="wwwroot\TMC\Images\" />

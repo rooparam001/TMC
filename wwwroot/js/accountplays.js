@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
 
-    _upcomingplaysMaster.fnloadData();
+    _playsMaster.fnloadData();
     $('button[name="btnAdd"]').click(function () {
         $("#modalAddNew").modal();
     });
@@ -18,18 +18,29 @@
 
             // Looping over all files and add it to FormData object
             for (var i = 0; i < files.length; i++) {
-                fileData.append('files', files[i]);
+                fileData.append('thumbnailfiles', files[i]);
+            }
+
+            fileUpload = $("#sliderFile").get(0);
+            files = fileUpload.files;
+
+            // Looping over all files and add it to FormData object
+            for (var i = 0; i < files.length; i++) {
+                fileData.append('sliderfiles', files[i]);
             }
 
             // Adding one more key to FormData object
-            fileData.append('PLAYDATE', $('#txtplaydate').val());
-            fileData.append('PLAYTIME', $('#txtplaytime').val());
-            fileData.append('TICKETSBUYLINK', $('#txtplayeventbuylink').val());
             fileData.append('TITLE', $('#txtplaytitle').val());
-            fileData.append('VIEWEVENTLINK', $('#txtplayeventlink').val());
+            fileData.append('ACTOR', $('#txtplayactor').val());
+            fileData.append('DIRECTOR', $('#txtplaydirector').val());
+            fileData.append('NUMBER_OF_SHOWS', $('#txtnumberofshow').val());
+            fileData.append('PREMIERDATE', $('#txtplaydate').val());
+            fileData.append('SYNOPSIS', $('#txtareasynopsis').val());
+            fileData.append('TRAILERLINK', $('#txtplaytrailerlink').val());
+            fileData.append('WRITER', $('#txtplaywriter').val());
 
             $.ajax({
-                url: '/Account/SaveUpcomingPlay',
+                url: '/Account/SavePlay',
                 type: "post",
                 contentType: false, // Not to set any content header
                 processData: false, // Not to process data
@@ -38,7 +49,7 @@
                 success: function (result) {
                     alert(result.respmessage);
                     $("#modalAddNew").modal();
-                    _upcomingplaysMaster.fnloadData();
+                    _playsMaster.fnloadData();
                 },
                 error: function (err) {
                     alert(err.statusText);
@@ -50,14 +61,14 @@
     });
 
     $('#btnDeleteAll').click(function () {
-        _upcomingplaysMaster.fnDelAllData();
+        _playsMaster.fnDelAllData();
     });
 });
 
-_upcomingplaysMaster = {
+_playsMaster = {
     fnloadData: function () {
         $.ajax({
-            url: '/Account/GetAllUpcomingPlay',
+            url: '/Account/GetAllPlays',
             dataType: "json",
             method: 'GET',
             success: function (data) {
@@ -69,10 +80,10 @@ _upcomingplaysMaster = {
 
                     rowCount++;
                     playdataTable.append('<tr><td>' + rowCount + '</td><td>'
-                        + relationModelObj.title + '</td><td>' + relationModelObj.playdate + '</td><td>'
-                        + relationModelObj.playtime + '</td><td><a href="' + relationModelObj.vieweventlink + '">Link</a></td><td>' +
-                        '<a href="' + relationModelObj.ticketsbuylink + '">Link</a></td><td>' +
-                        '<span onclick="_upcomingplaysMaster.fnDelData_ID(' + relationModelObj.id + ')"><i class="bi bi-trash" name="btnDelete" style="cursor:pointer;" data-bs-toggle="tooltip" title="Delete"></i></span></td></tr>');
+                        + relationModelObj.title + '</td><td>' + relationModelObj.writer + '</td><td>'
+                        + relationModelObj.director + '</td><td>' + relationModelObj.actor + '</td><td>'
+                        + relationModelObj.dateCreated + '</td><td>' +
+                        '<span onclick="_playsMaster.fnDelData_ID(' + relationModelObj.id + ')"><i class="bi bi-trash" name="btnDelete" style="cursor:pointer;" data-bs-toggle="tooltip" title="Delete"></i></span></td></tr>');
                 });
 
             },
@@ -83,14 +94,14 @@ _upcomingplaysMaster = {
     },
     fnDelData_ID: function (ID) {
         $.ajax({
-            url: '/Account/DeleteUpcomingPlay',
+            url: '/Account/DeletePlay',
             dataType: "json",
             method: 'get',
             contentType: "application/json; charset=utf-8",
             data: { objID: ID },
             success: function (result) {
                 alert(result.respmessage);
-                _upcomingplaysMaster.fnloadData();
+                _playsMaster.fnloadData();
             },
             error: function (err) {
                 alert(err.statusText);
@@ -100,14 +111,14 @@ _upcomingplaysMaster = {
     fnDelAllData: function () {
 
         $.ajax({
-            url: '/Account/DeleteAllUpcomingPlay',
+            url: '/Account/DeleteAllExistingPlays',
             type: "get",
             contentType: false, // Not to set any content header
             processData: false, // Not to process data
             dataType: 'json',
             success: function (result) {
                 alert(result.respmessage);
-                _upcomingplaysMaster.fnloadData();
+                _playsMaster.fnloadData();
             },
             error: function (err) {
                 alert(err.statusText);

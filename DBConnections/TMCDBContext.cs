@@ -36,6 +36,9 @@ namespace TMC.DBConnections
         public DbSet<Tbl_RoleMaster> Tbl_RoleMaster { get; set; }
         public DbSet<Tbl_TeamMaster> Tbl_TeamMaster { get; set; }
         public DbSet<TBL_UPCOMINGPLAYS> TBL_UPCOMINGPLAYS { get; set; }
+        public DbSet<TBL_PLAYSMASTER> TBL_PLAYSMASTER { get; set; }
+        public DbSet<TBL_SLIDERMASTER> TBL_SLIDERMASTER { get; set; }
+
 
         public AccountMaster fn_GetUserByID(int ID)
         {
@@ -139,7 +142,7 @@ namespace TMC.DBConnections
             var respList = new List<TBL_UPCOMINGPLAYS>();
             try
             {
-                respList = this.TBL_UPCOMINGPLAYS.Where(x => x.ISENABLE).ToList();
+                respList = this.TBL_UPCOMINGPLAYS.Where(x => x.ISENABLE).OrderBy(y => y.SERIALORDER).ToList();
             }
             catch { respList = new List<TBL_UPCOMINGPLAYS>(); }
             return respList;
@@ -161,6 +164,84 @@ namespace TMC.DBConnections
                 resp = true;
             }
             catch { resp = false; }
+            return resp;
+        }
+
+        public TBL_PLAYSMASTER fn_SavePlay(TBL_PLAYSMASTER obj)
+        {
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    context.TBL_PLAYSMASTER.Add(obj);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex) { }
+            return obj;
+        }
+        public bool fn_DeletePlay(int objID)
+        {
+            var resp = false;
+            try
+            {
+                var relationObj = new TBL_PLAYSMASTER();
+                relationObj = this.TBL_PLAYSMASTER.Where(x => x.ID == objID).FirstOrDefault();
+                if (relationObj != null)
+                    if (relationObj.ID > 0)
+                    {
+                        relationObj.ISENABLE = false;
+                        this.TBL_PLAYSMASTER.Update(relationObj);
+                        this.SaveChanges();
+                        resp = true;
+                    }
+            }
+            catch { resp = false; }
+            return resp;
+        }
+        public List<TBL_PLAYSMASTER> fn_GetAllExistingPlays()
+        {
+            var respList = new List<TBL_PLAYSMASTER>();
+            try
+            {
+                respList = this.TBL_PLAYSMASTER.Where(x => x.ISENABLE).OrderBy(y => y.ID).ToList();
+            }
+            catch { respList = new List<TBL_PLAYSMASTER>(); }
+            return respList;
+        }
+        public bool fn_DeleteAllExistingPlays()
+        {
+            var resp = false;
+            try
+            {
+                var playList = new List<TBL_PLAYSMASTER>();
+                playList = this.TBL_PLAYSMASTER.Where(x => x.ISENABLE).ToList();
+                foreach (var currPlay in playList)
+                {
+                    currPlay.ISENABLE = false;
+                    this.TBL_PLAYSMASTER.Update(currPlay);
+                    this.SaveChanges();
+                }
+
+                resp = true;
+            }
+            catch { resp = false; }
+            return resp;
+        }
+
+        public bool fn_SaveSlider(TBL_SLIDERMASTER obj)
+        {
+            var resp = false;
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    context.TBL_SLIDERMASTER.Add(obj);
+                    context.SaveChanges();
+                }
+                resp = true;
+            }
+            catch (Exception ex) { resp = false; }
             return resp;
         }
     }
