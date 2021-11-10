@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -177,7 +178,16 @@ namespace TMC.Controllers
         {
             var resp = new ajaxResponse()
             {
-                data = Play.fn_GetAllExistingPlays(),
+                data = Play.fn_GetAllExistingPlays().Select(x => new accountPlayModel()
+                {
+                    id = x.ID,
+                    Actor = x.ACTOR,
+                    DateCreated = x.DATECREATED.ToString("dddd dd MMMM", CultureInfo.CreateSpecificCulture("en-US")),
+                    Director = x.DIRECTOR,
+                    ImageURL = x.IMAGEURL,
+                    Title = x.TITLE,
+                    Writer = x.WRITER
+                }).ToList(),
                 respstatus = ResponseStatus.success
             };
             return Json(resp);

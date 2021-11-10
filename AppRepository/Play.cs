@@ -58,20 +58,9 @@ namespace TMC.AppRepository
         {
             return new TMCDBContext().fn_DeleteAllExistingPlays();
         }
-        public static List<accountPlayModel> fn_GetAllExistingPlays()
+        public static List<TBL_PLAYSMASTER> fn_GetAllExistingPlays()
         {
-            var resp = new List<accountPlayModel>();
-            resp = new TMCDBContext().fn_GetAllExistingPlays().Select(x => new accountPlayModel()
-            {
-                id = x.ID,
-                Actor = x.ACTOR,
-                DateCreated = x.DATECREATED.ToString("dddd dd MMMM", CultureInfo.CreateSpecificCulture("en-US")),
-                Director = x.DIRECTOR,
-                ImageURL = x.IMAGEURL,
-                Title = x.TITLE,
-                Writer = x.WRITER
-            }).ToList();
-            return resp;
+            return new TMCDBContext().fn_GetAllExistingPlays();
         }
     }
 }
