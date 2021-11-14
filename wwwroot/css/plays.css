@@ -1,3 +1,33 @@
-﻿label[name=lbltitle] {
-    font-size: 3em;
+﻿.lbltitle {
+    font-size: 4em;
 }
+
+.lbladdedondate {
+    color: #6e6d6d;
+}
+
+.play-details {
+    margin-top: 4%;
+}
+
+.spangenres {
+    margin-left: 2%;
+    border: 2px solid;
+    border-radius: 22%;
+    padding: 1%;
+    cursor: pointer;
+}
+
+    .spangenres:hover {
+        background-color: lightgrey;
+    }
+
+.play-story {
+    margin-top: 4%;
+}
+
+    .play-story h3 {
+        margin-bottom: 2%;
+        border-left: 4px solid;
+        padding-left: 2%;
+    }
