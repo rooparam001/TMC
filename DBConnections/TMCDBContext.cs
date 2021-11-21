@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using TMC.Models;
 
 namespace TMC.DBConnections
 {
@@ -38,6 +39,8 @@ namespace TMC.DBConnections
         public DbSet<TBL_UPCOMINGPLAYS> TBL_UPCOMINGPLAYS { get; set; }
         public DbSet<TBL_PLAYSMASTER> TBL_PLAYSMASTER { get; set; }
         public DbSet<TBL_SLIDERMASTER> TBL_SLIDERMASTER { get; set; }
+        public DbSet<TBL_GENREMASTER> TBL_GENREMASTER { get; set; }
+        public DbSet<TBL_LANGUAGEMASTER> TBL_LANGUAGEMASTER { get; set; }
 
 
         public AccountMaster fn_GetUserByID(int ID)
@@ -100,6 +103,20 @@ namespace TMC.DBConnections
             }
             catch (Exception ex) { respObj = new AccountMaster(); }
             return respObj;
+        }
+
+        public TBL_PLAYSMASTER fn_GetSinglePlayByID(int ID)
+        {
+            return this.TBL_PLAYSMASTER.Where(x => x.ID == ID && x.ISENABLE).FirstOrDefault();
+        }
+
+        public TBL_GENREMASTER fn_GetSingleGenreByID(int ID)
+        {
+            return this.TBL_GENREMASTER.Where(x => x.ID == ID).FirstOrDefault();
+        }
+        public TBL_LANGUAGEMASTER fn_GetSingleLanguageByID(int ID)
+        {
+            return this.TBL_LANGUAGEMASTER.Where(x => x.ID == ID).FirstOrDefault();
         }
         public bool fn_SaveUpcomingPlay(TBL_UPCOMINGPLAYS obj)
         {
@@ -199,6 +216,46 @@ namespace TMC.DBConnections
             catch { resp = false; }
             return resp;
         }
+
+        public int fn_SaveGenre(string obj)
+        {
+            int resp = 0;
+            try
+            {
+                if (this.TBL_GENREMASTER.Where(x => x.Genre.ToLower() == obj.ToLower()).Count() == 0)
+                {
+                    this.TBL_GENREMASTER.Add(new TBL_GENREMASTER()
+                    {
+                        DateCreated = DateTime.Now,
+                        Genre = obj.ToString()
+                    });
+                    this.SaveChanges();
+                }
+                return this.TBL_GENREMASTER.Where(x => x.Genre.ToLower() == obj.ToLower()).Select(y => y.ID).FirstOrDefault();
+            }
+            catch { resp = 0; }
+            return resp;
+        }
+
+        public int fn_SaveLanguage(string obj)
+        {
+            int resp = 0;
+            try
+            {
+                if (this.TBL_LANGUAGEMASTER.Where(x => x.LANGUAGEVAL.ToLower() == obj.ToLower()).Count() == 0)
+                {
+                    this.TBL_LANGUAGEMASTER.Add(new TBL_LANGUAGEMASTER()
+                    {
+                        DateCreated = DateTime.Now,
+                        LANGUAGEVAL = obj.ToString()
+                    });
+                    this.SaveChanges();
+                }
+                return this.TBL_LANGUAGEMASTER.Where(x => x.LANGUAGEVAL.ToLower() == obj.ToLower()).Select(y => y.ID).FirstOrDefault();
+            }
+            catch { resp = 0; }
+            return resp;
+        }
         public List<TBL_PLAYSMASTER> fn_GetAllExistingPlays()
         {
             var respList = new List<TBL_PLAYSMASTER>();
@@ -206,7 +263,7 @@ namespace TMC.DBConnections
             {
                 respList = this.TBL_PLAYSMASTER.Where(x => x.ISENABLE).OrderBy(y => y.ID).ToList();
             }
-            catch { respList = new List<TBL_PLAYSMASTER>(); }
+            catch (Exception ex) { respList = new List<TBL_PLAYSMASTER>(); }
             return respList;
         }
         public bool fn_DeleteAllExistingPlays()

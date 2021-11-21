@@ -1,4 +1,8 @@
-﻿.lbltitle {
+﻿.table {
+    font-size: 14px;
+}
+
+.lbltitle {
     font-size: 4em;
 }
 
@@ -10,16 +14,23 @@
     margin-top: 4%;
 }
 
+    .play-details h3 {
+        margin-bottom: 4%;
+        border-left: 4px solid darkorange;
+        padding-left: 2%;
+    }
+
 .spangenres {
     margin-left: 2%;
-    border: 2px solid;
-    border-radius: 22%;
+    border: 1px solid #bfbfbf;
     padding: 1%;
     cursor: pointer;
+    font-size: 12px;
 }
 
     .spangenres:hover {
         background-color: lightgrey;
+        color: white;
     }
 
 .play-story {
@@ -28,6 +39,18 @@
 
     .play-story h3 {
         margin-bottom: 2%;
-        border-left: 4px solid;
+        border-left: 4px solid darkorange;
         padding-left: 2%;
+    }
+
+.play-heading-details {
+    float: right;
+}
+
+    .play-heading-details i {
+        font-size: 2em;
+    }
+
+    .play-heading-details span {
+        color: #6e6d6d;
     }

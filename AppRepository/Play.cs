@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMC.DBConnections;
 using System.Linq;
 using System.Globalization;
+using TMC.Models;
 
 namespace TMC.AppRepository
 {
@@ -35,15 +36,134 @@ namespace TMC.AppRepository
         {
             return new TMCDBContext().fn_GetAllPlays();
         }
-
         public static TBL_PLAYSMASTER fn_SavePlay(TBL_PLAYSMASTER obj)
         {
             var resp = new TBL_PLAYSMASTER();
 
             if (obj != null)
+            {
+                if (!string.IsNullOrEmpty(obj.Genre))
+                {
+                    string _strGenre = "";
+                    foreach (var currGenre in obj.Genre.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        if (!string.IsNullOrEmpty(currGenre))
+                        {
+                            _strGenre += new TMCDBContext().fn_SaveGenre(currGenre.Trim()).ToString() + ",";
+                        }
+                    }
+                    if (_strGenre.StartsWith(","))
+                        _strGenre = _strGenre.Substring(1, _strGenre.Length);
+                    while (_strGenre.EndsWith(","))
+                        _strGenre = _strGenre.Substring(0, _strGenre.Length - 1);
+                    if (!string.IsNullOrEmpty(_strGenre))
+                        obj.Genre = _strGenre;
+                }
+
+                if (!string.IsNullOrEmpty(obj.LANGAUAGE))
+                {
+                    string _strLanguage = "";
+                    foreach (var currLang in obj.LANGAUAGE.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        if (!string.IsNullOrEmpty(currLang))
+                        {
+                            _strLanguage += new TMCDBContext().fn_SaveLanguage(currLang.Trim()).ToString() + ",";
+                        }
+                    }
+                    if (_strLanguage.StartsWith(","))
+                        _strLanguage = _strLanguage.Substring(1, _strLanguage.Length);
+                    while (_strLanguage.EndsWith(","))
+                        _strLanguage = _strLanguage.Substring(0, _strLanguage.Length - 1);
+                    if (!string.IsNullOrEmpty(_strLanguage))
+                        obj.LANGAUAGE = _strLanguage;
+                }
                 resp = new TMCDBContext().fn_SavePlay(obj);
+            }
 
             return resp;
+        }
+        public static ViewSinglePlayModel fn_GetSinglePlayByID(int ID)
+        {
+            var respObj = new ViewSinglePlayModel();
+            if (ID > 0)
+            {
+                var playObj = new TBL_PLAYSMASTER();
+                playObj = new TMCDBContext().fn_GetSinglePlayByID(ID);
+                if (playObj != null)
+                    if (playObj.ID > 0)
+                    {
+                        var genreList = ""; var languageList = ""; var sliderList = "";
+
+                        if (!string.IsNullOrEmpty(playObj.Genre))
+                        {
+                            foreach (var currGenre in playObj.Genre.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries))
+                            {
+                                if (!string.IsNullOrEmpty(currGenre))
+                                {
+                                    var objID = 0;
+                                    int.TryParse(currGenre, out objID);
+                                    if (objID > 0)
+                                    {
+                                        genreList += "," + new TMCDBContext().fn_GetSingleGenreByID(objID).Genre;
+                                    }
+
+                                }
+                            }
+                            if (genreList.StartsWith(","))
+                                genreList = genreList.Substring(1, genreList.Length - 1);
+                            while (genreList.EndsWith(","))
+                                genreList = genreList.Substring(0, genreList.Length - 1);
+                        }
+
+                        if (!string.IsNullOrEmpty(playObj.LANGAUAGE))
+                        {
+                            foreach (var currLang in playObj.Genre.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries))
+                            {
+                                if (!string.IsNullOrEmpty(currLang))
+                                {
+                                    var objID = 0;
+                                    int.TryParse(currLang, out objID);
+                                    if (objID > 0)
+                                    {
+                                        languageList += "," + new TMCDBContext().fn_GetSingleLanguageByID(objID).LANGUAGEVAL;
+                                    }
+
+                                }
+                            }
+                            if (languageList.StartsWith(","))
+                                languageList = languageList.Substring(1, languageList.Length - 1);
+                            while (languageList.EndsWith(","))
+                                languageList = languageList.Substring(0, languageList.Length - 1);
+                        }
+
+                        sliderList = playObj.IMAGEURL + "," + (string.Join(",", new TMCDBContext().TBL_SLIDERMASTER.Where(x => x.OBJECTID == ID && x.OBJECTTYPE == (int)SliderObjectType.Plays).Select(y => y.OBJECTURL.ToString())));
+                        if (sliderList.StartsWith(","))
+                            sliderList = sliderList.Substring(1, sliderList.Length);
+                        while (sliderList.EndsWith(","))
+                            sliderList = sliderList.Substring(0, sliderList.Length - 1);
+
+                        respObj = new ViewSinglePlayModel()
+                        {
+                            ABOUT_THEATRE_LINK = playObj.ABOUT_THEATRE_LINK,
+                            ACTOR = playObj.ACTOR,
+                            AGESUITABLEFOR = playObj.AGESUITABLEFOR,
+                            DATECREATED = playObj.DATECREATED.ToString("dddd, dd MMMM yyyy"),
+                            DIRECTOR = playObj.DIRECTOR,
+                            DURATION = playObj.DURATION,
+                            Genre = genreList,
+                            ID = ID,
+                            IMAGEURL = sliderList,
+                            LANGAUAGE = languageList,
+                            NUMBER_OF_SHOWS = playObj.NUMBER_OF_SHOWS,
+                            PREMIERDATE = playObj.PREMIERDATE,
+                            SYNOPSIS = playObj.SYNOPSIS,
+                            TITLE = playObj.TITLE,
+                            TRAILERLINK = playObj.TRAILERLINK,
+                            WRITER = playObj.WRITER
+                        };
+                    }
+            }
+            return respObj;
         }
         public static bool DeletePlay(int objID)
         {

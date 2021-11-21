@@ -38,6 +38,10 @@
             fileData.append('SYNOPSIS', $('#txtareasynopsis').val());
             fileData.append('TRAILERLINK', $('#txtplaytrailerlink').val());
             fileData.append('WRITER', $('#txtplaywriter').val());
+            fileData.append('GENRE', $('#txtplaygenre').val());
+            fileData.append('LANGUAGE', $('#txtplaylanguage').val());
+            fileData.append('SUITABLEFORAGE', $('#txtplayage').val());
+            fileData.append('DURATION', $('#txtplayduration').val());
 
             $.ajax({
                 url: '/Account/SavePlay',
@@ -83,7 +87,9 @@ _playsMaster = {
                         + relationModelObj.title + '</td><td>' + relationModelObj.writer + '</td><td>'
                         + relationModelObj.director + '</td><td>' + relationModelObj.actor + '</td><td>'
                         + relationModelObj.dateCreated + '</td><td>' +
-                        '<span onclick="_playsMaster.fnDelData_ID(' + relationModelObj.id + ')"><i class="bi bi-trash" name="btnDelete" style="cursor:pointer;" data-bs-toggle="tooltip" title="Delete"></i></span></td></tr>');
+                        '<span onclick="_playsMaster.fnDelData_ID(' + relationModelObj.id + ')">' +
+                        '<i class="bi bi-trash" name="btnDelete" style="cursor:pointer;" data-bs-toggle="tooltip" title="Delete"></i>' +
+                        '</span></td></tr>');
                 });
 
             },

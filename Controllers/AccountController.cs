@@ -228,6 +228,10 @@ namespace TMC.Controllers
                     SYNOPSIS = Request.Form["SYNOPSIS"],
                     TRAILERLINK = Request.Form["TRAILERLINK"],
                     WRITER = Request.Form["WRITER"],
+                    Genre = Request.Form["GENRE"],
+                    LANGAUAGE = Request.Form["LANGUAGE"],
+                    AGESUITABLEFOR = Request.Form["SUITABLEFORAGE"],
+                    DURATION = Request.Form["DURATION"],
                     DATECREATED = DateTime.Now
                 };
 

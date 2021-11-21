@@ -16,7 +16,8 @@ namespace TMC.AppRepository
                     {
                         OBJECTID = obj.OBJECTID,
                         OBJECTTYPE = (int)obj.ObjectType,
-                        OBJECTURL = currImage
+                        OBJECTURL = currImage,
+                        DATECREATED=System.DateTime.Now
                     });
             }
             return resp;

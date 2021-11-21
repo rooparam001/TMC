@@ -27,9 +27,9 @@ namespace TMC.Controllers
             return View();
         }
 
-        public IActionResult Plays(int Id)
+        public IActionResult Plays(int objToken)
         {
-            if(Id>0)
+            if (objToken > 0)
             {
                 return View();
             }
@@ -58,6 +58,17 @@ namespace TMC.Controllers
                     About = (x.SYNOPSIS.Length > 100 ? x.SYNOPSIS.Substring(0, 100) : x.SYNOPSIS),
                     BookUrl = x.TRAILERLINK
                 }).ToList(),
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
+        }
+
+        [HttpGet]
+        public JsonResult GetPlayByID(int obj)
+        {
+            var resp = new ajaxResponse()
+            {
+                data = Play.fn_GetSinglePlayByID(obj),
                 respstatus = ResponseStatus.success
             };
             return Json(resp);
