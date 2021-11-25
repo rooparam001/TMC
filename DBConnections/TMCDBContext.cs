@@ -256,6 +256,29 @@ namespace TMC.DBConnections
             catch { resp = 0; }
             return resp;
         }
+
+        public List<TBL_GENREMASTER> fn_GetAllGenres()
+        {
+            var outputObj = new List<TBL_GENREMASTER>();
+            try
+            {
+                outputObj = this.TBL_GENREMASTER.ToList();
+            }
+            catch { outputObj = new List<TBL_GENREMASTER>(); }
+            return outputObj;
+        }
+
+        public List<TBL_LANGUAGEMASTER> fn_GetAllLanguages()
+        {
+            var outputObj = new List<TBL_LANGUAGEMASTER>();
+            try
+            {
+                outputObj = this.TBL_LANGUAGEMASTER.ToList();
+            }
+            catch { outputObj = new List<TBL_LANGUAGEMASTER>(); }
+            return outputObj;
+        }
+
         public List<TBL_PLAYSMASTER> fn_GetAllExistingPlays()
         {
             var respList = new List<TBL_PLAYSMASTER>();

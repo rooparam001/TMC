@@ -1,17 +1,29 @@
 ﻿$(document).ready(function () {
     _allPlaysMaster.fnloadData();
+    _allPlaysMaster.fnshowGenre();
+    _allPlaysMaster.fnshowLanguage();
+});
+$('.filter-item').on("click", function () {
+    _allPlaysMaster.fnSelectFilter($(this));
 });
 
 _allPlaysMaster = {
+    selectedGenre: [],
+    selectedLanguage: [],
     fnloadData: function () {
         $.ajax({
             url: '/Home/GetAllPlays',
             dataType: "json",
+            data: { 'genres': _allPlaysMaster.selectedGenre.join(","), languages: _allPlaysMaster.selectedLanguage.join(",") },
             method: 'GET',
             success: function (data) {
-                
+
                 var playdataTable = $('.dataview');
                 playdataTable.empty();
+
+                if (data.data.length == 0) {
+                    playdataTable.append('<div class="col-md-4"><div class="card mb-4 box-shadow">No results found.</div></div>');
+                }
 
                 $(data.data).each(function (index, relationModelObj) {
                     playdataTable.append('<div class="col-md-4"><div class="card mb-4 box-shadow"><img class="card-img-top" src="/Blogs/Plays/' + relationModelObj.thumbnailUrl + '" alt="Play Image">' +
@@ -26,4 +38,84 @@ _allPlaysMaster = {
             }
         });
     },
+    fnSelectFilter: function (item) {
+        var ifAdd = false;
+        if (item.hasClass('filter-item-selected')) {
+            item.removeClass('filter-item-selected');
+        }
+        else {
+            item.addClass('filter-item-selected');
+            ifAdd = true;
+        }
+
+        var itemID = item.attr('filter-key');
+        var itemVal = item.attr('filter-val');
+        var filterType = item.attr('filter-attr');
+
+        switch (filterType) {
+            case 'genre':
+                if (ifAdd) {
+                    _allPlaysMaster.selectedGenre.push(itemID);
+                }
+                else {
+                    _allPlaysMaster.selectedGenre = _allPlaysMaster.selectedGenre.filter(function (elem) {
+                        return elem != itemID;
+                    });
+                }
+                break;
+            case 'language':
+                if (ifAdd) {
+                    _allPlaysMaster.selectedLanguage.push(itemID);
+                }
+                else {
+                    _allPlaysMaster.selectedLanguage = _allPlaysMaster.selectedLanguage.filter(function (elem) {
+                        return elem != itemID;
+                    });
+                }
+                break;
+        };
+
+        _allPlaysMaster.fnloadData();
+
+    },
+    fnshowGenre: function () {
+        $.ajax({
+            url: '/Home/GetAllGenres',
+            dataType: "json",
+            method: 'GET',
+            success: function (data) {
+
+                var genredataTable = $('.tbl-genre');
+                genredataTable.empty();
+
+                $(data.data).each(function (index, relationModelObj) {
+                    genredataTable.append('<tr><td class="filter-item-td"><span class="filter-item" onclick="_allPlaysMaster.fnSelectFilter($(this));" filter-attr="genre" filter-key="' + relationModelObj.id + '" filter-val="' + relationModelObj.genre + '">' + relationModelObj.genre + '</span></td></tr>');
+                });
+
+            },
+            error: function (err) {
+                alert(err.statusText);
+            }
+        });
+    },
+    fnshowLanguage: function () {
+        $.ajax({
+            url: '/Home/GetAllLanguages',
+            dataType: "json",
+            method: 'GET',
+            success: function (data) {
+
+                var langdataTable = $('.tbl-language');
+                langdataTable.empty();
+
+                $(data.data).each(function (index, relationModelObj) {
+                    langdataTable.append('<tr><td class="filter-item-td"><span class="filter-item" onclick="_allPlaysMaster.fnSelectFilter($(this));" filter-attr="language" filter-key="' + relationModelObj.id + '" filter-val="' + relationModelObj.languageval + '">' + relationModelObj.languageval + '</span></td></tr>');
+                });
+
+            },
+            error: function (err) {
+                alert(err.statusText);
+            }
+        });
+    }
 };

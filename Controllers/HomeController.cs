@@ -20,6 +20,7 @@ namespace TMC.Controllers
         public IActionResult Index()
         {
             return View("OnlineTheatreFestival");
+            //return View();
         }
 
         public IActionResult AllPlays()
@@ -39,17 +40,39 @@ namespace TMC.Controllers
             }
         }
 
+        [HttpGet]
+        public JsonResult GetAllGenres()
+        {
+            var resp = new ajaxResponse()
+            {
+                data = Play.fn_GetAllGenres(),
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
+        }
+
+        [HttpGet]
+        public JsonResult GetAllLanguages()
+        {
+            var resp = new ajaxResponse()
+            {
+                data = Play.fn_GetAllLanguages(),
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
+        }
+
         public IActionResult OnlineTheatreFestival()
         {
             return View();
         }
 
         [HttpGet]
-        public JsonResult GetAllPlays()
+        public JsonResult GetAllPlays(string genres = "", string languages = "")
         {
             var resp = new ajaxResponse()
             {
-                data = Play.fn_GetAllExistingPlays().Select(x => new playHomePageListDisplaymodel()
+                data = Play.fn_GetAllExistingPlays(genres,languages).Select(x => new playHomePageListDisplaymodel()
                 {
                     TokenID = x.ID,
                     DateCreated = x.DATECREATED.ToString("dddd dd MMMM", CultureInfo.CreateSpecificCulture("en-US")),

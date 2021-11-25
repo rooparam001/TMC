@@ -10,144 +10,238 @@
 
     <div class="album py-5 bg-light">
         <div class="container">
-            <div class="row dataview">
-                @*<div class="col-md-4">
-                    <div class="card mb-4 box-shadow">
-                        <img class="card-img-top" src="~/TMC/Images/thumbnail_sample.svg" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Book</button>
-                                </div>
-                                <small class="text-muted">9 mins</small>
+            @*<p class="filter-selected-list-items pl-lg-4">
+                <span class="filter-selected-list-items-object badge badge-dark">
+                    <span>Comedy</span>
+                    <a><i class="remove far fa-times-circle"></i></a>
+                </span>
+            </p>*@
+            <br />
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-2 filter-area">
+                        <div class="card">
+                            <div class="card-header">
+                                Genre
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-borderless table-hover table-sm tbl-genre">
+                                    <tr>
+                                        <td class="filter-item-td">
+                                            <span class="filter-item" filter-attr="genre" filter-key="Item 1" filter-val="123">Item 1</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="filter-item-td">
+                                            <span class="filter-item" filter-attr="genre" filter-key="Item 1" filter-val="123">Item 1</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="filter-item-td">
+                                            <span class="filter-item" filter-attr="genre" filter-key="Item 1" filter-val="123">Item 1</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="filter-item-td">
+                                            <span class="filter-item" filter-attr="genre" filter-key="Item 1" filter-val="123">Item 1</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="filter-item-td">
+                                            <span class="filter-item" filter-attr="genre" filter-key="Item 1" filter-val="123">Item 1</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="filter-item-td">
+                                            <span class="filter-item" filter-attr="genre" filter-key="Item 1" filter-val="123">Item 1</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="card">
+                            <div class="card-header">
+                                Languages
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-borderless table-hover table-sm tbl-language">
+                                    <tr>
+                                        <td class="filter-item-td">
+                                            <span class="filter-item" filter-attr="genre" filter-key="Item 1" filter-val="123">Item 1</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="filter-item-td">
+                                            <span class="filter-item" filter-attr="genre" filter-key="Item 1" filter-val="123">Item 1</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="filter-item-td">
+                                            <span class="filter-item" filter-attr="genre" filter-key="Item 1" filter-val="123">Item 1</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="filter-item-td">
+                                            <span class="filter-item" filter-attr="genre" filter-key="Item 1" filter-val="123">Item 1</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="filter-item-td">
+                                            <span class="filter-item" filter-attr="genre" filter-key="Item 1" filter-val="123">Item 1</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="filter-item-td">
+                                            <span class="filter-item" filter-attr="genre" filter-key="Item 1" filter-val="123">Item 1</span>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card mb-4 box-shadow">
-                        <img class="card-img-top" src="~/TMC/Images/thumbnail_sample.svg" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Book</button>
+                    <div class="col-md-10">
+                        <div class="row dataview">
+                            @*<div class="col-md-4">
+                                    <div class="card mb-4 box-shadow">
+                                        <img class="card-img-top" src="~/TMC/Images/thumbnail_sample.svg" alt="Card image cap">
+                                        <div class="card-body">
+                                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">Book</button>
+                                                </div>
+                                                <small class="text-muted">9 mins</small>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <small class="text-muted">9 mins</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card mb-4 box-shadow">
-                        <img class="card-img-top" src="~/TMC/Images/thumbnail_sample.svg" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Book</button>
+                                <div class="col-md-4">
+                                    <div class="card mb-4 box-shadow">
+                                        <img class="card-img-top" src="~/TMC/Images/thumbnail_sample.svg" alt="Card image cap">
+                                        <div class="card-body">
+                                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">Book</button>
+                                                </div>
+                                                <small class="text-muted">9 mins</small>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <small class="text-muted">9 mins</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                <div class="col-md-4">
+                                    <div class="card mb-4 box-shadow">
+                                        <img class="card-img-top" src="~/TMC/Images/thumbnail_sample.svg" alt="Card image cap">
+                                        <div class="card-body">
+                                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">Book</button>
+                                                </div>
+                                                <small class="text-muted">9 mins</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                <div class="col-md-4">
-                    <div class="card mb-4 box-shadow">
-                        <img class="card-img-top" src="~/TMC/Images/thumbnail_sample.svg" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Book</button>
+                                <div class="col-md-4">
+                                    <div class="card mb-4 box-shadow">
+                                        <img class="card-img-top" src="~/TMC/Images/thumbnail_sample.svg" alt="Card image cap">
+                                        <div class="card-body">
+                                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">Book</button>
+                                                </div>
+                                                <small class="text-muted">9 mins</small>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <small class="text-muted">9 mins</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card mb-4 box-shadow">
-                        <img class="card-img-top" src="~/TMC/Images/thumbnail_sample.svg" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Book</button>
+                                <div class="col-md-4">
+                                    <div class="card mb-4 box-shadow">
+                                        <img class="card-img-top" src="~/TMC/Images/thumbnail_sample.svg" alt="Card image cap">
+                                        <div class="card-body">
+                                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">Book</button>
+                                                </div>
+                                                <small class="text-muted">9 mins</small>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <small class="text-muted">9 mins</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card mb-4 box-shadow">
-                        <img class="card-img-top" src="~/TMC/Images/thumbnail_sample.svg" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Book</button>
+                                <div class="col-md-4">
+                                    <div class="card mb-4 box-shadow">
+                                        <img class="card-img-top" src="~/TMC/Images/thumbnail_sample.svg" alt="Card image cap">
+                                        <div class="card-body">
+                                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">Book</button>
+                                                </div>
+                                                <small class="text-muted">9 mins</small>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <small class="text-muted">9 mins</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="col-md-4">
-                    <div class="card mb-4 box-shadow">
-                        <img class="card-img-top" src="~/TMC/Images/thumbnail_sample.svg" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Book</button>
+                                <div class="col-md-4">
+                                    <div class="card mb-4 box-shadow">
+                                        <img class="card-img-top" src="~/TMC/Images/thumbnail_sample.svg" alt="Card image cap">
+                                        <div class="card-body">
+                                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">Book</button>
+                                                </div>
+                                                <small class="text-muted">9 mins</small>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <small class="text-muted">9 mins</small>
-                            </div>
+                                <div class="col-md-4">
+                                    <div class="card mb-4 box-shadow">
+                                        <img class="card-img-top" src="~/TMC/Images/thumbnail_sample.svg" alt="Card image cap">
+                                        <div class="card-body">
+                                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">Book</button>
+                                                </div>
+                                                <small class="text-muted">9 mins</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card mb-4 box-shadow">
+                                        <img class="card-img-top" src="~/TMC/Images/thumbnail_sample.svg" alt="Card image cap">
+                                        <div class="card-body">
+                                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary">Book</button>
+                                                </div>
+                                                <small class="text-muted">9 mins</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>*@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card mb-4 box-shadow">
-                        <img class="card-img-top" src="~/TMC/Images/thumbnail_sample.svg" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Book</button>
-                                </div>
-                                <small class="text-muted">9 mins</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card mb-4 box-shadow">
-                        <img class="card-img-top" src="~/TMC/Images/thumbnail_sample.svg" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Book</button>
-                                </div>
-                                <small class="text-muted">9 mins</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>*@
             </div>
         </div>
     </div>

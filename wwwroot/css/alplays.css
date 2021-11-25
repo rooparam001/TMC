@@ -28,6 +28,10 @@
     max-width: 40rem;
 }
 
+.card-img-top {
+    height: 15em;
+}
+
 footer {
     padding-top: 3rem;
     padding-bottom: 3rem;
@@ -43,4 +47,58 @@ footer {
 
 i {
     cursor: pointer;
+}
+
+.filter-area .card-body {
+    height: 150px;
+    overflow-y: auto;
+}
+
+.filter-area .filter-item-td {
+    cursor: pointer;
+    font-size: 14px;
+    text-transform: capitalize;
+}
+
+    .filter-area .filter-item-td:hover {
+        background-color: lightgrey;
+        text-decoration: underline;
+        /*color: #bd1515;*/
+    }
+
+.filter-item-selected {
+    background-color: #d3d3d3;
+}
+
+.filter-selected-list-items-object {
+    font-size: 14px;
+    padding: .3em .4em .4em;
+    margin: 0.1em;
+}
+
+    .filter-selected-list-items-object a {
+        color: #bbb;
+        cursor: pointer;
+        opacity: 0.6;
+        margin: 0 0 0 .3em;
+    }
+
+        .filter-selected-list-items-object a:hover {
+            opacity: 1.0
+        }
+
+    .filter-selected-list-items-object .remove {
+        vertical-align: bottom;
+        top: 0;
+    }
+
+    .filter-selected-list-items-object a .fa-times-circle {
+        color: #fff;
+    }
+
+.filter-selected-item-remove {
+    cursor: pointer;
+    color: white;
+    padding: 0 1% 0 1%;
+    background-color: #ffb340;
 }

@@ -36,6 +36,14 @@ namespace TMC.AppRepository
         {
             return new TMCDBContext().fn_GetAllPlays();
         }
+        public static List<TBL_GENREMASTER> fn_GetAllGenres()
+        {
+            return new TMCDBContext().fn_GetAllGenres();
+        }
+        public static List<TBL_LANGUAGEMASTER> fn_GetAllLanguages()
+        {
+            return new TMCDBContext().fn_GetAllLanguages();
+        }
         public static TBL_PLAYSMASTER fn_SavePlay(TBL_PLAYSMASTER obj)
         {
             var resp = new TBL_PLAYSMASTER();
@@ -45,7 +53,7 @@ namespace TMC.AppRepository
                 if (!string.IsNullOrEmpty(obj.Genre))
                 {
                     string _strGenre = "";
-                    foreach (var currGenre in obj.Genre.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries))
+                    foreach (var currGenre in obj.Genre.Split(new char[] { ',', ';', '/' }, System.StringSplitOptions.RemoveEmptyEntries))
                     {
                         if (!string.IsNullOrEmpty(currGenre))
                         {
@@ -63,7 +71,7 @@ namespace TMC.AppRepository
                 if (!string.IsNullOrEmpty(obj.LANGAUAGE))
                 {
                     string _strLanguage = "";
-                    foreach (var currLang in obj.LANGAUAGE.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries))
+                    foreach (var currLang in obj.LANGAUAGE.Split(new char[] { ',', ';', '/' }, System.StringSplitOptions.RemoveEmptyEntries))
                     {
                         if (!string.IsNullOrEmpty(currLang))
                         {
@@ -178,9 +186,43 @@ namespace TMC.AppRepository
         {
             return new TMCDBContext().fn_DeleteAllExistingPlays();
         }
-        public static List<TBL_PLAYSMASTER> fn_GetAllExistingPlays()
+        public static List<TBL_PLAYSMASTER> fn_GetAllExistingPlays(string _genres = "", string _langs = "")
         {
-            return new TMCDBContext().fn_GetAllExistingPlays();
+            var obj = new List<TBL_PLAYSMASTER>();
+            obj = new TMCDBContext().fn_GetAllExistingPlays();
+            var outputObj = new List<TBL_PLAYSMASTER>();
+
+            if (!string.IsNullOrEmpty(_genres))
+            {
+                foreach (var currPlay in obj)
+                {
+                    foreach (var currGenre in _genres)
+                    {
+                        if (currPlay.Genre.Contains(currGenre))
+                            if ((outputObj.Where(x => x.ID == currPlay.ID).ToList().Count) == 0)
+                                outputObj.Add(currPlay);
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(_langs))
+            {
+                foreach (var currPlay in obj.Where(x => (outputObj.Count == 0 ? true : outputObj.Select(y => y.ID).ToList().Contains(x.ID))))
+                {
+                    foreach (var currLang in _langs)
+                    {
+                        if (!currPlay.LANGAUAGE.Contains(currLang))
+                        {
+                            outputObj.Remove(currPlay);
+                        }
+                    }
+                }
+            }
+
+            if (string.IsNullOrEmpty(_genres) && string.IsNullOrEmpty(_langs))
+                outputObj = obj;
+
+            return outputObj;
         }
     }
 }
