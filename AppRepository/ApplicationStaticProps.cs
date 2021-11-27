@@ -31,5 +31,13 @@ namespace TMC.AppRepository
             }
         }
 
+        public static string appBasePath_Director_Image
+        {
+            get
+            {
+                return "\\blogs\\Directors\\";
+            }
+        }
+
     }
 }

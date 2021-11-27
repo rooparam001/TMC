@@ -41,7 +41,7 @@ namespace TMC.DBConnections
         public DbSet<TBL_SLIDERMASTER> TBL_SLIDERMASTER { get; set; }
         public DbSet<TBL_GENREMASTER> TBL_GENREMASTER { get; set; }
         public DbSet<TBL_LANGUAGEMASTER> TBL_LANGUAGEMASTER { get; set; }
-
+        public DbSet<TBL_DIRECTORMASTER> TBL_DIRECTORMASTER { get; set; }
 
         public AccountMaster fn_GetUserByID(int ID)
         {
@@ -128,13 +128,12 @@ namespace TMC.DBConnections
                     context.TBL_UPCOMINGPLAYS.Add(obj);
                     context.SaveChanges();
                 }
-                //this.TBL_UPCOMINGPLAYS.Add(obj);
-                //this.SaveChanges();
                 resp = true;
             }
             catch (Exception ex) { resp = false; }
             return resp;
         }
+
         public bool fn_DeleteUpcomingPlay(int objID)
         {
             var resp = false;
@@ -323,6 +322,53 @@ namespace TMC.DBConnections
             }
             catch (Exception ex) { resp = false; }
             return resp;
+        }
+
+        public bool fn_SaveDirectors(TBL_DIRECTORMASTER obj)
+        {
+            var resp = false;
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    context.TBL_DIRECTORMASTER.Add(obj);
+                    context.SaveChanges();
+                }
+                resp = true;
+            }
+            catch (Exception ex) { resp = false; }
+            return resp;
+        }
+
+        public bool fn_DeleteDirectors(int objID)
+        {
+            var resp = false;
+            try
+            {
+                var relationObj = new TBL_DIRECTORMASTER();
+                relationObj = this.TBL_DIRECTORMASTER.Where(x => x.ID == objID && x.ISENABLE).FirstOrDefault();
+                if (relationObj != null)
+                    if (relationObj.ID > 0)
+                    {
+                        relationObj.ISENABLE = false;
+                        this.TBL_DIRECTORMASTER.Update(relationObj);
+                        this.SaveChanges();
+                        resp = true;
+                    }
+            }
+            catch { resp = false; }
+            return resp;
+        }
+
+        public List<TBL_DIRECTORMASTER> fn_getallDirectors(int ID = 0)
+        {
+            var outputObj = new List<TBL_DIRECTORMASTER>();
+            try
+            {
+                outputObj = this.TBL_DIRECTORMASTER.Where(x => (ID == 0 ? true : x.ID == ID) && x.ISENABLE).ToList();
+            }
+            catch { outputObj = new List<TBL_DIRECTORMASTER>(); }
+            return outputObj;
         }
     }
 }

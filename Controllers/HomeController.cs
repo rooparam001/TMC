@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EntitesInterfaces.AppModels;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Globalization;
@@ -23,10 +24,8 @@ namespace TMC.Controllers
             //return View();
         }
 
-        public IActionResult AllPlays()
-        {
-            return View();
-        }
+        public IActionResult AllPlays() => View();
+        public IActionResult AllDirectors() => View();
 
         public IActionResult Plays(int objToken)
         {
@@ -62,17 +61,14 @@ namespace TMC.Controllers
             return Json(resp);
         }
 
-        public IActionResult OnlineTheatreFestival()
-        {
-            return View();
-        }
+        public IActionResult OnlineTheatreFestival() => View();
 
         [HttpGet]
         public JsonResult GetAllPlays(string genres = "", string languages = "")
         {
             var resp = new ajaxResponse()
             {
-                data = Play.fn_GetAllExistingPlays(genres,languages).Select(x => new playHomePageListDisplaymodel()
+                data = Play.fn_GetAllExistingPlays(genres, languages).Select(x => new playHomePageListDisplaymodel()
                 {
                     TokenID = x.ID,
                     DateCreated = x.DATECREATED.ToString("dddd dd MMMM", CultureInfo.CreateSpecificCulture("en-US")),
@@ -92,6 +88,23 @@ namespace TMC.Controllers
             var resp = new ajaxResponse()
             {
                 data = Play.fn_GetSinglePlayByID(obj),
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
+        }
+
+        [HttpGet]
+        public JsonResult GetAllDirectors()
+        {
+            var resp = new ajaxResponse()
+            {
+                data = Director.GetAllDirectors().Select(x => new directorModel()
+                {
+                    ID = x.ID,
+                    ImageURL = x.OBJECTIMGURL,
+                    Title = x.OBJECTNAME,
+                    DateCreated = x.DATECREATED.ToString("dddd dd MMMM", CultureInfo.CreateSpecificCulture("en-US")),
+                }).ToList(),
                 respstatus = ResponseStatus.success
             };
             return Json(resp);

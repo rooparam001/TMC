@@ -23,14 +23,8 @@ namespace TMC.Controllers
         {
             _webHostEnvironment = webHostEnvironment;
         }
-        public IActionResult Verify()
-        {
-            return View();
-        }
-        public ActionResult login()
-        {
-            return View();
-        }
+        public IActionResult Verify()=> View();
+        public ActionResult login() => View();
         public ActionResult register(string UserName, string Email, string ContactNumber, string UPassword)
         {
             return View();
@@ -38,6 +32,7 @@ namespace TMC.Controllers
 
         public ActionResult UpComingPlays() => View();
         public ActionResult Plays() => View();
+        public ActionResult Directors() => View();
 
         #region UpComing Plays region
         [HttpGet]
@@ -326,6 +321,117 @@ namespace TMC.Controllers
         }
         #endregion
 
+        #region Directors region
+        [HttpPost]
+        public async Task<JsonResult> SaveDirector(List<IFormFile> thumbnailfiles)
+        {
+            var resp = new ajaxResponse();
+            try
+            {
+                var inputDirectorObj = new TBL_DIRECTORMASTER()
+                {
+                    DATECREATED = DateTime.Now,
+                    OBJECTNAME = Request.Form["TITLE"]
+                };
+
+                try
+                {
+                    //saving directors's thumbnail
+                    IFormFile source = thumbnailfiles[0];
+                    string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
+                    filename = this.EnsureCorrectFilename(filename);
+                    using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "directors")))
+                        await source.CopyToAsync(output);
+
+                    inputDirectorObj.OBJECTIMGURL = filename;
+
+                    var isSave = Director.SaveDirectors(inputDirectorObj);
+                    if (isSave)
+                    {
+                        resp.respmessage = "Play saved";
+                        resp.respstatus = ResponseStatus.success;
+                    }
+                    else
+                    {
+                        resp = new ajaxResponse()
+                        {
+                            data = null,
+                            respmessage = "Something went wrong",
+                            respstatus = ResponseStatus.error
+                        };
+                    }
+                }
+                catch (Exception ex)
+                {
+                    resp = new ajaxResponse()
+                    {
+                        data = null,
+                        respmessage = ex.Message.ToString(),
+                        respstatus = ResponseStatus.error
+                    };
+                }
+
+            }
+            catch
+            {
+                resp = new ajaxResponse()
+                {
+                    data = null,
+                    respmessage = "Something went wrong",
+                    respstatus = ResponseStatus.error
+                };
+            }
+            return Json(resp);
+        }
+
+        [HttpGet]
+        public JsonResult DeleteDirector(string objID)
+        {
+            int modelID = 0;
+            int.TryParse(objID, out modelID);
+            var resp = new ajaxResponse()
+            {
+                respmessage = "Something went wrong.",
+                respstatus = ResponseStatus.error
+            };
+            if (modelID > 0)
+            {
+                resp.data = Director.DeleteDirectors(modelID);
+                resp.respstatus = ResponseStatus.success;
+                resp.respmessage = "Director deleted";
+            }
+            return Json(resp);
+        }
+
+        [HttpGet]
+        public JsonResult GetAllDirectors()
+        {
+            var resp = new ajaxResponse()
+            {
+                data = Director.GetAllDirectors().Select(x => new directorModel()
+                {
+                    ID = x.ID,
+                    ImageURL = x.OBJECTIMGURL,
+                    Title = x.OBJECTNAME,
+                    DateCreated = x.DATECREATED.ToString("dddd dd MMMM", CultureInfo.CreateSpecificCulture("en-US")),
+                }).ToList(),
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
+        }
+
+        [HttpGet]
+        public JsonResult Getirector_ByID(int ID)
+        {
+            var resp = new ajaxResponse()
+            {
+                data = Director.GetSingleDirector_ByID(ID),
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
+        }
+        #endregion
+
         private string EnsureCorrectFilename(string filename)
         {
             if (filename.Contains("\\"))
@@ -351,6 +457,10 @@ namespace TMC.Controllers
                 case "sliders":
                     {
                         return _webHostEnvironment.WebRootPath + ApplicationStaticProps.appBasePath_Sliders_Image + filename;
+                    }
+                case "directors":
+                    {
+                        return _webHostEnvironment.WebRootPath + ApplicationStaticProps.appBasePath_Director_Image + filename;
                     }
                 default:
                     {

@@ -196,7 +196,7 @@ namespace TMC.AppRepository
             {
                 foreach (var currPlay in obj)
                 {
-                    foreach (var currGenre in _genres)
+                    foreach (var currGenre in _genres.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries))
                     {
                         if (currPlay.Genre.Contains(currGenre))
                             if ((outputObj.Where(x => x.ID == currPlay.ID).ToList().Count) == 0)
@@ -207,14 +207,25 @@ namespace TMC.AppRepository
 
             if (!string.IsNullOrEmpty(_langs))
             {
-                foreach (var currPlay in obj.Where(x => (outputObj.Count == 0 ? true : outputObj.Select(y => y.ID).ToList().Contains(x.ID))))
+                if (outputObj.Count > 0)
+                    obj = obj.Where(x => outputObj.Select(y => y.ID).ToList().Contains(x.ID)).ToList();
+
+                foreach (var currPlay in obj)
                 {
-                    foreach (var currLang in _langs)
+                    var isTrue = false;
+                    foreach (var currLang in _langs.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries))
                     {
-                        if (!currPlay.LANGAUAGE.Contains(currLang))
+                        if (currPlay.LANGAUAGE.Contains(currLang))
                         {
-                            outputObj.Remove(currPlay);
+                            isTrue = true;
                         }
+                    }
+                    if (!isTrue)
+                        outputObj.Remove(currPlay);
+                    else
+                    {
+                        if ((outputObj.Where(x => x.ID == currPlay.ID).ToList().Count) == 0)
+                            outputObj.Add(currPlay);
                     }
                 }
             }
