@@ -125,7 +125,7 @@ namespace TMC.AppRepository
 
                         if (!string.IsNullOrEmpty(playObj.LANGAUAGE))
                         {
-                            foreach (var currLang in playObj.Genre.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries))
+                            foreach (var currLang in playObj.LANGAUAGE.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries))
                             {
                                 if (!string.IsNullOrEmpty(currLang))
                                 {

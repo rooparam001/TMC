@@ -51,7 +51,6 @@ _directorsMaster = {
             dataType: "json",
             method: 'GET',
             success: function (data) {
-                console.log(data);
                 var directordataTable = $('.data-view');
                 directordataTable.empty();
                 $(data.data).each(function (index, relationModelObj) {

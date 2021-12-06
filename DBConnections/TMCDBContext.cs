@@ -331,6 +331,7 @@ namespace TMC.DBConnections
             {
                 using (var context = new TMCDBContext())
                 {
+                    obj.ISENABLE = true;
                     context.TBL_DIRECTORMASTER.Add(obj);
                     context.SaveChanges();
                 }

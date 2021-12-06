@@ -20,7 +20,7 @@ namespace TMC.Controllers
 
         public IActionResult Index()
         {
-            return View("OnlineTheatreFestival");
+            return View("AllPlays");
             //return View();
         }
 
