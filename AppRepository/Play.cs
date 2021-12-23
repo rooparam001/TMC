@@ -44,6 +44,10 @@ namespace TMC.AppRepository
         {
             return new TMCDBContext().fn_GetAllLanguages();
         }
+        public static List<TBL_CITYMASTER> fn_GetAllCities()
+        {
+            return new TMCDBContext().fn_GetAllCities();
+        }
         public static TBL_PLAYSMASTER fn_SavePlay(TBL_PLAYSMASTER obj)
         {
             var resp = new TBL_PLAYSMASTER();
@@ -84,6 +88,11 @@ namespace TMC.AppRepository
                         _strLanguage = _strLanguage.Substring(0, _strLanguage.Length - 1);
                     if (!string.IsNullOrEmpty(_strLanguage))
                         obj.LANGAUAGE = _strLanguage;
+                }
+
+                if (!string.IsNullOrEmpty(obj.CITY))
+                {
+                    obj.CITY = new TMCDBContext().fn_SaveCity(obj.CITY.Trim()).ToString();
                 }
                 resp = new TMCDBContext().fn_SavePlay(obj);
             }
@@ -150,6 +159,10 @@ namespace TMC.AppRepository
                         while (sliderList.EndsWith(","))
                             sliderList = sliderList.Substring(0, sliderList.Length - 1);
 
+                        int cityID = 0;
+                        if (!string.IsNullOrEmpty(playObj.CITY))
+                            int.TryParse(playObj.CITY, out cityID);
+
                         respObj = new ViewSinglePlayModel()
                         {
                             ABOUT_THEATRE_LINK = playObj.ABOUT_THEATRE_LINK,
@@ -167,7 +180,8 @@ namespace TMC.AppRepository
                             SYNOPSIS = playObj.SYNOPSIS,
                             TITLE = playObj.TITLE,
                             TRAILERLINK = playObj.TRAILERLINK,
-                            WRITER = playObj.WRITER
+                            WRITER = playObj.WRITER,
+                            CITY = new TMCDBContext().fn_GetSingleCityByID(cityID).CITY
                         };
                     }
             }
@@ -186,7 +200,7 @@ namespace TMC.AppRepository
         {
             return new TMCDBContext().fn_DeleteAllExistingPlays();
         }
-        public static List<TBL_PLAYSMASTER> fn_GetAllExistingPlays(string _genres = "", string _langs = "")
+        public static List<TBL_PLAYSMASTER> fn_GetAllExistingPlays(string _genres = "", string _langs = "", string _cities = "")
         {
             var obj = new List<TBL_PLAYSMASTER>();
             obj = new TMCDBContext().fn_GetAllExistingPlays();
@@ -230,7 +244,32 @@ namespace TMC.AppRepository
                 }
             }
 
-            if (string.IsNullOrEmpty(_genres) && string.IsNullOrEmpty(_langs))
+            if (!string.IsNullOrEmpty(_cities))
+            {
+                if (outputObj.Count > 0)
+                    obj = obj.Where(x => outputObj.Select(y => y.ID).ToList().Contains(x.ID)).ToList();
+
+                foreach (var currPlay in obj)
+                {
+                    var isTrue = false;
+                    foreach (var currCity in _cities.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        if (currPlay.CITY.Contains(currCity))
+                        {
+                            isTrue = true;
+                        }
+                    }
+                    if (!isTrue)
+                        outputObj.Remove(currPlay);
+                    else
+                    {
+                        if ((outputObj.Where(x => x.ID == currPlay.ID).ToList().Count) == 0)
+                            outputObj.Add(currPlay);
+                    }
+                }
+            }
+
+            if (string.IsNullOrEmpty(_genres) && string.IsNullOrEmpty(_langs) && string.IsNullOrEmpty(_cities))
                 outputObj = obj;
 
             return outputObj;

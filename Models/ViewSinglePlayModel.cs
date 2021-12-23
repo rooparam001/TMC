@@ -18,5 +18,6 @@
         public string LANGAUAGE { get; set; }
         public string DURATION { get; set; }
         public string AGESUITABLEFOR { get; set; }
+        public string CITY { get; set; }
     }
 }

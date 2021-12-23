@@ -42,6 +42,7 @@ namespace TMC.DBConnections
         public DbSet<TBL_GENREMASTER> TBL_GENREMASTER { get; set; }
         public DbSet<TBL_LANGUAGEMASTER> TBL_LANGUAGEMASTER { get; set; }
         public DbSet<TBL_DIRECTORMASTER> TBL_DIRECTORMASTER { get; set; }
+        public DbSet<TBL_CITYMASTER> TBL_CITYMASTER { get; set; }
 
         public AccountMaster fn_GetUserByID(int ID)
         {
@@ -117,6 +118,10 @@ namespace TMC.DBConnections
         public TBL_LANGUAGEMASTER fn_GetSingleLanguageByID(int ID)
         {
             return this.TBL_LANGUAGEMASTER.Where(x => x.ID == ID).FirstOrDefault();
+        }
+        public TBL_CITYMASTER fn_GetSingleCityByID(int ID)
+        {
+            return this.TBL_CITYMASTER.Where(x => x.ID == ID).FirstOrDefault();
         }
         public bool fn_SaveUpcomingPlay(TBL_UPCOMINGPLAYS obj)
         {
@@ -256,6 +261,26 @@ namespace TMC.DBConnections
             return resp;
         }
 
+        public int fn_SaveCity(string obj)
+        {
+            int resp = 0;
+            try
+            {
+                if (this.TBL_CITYMASTER.Where(x => x.CITY.ToLower() == obj.ToLower()).Count() == 0)
+                {
+                    this.TBL_CITYMASTER.Add(new TBL_CITYMASTER()
+                    {
+                        DATECREATED = DateTime.Now,
+                        CITY = obj.ToString()
+                    });
+                    this.SaveChanges();
+                }
+                return this.TBL_CITYMASTER.Where(x => x.CITY.ToLower() == obj.ToLower()).Select(y => y.ID).FirstOrDefault();
+            }
+            catch { resp = 0; }
+            return resp;
+        }
+
         public List<TBL_GENREMASTER> fn_GetAllGenres()
         {
             var outputObj = new List<TBL_GENREMASTER>();
@@ -275,6 +300,17 @@ namespace TMC.DBConnections
                 outputObj = this.TBL_LANGUAGEMASTER.ToList();
             }
             catch { outputObj = new List<TBL_LANGUAGEMASTER>(); }
+            return outputObj;
+        }
+
+        public List<TBL_CITYMASTER> fn_GetAllCities()
+        {
+            var outputObj = new List<TBL_CITYMASTER>();
+            try
+            {
+                outputObj = this.TBL_CITYMASTER.ToList();
+            }
+            catch { outputObj = new List<TBL_CITYMASTER>(); }
             return outputObj;
         }
 

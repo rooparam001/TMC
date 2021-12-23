@@ -23,7 +23,7 @@ namespace TMC.Controllers
         {
             _webHostEnvironment = webHostEnvironment;
         }
-        public IActionResult Verify()=> View();
+        public IActionResult Verify() => View();
         public ActionResult login() => View();
         public ActionResult register(string UserName, string Email, string ContactNumber, string UPassword)
         {
@@ -227,7 +227,8 @@ namespace TMC.Controllers
                     LANGAUAGE = Request.Form["LANGUAGE"],
                     AGESUITABLEFOR = Request.Form["SUITABLEFORAGE"],
                     DURATION = Request.Form["DURATION"],
-                    DATECREATED = DateTime.Now
+                    DATECREATED = DateTime.Now,
+                    CITY = Request.Form["CITY"]
                 };
 
 
@@ -331,7 +332,8 @@ namespace TMC.Controllers
                 var inputDirectorObj = new TBL_DIRECTORMASTER()
                 {
                     DATECREATED = DateTime.Now,
-                    OBJECTNAME = Request.Form["TITLE"]
+                    OBJECTNAME = Request.Form["TITLE"],
+                    OBJECTDESCRIPTION = Request.Form["DESCRIPTION"],
                 };
 
                 try
@@ -414,6 +416,7 @@ namespace TMC.Controllers
                     ImageURL = x.OBJECTIMGURL,
                     Title = x.OBJECTNAME,
                     DateCreated = x.DATECREATED.ToString("dddd dd MMMM", CultureInfo.CreateSpecificCulture("en-US")),
+                    Description = x.OBJECTDESCRIPTION
                 }).ToList(),
                 respstatus = ResponseStatus.success
             };

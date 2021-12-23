@@ -38,7 +38,9 @@ namespace TMC.AppRepository
             {
                 ID = x.ID,
                 ImageURL = x.OBJECTIMGURL,
-                Title = x.OBJECTNAME
+                Title = x.OBJECTNAME,
+                DateCreated = x.DATECREATED.ToString(),
+                Description = x.OBJECTDESCRIPTION
             }).FirstOrDefault();
         }
     }

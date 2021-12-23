@@ -61,14 +61,25 @@ namespace TMC.Controllers
             return Json(resp);
         }
 
-        public IActionResult OnlineTheatreFestival() => View();
-
         [HttpGet]
-        public JsonResult GetAllPlays(string genres = "", string languages = "")
+        public JsonResult GetAllCities()
         {
             var resp = new ajaxResponse()
             {
-                data = Play.fn_GetAllExistingPlays(genres, languages).Select(x => new playHomePageListDisplaymodel()
+                data = Play.fn_GetAllCities(),
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
+        }
+
+        public IActionResult OnlineTheatreFestival() => View();
+
+        [HttpGet]
+        public JsonResult GetAllPlays(string genres = "", string languages = "", string cities = "")
+        {
+            var resp = new ajaxResponse()
+            {
+                data = Play.fn_GetAllExistingPlays(genres, languages, cities).Select(x => new playHomePageListDisplaymodel()
                 {
                     TokenID = x.ID,
                     DateCreated = x.DATECREATED.ToString("dddd dd MMMM", CultureInfo.CreateSpecificCulture("en-US")),
@@ -104,6 +115,7 @@ namespace TMC.Controllers
                     ImageURL = x.OBJECTIMGURL,
                     Title = x.OBJECTNAME,
                     DateCreated = x.DATECREATED.ToString("dddd dd MMMM", CultureInfo.CreateSpecificCulture("en-US")),
+                    Description = x.OBJECTDESCRIPTION
                 }).ToList(),
                 respstatus = ResponseStatus.success
             };

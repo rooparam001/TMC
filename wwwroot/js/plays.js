@@ -40,6 +40,7 @@ _playsMaster = {
                 $('label[name="lblageSuitable"]').html(data.data.agesuitablefor);
                 $('label[name="lbltrailer"]').html('<a href="' + data.data.trailerlink + '" target="_blank">Click to watch</a>');
                 $('label[name="lblpremierdate"]').html(data.data.premierdate);
+                $('label[name="lblCity"]').html(data.data.city);
                 $('p[name="psynopsis"]').html(data.data.synopsis);
             },
             error: function (err) {

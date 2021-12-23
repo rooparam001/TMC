@@ -4,6 +4,7 @@
         $("#modalAddNew").modal();
     });
 
+
     $('#btnUpload').click(function () {
 
         // Checking whether FormData is available in browser
@@ -22,6 +23,7 @@
 
             // Adding one more key to FormData object
             fileData.append('TITLE', $('#txtdirectortitle').val());
+            fileData.append('DESCRIPTION', $('#txtDescription').val());
 
             $.ajax({
                 url: '/Account/SaveDirector',
@@ -55,10 +57,13 @@ _directorsMaster = {
                 directordataTable.empty();
                 $(data.data).each(function (index, relationModelObj) {
                     directordataTable.append('<div class="col-md-4 data-item"><div class="card mb-4 box-shadow">' +
-                        '<img class="card-img-top" src="/Blogs/Directors/' + relationModelObj.imageURL + '" alt="Director Image">' +
-                        '<div class="card-body"><p class="card-text">' + relationModelObj.title + '</p><div class="d-flex justify-content-between align-items-center">' +
-                        '<button type="button" class="btn btn-sm btn-outline-danger" onclick="_directorsMaster.fnDelData_ID(' + relationModelObj.id + ')">' +
-                        '<i class="fas fa-trash"></i></button><small class="text-muted">' + relationModelObj.dateCreated + '</small>' +
+                        '<img class="card-img-top" src="/Blogs/Directors/' + relationModelObj.imageURL + '" alt="Director Image" alt-id=' + relationModelObj.id + '>' +
+                        '<div class="card-body"><p class="card-text">' + relationModelObj.title + '</p><p style="display:none;" alt-id=' + relationModelObj.id + '>' + relationModelObj.description + '</p>' +
+                        '<div class="d-flex justify-content-between align-items-center">' +
+                        '<div class="btn-group btn-group-sm" role="group"><button type="button" class="btn btn-sm btn-outline-danger" ' +
+                        'onclick="_directorsMaster.fnDelData_ID(' + relationModelObj.id + ')"><i class="fas fa-trash"></i></button>' +
+                        '<button type="button" class="btn btn-sm btn-outline-primary" onclick="_directorsMaster.fnViewDirector(\'' + relationModelObj.title + '\',' + relationModelObj.id + ')">'
+                        + '<i class="fas fa-eye"></i></button></div><small class="text-muted">' + relationModelObj.dateCreated + '</small>' +
                         '</div></div></div></div>');
                 });
 
@@ -83,5 +88,11 @@ _directorsMaster = {
                 alert(err.statusText);
             }
         });
+    },
+    fnViewDirector: function (Name, Id) {
+        $("#modalViewDirector").modal();
+        $('#modalheading').html(Name);
+        $('#modalimg').attr('src', $('img[alt-id=' + Id + ']').attr('src'));
+        $('#modalp').html($('p[alt-id=' + Id + ']').html());
     }
 };

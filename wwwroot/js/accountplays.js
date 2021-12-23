@@ -42,7 +42,8 @@
             fileData.append('LANGUAGE', $('#txtplaylanguage').val());
             fileData.append('SUITABLEFORAGE', $('#txtplayage').val());
             fileData.append('DURATION', $('#txtplayduration').val());
-
+            fileData.append('CITY', $('#ddlplaycity option:selected').val());
+            
             $.ajax({
                 url: '/Account/SavePlay',
                 type: "post",
