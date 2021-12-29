@@ -17,9 +17,16 @@ namespace TMC.AppRepository
                         OBJECTID = obj.OBJECTID,
                         OBJECTTYPE = (int)obj.ObjectType,
                         OBJECTURL = currImage,
-                        DATECREATED=System.DateTime.Now
+                        DATECREATED = System.DateTime.Now
                     });
             }
+            return resp;
+        }
+
+        public static bool DelSlider(int ObjID)
+        {
+            bool resp = false;
+            resp = new TMCDBContext().fn_DelSlider(ObjID);
             return resp;
         }
     }

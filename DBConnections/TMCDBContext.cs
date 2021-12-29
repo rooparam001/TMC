@@ -18,7 +18,6 @@ namespace TMC.DBConnections
         {
             base.OnModelCreating(builder);
         }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string c = Directory.GetCurrentDirectory();
@@ -43,6 +42,8 @@ namespace TMC.DBConnections
         public DbSet<TBL_LANGUAGEMASTER> TBL_LANGUAGEMASTER { get; set; }
         public DbSet<TBL_DIRECTORMASTER> TBL_DIRECTORMASTER { get; set; }
         public DbSet<TBL_CITYMASTER> TBL_CITYMASTER { get; set; }
+        public DbSet<TBL_ENQUIRYMASTER> TBL_ENQUIRYMASTER { get; set; }
+
 
         public AccountMaster fn_GetUserByID(int ID)
         {
@@ -105,12 +106,10 @@ namespace TMC.DBConnections
             catch (Exception ex) { respObj = new AccountMaster(); }
             return respObj;
         }
-
         public TBL_PLAYSMASTER fn_GetSinglePlayByID(int ID)
         {
             return this.TBL_PLAYSMASTER.Where(x => x.ID == ID && x.ISENABLE).FirstOrDefault();
         }
-
         public TBL_GENREMASTER fn_GetSingleGenreByID(int ID)
         {
             return this.TBL_GENREMASTER.Where(x => x.ID == ID).FirstOrDefault();
@@ -138,7 +137,6 @@ namespace TMC.DBConnections
             catch (Exception ex) { resp = false; }
             return resp;
         }
-
         public bool fn_DeleteUpcomingPlay(int objID)
         {
             var resp = false;
@@ -187,7 +185,6 @@ namespace TMC.DBConnections
             catch { resp = false; }
             return resp;
         }
-
         public TBL_PLAYSMASTER fn_SavePlay(TBL_PLAYSMASTER obj)
         {
             try
@@ -220,7 +217,6 @@ namespace TMC.DBConnections
             catch { resp = false; }
             return resp;
         }
-
         public int fn_SaveGenre(string obj)
         {
             int resp = 0;
@@ -240,7 +236,6 @@ namespace TMC.DBConnections
             catch { resp = 0; }
             return resp;
         }
-
         public int fn_SaveLanguage(string obj)
         {
             int resp = 0;
@@ -260,7 +255,6 @@ namespace TMC.DBConnections
             catch { resp = 0; }
             return resp;
         }
-
         public int fn_SaveCity(string obj)
         {
             int resp = 0;
@@ -280,7 +274,6 @@ namespace TMC.DBConnections
             catch { resp = 0; }
             return resp;
         }
-
         public List<TBL_GENREMASTER> fn_GetAllGenres()
         {
             var outputObj = new List<TBL_GENREMASTER>();
@@ -291,7 +284,6 @@ namespace TMC.DBConnections
             catch { outputObj = new List<TBL_GENREMASTER>(); }
             return outputObj;
         }
-
         public List<TBL_LANGUAGEMASTER> fn_GetAllLanguages()
         {
             var outputObj = new List<TBL_LANGUAGEMASTER>();
@@ -302,7 +294,6 @@ namespace TMC.DBConnections
             catch { outputObj = new List<TBL_LANGUAGEMASTER>(); }
             return outputObj;
         }
-
         public List<TBL_CITYMASTER> fn_GetAllCities()
         {
             var outputObj = new List<TBL_CITYMASTER>();
@@ -313,7 +304,6 @@ namespace TMC.DBConnections
             catch { outputObj = new List<TBL_CITYMASTER>(); }
             return outputObj;
         }
-
         public List<TBL_PLAYSMASTER> fn_GetAllExistingPlays()
         {
             var respList = new List<TBL_PLAYSMASTER>();
@@ -343,7 +333,6 @@ namespace TMC.DBConnections
             catch { resp = false; }
             return resp;
         }
-
         public bool fn_SaveSlider(TBL_SLIDERMASTER obj)
         {
             var resp = false;
@@ -359,7 +348,19 @@ namespace TMC.DBConnections
             catch (Exception ex) { resp = false; }
             return resp;
         }
-
+        public bool fn_DelSlider(int ObjID)
+        {
+            var resp = false;
+            try
+            {
+                var context = new TMCDBContext();
+                context.TBL_SLIDERMASTER.RemoveRange(context.TBL_SLIDERMASTER.Where(x => x.OBJECTID == ObjID && x.OBJECTTYPE == (int)SliderObjectType.Plays).ToList());
+                context.SaveChanges();
+                resp = true;
+            }
+            catch (Exception ex) { resp = false; }
+            return resp;
+        }
         public bool fn_SaveDirectors(TBL_DIRECTORMASTER obj)
         {
             var resp = false;
@@ -376,7 +377,6 @@ namespace TMC.DBConnections
             catch (Exception ex) { resp = false; }
             return resp;
         }
-
         public bool fn_DeleteDirectors(int objID)
         {
             var resp = false;
@@ -396,7 +396,6 @@ namespace TMC.DBConnections
             catch { resp = false; }
             return resp;
         }
-
         public List<TBL_DIRECTORMASTER> fn_getallDirectors(int ID = 0)
         {
             var outputObj = new List<TBL_DIRECTORMASTER>();
@@ -405,6 +404,31 @@ namespace TMC.DBConnections
                 outputObj = this.TBL_DIRECTORMASTER.Where(x => (ID == 0 ? true : x.ID == ID) && x.ISENABLE).ToList();
             }
             catch { outputObj = new List<TBL_DIRECTORMASTER>(); }
+            return outputObj;
+        }
+        public bool fn_SaveEnquiry(TBL_ENQUIRYMASTER obj)
+        {
+            var resp = false;
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    context.TBL_ENQUIRYMASTER.Add(obj);
+                    context.SaveChanges();
+                }
+                resp = true;
+            }
+            catch (Exception ex) { resp = false; }
+            return resp;
+        }
+        public List<TBL_ENQUIRYMASTER> fn_getallUnSeenEnquiries(int ID = 0)
+        {
+            var outputObj = new List<TBL_ENQUIRYMASTER>();
+            try
+            {
+                outputObj = this.TBL_ENQUIRYMASTER.Where(x => (ID == 0 ? true : x.ID == ID) && !x.SEENSTATUS).ToList();
+            }
+            catch { outputObj = new List<TBL_ENQUIRYMASTER>(); }
             return outputObj;
         }
     }

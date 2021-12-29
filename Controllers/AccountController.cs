@@ -33,6 +33,7 @@ namespace TMC.Controllers
         public ActionResult UpComingPlays() => View();
         public ActionResult Plays() => View();
         public ActionResult Directors() => View();
+        public ActionResult ListYourPlay() => View();
 
         #region UpComing Plays region
         [HttpGet]
@@ -189,6 +190,17 @@ namespace TMC.Controllers
         }
 
         [HttpGet]
+        public JsonResult GetSinglePlay(int objID)
+        {
+            var resp = new ajaxResponse()
+            {
+                data = Play.fn_GetSinglePlayByID(objID),
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
+        }
+
+        [HttpGet]
         public JsonResult DeleteAllExistingPlays()
         {
             bool resp = false;
@@ -228,20 +240,27 @@ namespace TMC.Controllers
                     AGESUITABLEFOR = Request.Form["SUITABLEFORAGE"],
                     DURATION = Request.Form["DURATION"],
                     DATECREATED = DateTime.Now,
-                    CITY = Request.Form["CITY"]
+                    CITY = Request.Form["CITY"],
+                    ID = Convert.ToInt16(string.IsNullOrEmpty(Request.Form["ID"]) ? 0 : Request.Form["ID"]),
                 };
 
 
                 try
                 {
                     //saving play's thumbnail
-                    IFormFile source = thumbnailfiles[0];
-                    string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
-                    filename = this.EnsureCorrectFilename(filename);
-                    using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "allplays")))
-                        await source.CopyToAsync(output);
+                    if (thumbnailfiles != null)
+                    {
+                        if (thumbnailfiles.Count > 0)
+                        {
+                            IFormFile source = thumbnailfiles[0];
+                            string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
+                            filename = this.EnsureCorrectFilename(filename);
+                            using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "allplays")))
+                                await source.CopyToAsync(output);
 
-                    relationModelObj.IMAGEURL = filename;
+                            relationModelObj.IMAGEURL = filename;
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -260,20 +279,29 @@ namespace TMC.Controllers
                     {
                         if (relationModelObj.ID > 0)
                         {
-                            //saving play's slider images
-                            foreach (IFormFile currsource in sliderfiles)
+                            if (sliderfiles != null)
                             {
-                                string filename = ContentDispositionHeaderValue.Parse(currsource.ContentDisposition).FileName.Trim('"');
-                                filename = this.EnsureCorrectFilename(filename);
-                                using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "sliders")))
+                                if (sliderfiles.Count > 0)
                                 {
-                                    await currsource.CopyToAsync(output);
-                                    Slider.SaveSlider(new slider_inputoutputmodel()
+                                    if (Slider.DelSlider(relationModelObj.ID))
                                     {
-                                        OBJECTID = relationModelObj.ID,
-                                        ObjectType = SliderObjectType.Plays,
-                                        OBJECTURL = new string[] { filename }
-                                    });
+                                        //saving play's slider images
+                                        foreach (IFormFile currsource in sliderfiles)
+                                        {
+                                            string filename = ContentDispositionHeaderValue.Parse(currsource.ContentDisposition).FileName.Trim('"');
+                                            filename = this.EnsureCorrectFilename(filename);
+                                            using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "sliders")))
+                                            {
+                                                await currsource.CopyToAsync(output);
+                                                Slider.SaveSlider(new slider_inputoutputmodel()
+                                                {
+                                                    OBJECTID = relationModelObj.ID,
+                                                    ObjectType = SliderObjectType.Plays,
+                                                    OBJECTURL = new string[] { filename }
+                                                });
+                                            }
+                                        }
+                                    }
                                 }
                             }
 
@@ -350,7 +378,7 @@ namespace TMC.Controllers
                     var isSave = Director.SaveDirectors(inputDirectorObj);
                     if (isSave)
                     {
-                        resp.respmessage = "Play saved";
+                        resp.respmessage = "Director saved";
                         resp.respstatus = ResponseStatus.success;
                     }
                     else

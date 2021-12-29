@@ -1,7 +1,15 @@
-﻿.data-item {
+﻿form {
+    margin-top: 2%;
+}
+
+.data-item {
     margin-top: 4%;
 }
 
 .card-img-top {
     height: 15em;
+}
+
+#modalp {
+    height: 100% !important;
 }

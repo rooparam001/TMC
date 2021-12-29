@@ -20,8 +20,8 @@ namespace TMC.Controllers
 
         public IActionResult Index()
         {
-            return View("AllPlays");
-            //return View();
+            //return View("AllPlays");
+            return View();
         }
 
         public IActionResult AllPlays() => View();
@@ -91,6 +91,26 @@ namespace TMC.Controllers
                 respstatus = ResponseStatus.success
             };
             return Json(resp);
+        }
+
+        [HttpPost]
+        public ActionResult SaveEnquiry(string name = "", string email = "", string subject = "", string message = "")
+        {
+            var resp = new ajaxResponse()
+            {
+                data = (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(message)) ? "" :
+                Enquiries.Save(new EntitesInterfaces.DBEntities.TBL_ENQUIRYMASTER()
+                {
+                    USERNAME = name.Trim(),
+                    DATECREATED = System.DateTime.Now,
+                    EMAILADD = email.Trim(),
+                    SEENSTATUS = false,
+                    USERMESSAGE = message.Trim(),
+                    USERSUBJECT = subject.Trim()
+                }),
+                respstatus = ResponseStatus.success
+            };
+            return View("Index");
         }
 
         [HttpGet]

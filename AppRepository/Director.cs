@@ -6,7 +6,7 @@ using TMC.DBConnections;
 
 namespace TMC.AppRepository
 {
-    public class Director
+    public static class Director
     {
         public static bool SaveDirectors(TBL_DIRECTORMASTER obj)
         {

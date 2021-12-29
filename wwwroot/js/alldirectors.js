@@ -16,7 +16,8 @@ _directorsMaster = {
                         '<div class="card-body"><p class="card-text">' + relationModelObj.title + '</p><p style="display:none;" alt-id=' + relationModelObj.id + '>' + relationModelObj.description + '</p>' +
                         '<div class="d-flex justify-content-between align-items-center">' +
                         '<button type="button" class="btn btn-sm btn-outline-primary" onclick="_directorsMaster.fnViewDirector(\'' + relationModelObj.title + '\',' + relationModelObj.id + ')">'
-                        + '<i class="fas fa-eye"></i> View More</button></div></div></div></div>');
+                        + '<i class="fas fa-eye"></i> View</button><button type="button" class="btn btn-sm btn-outline-warning">'
+                        + '<i class="far fa-comments"></i> Contact</button></div></div></div></div>');
                 });
 
             },

@@ -94,6 +94,13 @@ namespace TMC.AppRepository
                 {
                     obj.CITY = new TMCDBContext().fn_SaveCity(obj.CITY.Trim()).ToString();
                 }
+
+                if (obj.ID > 0)
+                {
+                    if (string.IsNullOrEmpty(obj.IMAGEURL))
+                        obj.IMAGEURL = new TMCDBContext().fn_GetSinglePlayByID(obj.ID).IMAGEURL;
+                }
+
                 resp = new TMCDBContext().fn_SavePlay(obj);
             }
 
