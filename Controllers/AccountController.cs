@@ -34,6 +34,8 @@ namespace TMC.Controllers
         public ActionResult Plays() => View();
         public ActionResult Directors() => View();
         public ActionResult ListYourPlay() => View();
+        public ActionResult ListYourProfile() => View();
+        public ActionResult GiveAway() => View();
 
         #region UpComing Plays region
         [HttpGet]

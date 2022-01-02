@@ -7,113 +7,68 @@
 <main role="main">
     <section class="jumbotron text-center">
         <div class="container">
-            <h1 class="jumbotron-heading">upload play</h1>
+            <h1 class="jumbotron-heading">upload profile</h1>
         </div>
     </section>
 
     <div class="album py-5 bg-light">
         <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <input type="hidden" id="HFID" />
-                    <hr />
-                    <form style="width:100%;">
+            <div class="col-md-12">
+                <div class="row">
+                    <select class="form-control form-control-sm custom-select-sm" style="width:100%;">
+                        <option>
+                            Writer
+                        </option>
+                        <option>
+                            Producer
+                        </option>
+                        <option>
+                            Actor
+                        </option>
+                        <option>
+                            Set Designer
+                        </option>
+                        <option>
+                            Light Designer
+                        </option>
+                        <option>
+                            Graphic Designer
+                        </option>
+                        <option>
+                            Production Manager
+                        </option>
+                        <option>
+                            Stage Manager
+                        </option>
+                        <option>
+                            Light Operator
+                        </option>
+                        <option>
+                            Sound Operator
+                        </option>
+                        <option>
+                            Back Stage
+                        </option>
+                    </select>
+                </div>
+                <div class="row">
+                    <form style="width: 100%;">
                         <div class="row">
                             <div class="col-lg-12 col-sm-12 col-12">
                                 <div class="form-group">
-                                    <label class="text-inverse" for="txtplaytitle">Title</label>
-                                    <input type="text" class="form-control form-control-sm" id="txtplaytitle" placeholder="play's title" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12 col-sm-12 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="txtgrouptitle">Group Title</label>
-                                    <input type="text" class="form-control form-control-sm" id="txtgrouptitle" placeholder="group's title" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12 col-sm-12 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="txtplayactor">Actor(s)</label>
-                                    <input type="text" class="form-control form-control-sm" id="txtplayactor" placeholder="play's actor(s)" required>
+                                    <label class="text-inverse" for="txtFullName">Title</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtFullName" placeholder="full name" required>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
-                                    <label class="text-inverse" for="txtplaywriter">Writer</label>
-                                    <input type="text" class="form-control form-control-sm" id="txtplaywriter" placeholder="play's writer" required>
+                                    <label class="text-inverse" for="txtEmail">Email Address</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtEmail" placeholder="email address" required>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="txtplaydirector">Director</label>
-                                    <input type="text" class="form-control form-control-sm" id="txtplaydirector" placeholder="play's director" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="txtnumberofshow">Number of show(s)</label>
-                                    <input type="number" class="form-control form-control-sm" id="txtnumberofshow" required>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="txtplaydate">Date</label>
-                                    <input type="date" class="form-control form-control-sm" id="txtplaydate" placeholder="play's date" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12 col-sm-12 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="txtplaytrailerlink">Upload HD trailer of your play /link of your play</label>
-                                    <input type="text" class="form-control form-control-sm" id="txtplaytrailerlink" placeholder="play's link" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="txtplaygenre">Genre</label>
-                                    <input type="text" class="form-control form-control-sm" id="txtplaygenre" placeholder="play's genre" required>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="txtplaylanguage">Language(s)</label>
-                                    <input type="text" class="form-control form-control-sm" id="txtplaylanguage" placeholder="play's language" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12 col-sm-12 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="txtplaycastncredit">Cast &amp; Credit</label>
-                                    <input type="text" class="form-control form-control-sm" id="txtplaycastncredit" placeholder="play's cast-n-credit" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-4 col-sm-4 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="txtplayage">Suitable for age(s)</label>
-                                    <input type="text" class="form-control form-control-sm" id="txtplayage" placeholder="suitable age" required>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-sm-4 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="txtplayduration">Duration of play</label>
-                                    <input type="text" class="form-control form-control-sm" id="txtplayduration" placeholder="play's duration" required>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-sm-4 col-12">
                                 <div class="form-group">
                                     <label class="text-inverse" for="txtplaycity">City</label>
                                     <select class="form-control form-control-sm" id="ddlplaycity">
@@ -715,72 +670,66 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-4 col-sm-4 col-12">
+                            <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
-                                    <label class="text-inverse" for="txtfacebook">Facebook</label>
-                                    <input type="text" class="form-control form-control-sm" id="txtfacebook" placeholder="facebook's handle" required>
+                                    <label class="text-inverse" for="fuDegree">Degree</label>
+                                    <input class="form-control form-control-sm" type="file" id="fuDegree" accept="application/pdf" multiple>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-sm-4 col-12">
+                            <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
-                                    <label class="text-inverse" for="txttwitter">Twitter</label>
-                                    <input type="text" class="form-control form-control-sm" id="txttwitter" placeholder="twitter's handle" required>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-sm-4 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="txtinstagram">Instagram</label>
-                                    <input type="text" class="form-control form-control-sm" id="txtinstagram" placeholder="instagram's handle" required>
+                                    <label class="text-inverse" for="fuLetterofRef">Letter Of References</label>
+                                    <input class="form-control form-control-sm" type="file" id="fuLetterofRef" accept="application/pdf">
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
-                                    <label class="text-inverse" for="txtareasynopsis">Synopsis</label>
-                                    <textarea id="txtareasynopsis" class="form-control form-control-sm" placeholder="play's synopsis" rows="4" required></textarea>
+                                    <label class="text-inverse" for="txtFieldExcellence">Field of Excellence</label>
+                                    <textarea class="form-control form-control-sm" id="txtFieldExcellence" placeholder="field of excellence"></textarea>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
-                                    <label class="text-inverse" for="txtareagroupinfo">Group's Info</label>
-                                    <textarea id="txtareagroupinfo" class="form-control form-control-sm" placeholder="group's info" rows="4" required></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="txtareasynopsisSocialHandles">Synopsis for social handles</label>
-                                    <textarea id="txtareasynopsisSocialHandles" class="form-control form-control-sm" placeholder="play's synopsis" rows="4" required></textarea>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="txtnameoncheque">Name on cheque</label>
-                                    <input type="text" class="form-control form-control-sm" id="txtnameoncheque" placeholder="name on cheque" required>
+                                    <label class="text-inverse" for="txtPrevWorkDet">Previous Work Details</label>
+                                    <textarea class="form-control form-control-sm" id="txtPrevWorkDet" placeholder="field of excellence"></textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
-                                    <label for="formFile" class="form-label">Censor Certificate</label>
-                                    <input class="form-control form-control-sm" type="file" id="formFile" accept="image/*">
+                                    <label class="text-inverse" for="fuCertificates">Add certification(s) if any</label>
+                                    <input class="form-control form-control-sm" type="file" id="fuCertificates" accept="application/pdf" multiple>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
-                                    <label for="formFile" class="form-label">Banner Image</label>
-                                    <input class="form-control form-control-sm" type="file" id="formFile" accept="image/*">
+                                    <label class="text-inverse" for="fuAwardsAchiev">Award/Achievements</label>
+                                    <input class="form-control form-control-sm" type="file" id="fuAwardsAchiev" accept="application/pdf" multiple>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label class="text-inverse" for="txtLanguages">Language(s) known</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtLanguages" placeholder="language(s)" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label class="text-inverse" for="txtExpYrs">Experience in years</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtExpYrs" placeholder="total experience" required>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12 col-sm-12 col-12">
                                 <div class="form-group">
-                                    <label for="sliderFile" class="form-label">HD Pictures /Posters of your Play</label>
-                                    <input class="form-control form-control-sm" type="file" multiple id="sliderFile" accept="image/*">
+                                    <label class="text-inverse" for="fuUploadWork">Upload Your Work</label>
+                                    <input class="form-control form-control-sm" type="file" id="fuUploadWork" accept="application/pdf" multiple>
                                 </div>
                             </div>
                         </div>
@@ -792,5 +741,4 @@
             </div>
         </div>
     </div>
-
 </main>
