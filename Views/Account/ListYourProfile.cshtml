@@ -1,4 +1,7 @@
-﻿<script src="~/js/accountplays.js"></script>
+﻿@{
+    ViewData["Title"] = "Profile";
+}
+<script src="~/js/listyourprofile.js"></script>
 <style type="text/css">
     form {
         margin-top: 2%;
@@ -15,38 +18,38 @@
         <div class="container">
             <div class="col-md-12">
                 <div class="row">
-                    <select class="form-control form-control-sm custom-select-sm" style="width:100%;">
-                        <option>
+                    <select class="form-control form-control-sm custom-select-sm" style="width:100%;" name="selectUserRole">
+                        <option value="writer">
                             Writer
                         </option>
-                        <option>
+                        <option value="producer">
                             Producer
                         </option>
-                        <option>
+                        <option value="actor">
                             Actor
                         </option>
-                        <option>
+                        <option value="set designer">
                             Set Designer
                         </option>
-                        <option>
+                        <option value="light designer">
                             Light Designer
                         </option>
-                        <option>
+                        <option value="graphic designer">
                             Graphic Designer
                         </option>
-                        <option>
+                        <option value="production manager">
                             Production Manager
                         </option>
-                        <option>
+                        <option value="stage manager">
                             Stage Manager
                         </option>
-                        <option>
+                        <option value="light operator">
                             Light Operator
                         </option>
-                        <option>
+                        <option value="sound operator">
                             Sound Operator
                         </option>
-                        <option>
+                        <option value="back stage">
                             Back Stage
                         </option>
                     </select>
@@ -57,7 +60,7 @@
                             <div class="col-lg-12 col-sm-12 col-12">
                                 <div class="form-group">
                                     <label class="text-inverse" for="txtFullName">Title</label>
-                                    <input type="text" class="form-control form-control-sm" id="txtFullName" placeholder="full name" required>
+                                    <input type="text" class="form-control form-control-sm" name="txtFullName" placeholder="full name" required>
                                 </div>
                             </div>
                         </div>
@@ -65,13 +68,13 @@
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label class="text-inverse" for="txtEmail">Email Address</label>
-                                    <input type="text" class="form-control form-control-sm" id="txtEmail" placeholder="email address" required>
+                                    <input type="text" class="form-control form-control-sm" name="txtEmail" placeholder="email address" required>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label class="text-inverse" for="txtplaycity">City</label>
-                                    <select class="form-control form-control-sm" id="ddlplaycity">
+                                    <select class="form-control form-control-sm" name="ddlplaycity">
                                         <option>North and Middle Andaman</option>
                                         <option>South Andaman</option>
                                         <option>Nicobar</option>
@@ -673,13 +676,13 @@
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label class="text-inverse" for="fuDegree">Degree</label>
-                                    <input class="form-control form-control-sm" type="file" id="fuDegree" accept="application/pdf" multiple>
+                                    <input class="form-control form-control-sm" type="file" name="fuDegree" accept="application/pdf" multiple>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label class="text-inverse" for="fuLetterofRef">Letter Of References</label>
-                                    <input class="form-control form-control-sm" type="file" id="fuLetterofRef" accept="application/pdf">
+                                    <input class="form-control form-control-sm" type="file" name="fuLetterofRef" accept="application/pdf">
                                 </div>
                             </div>
                         </div>
@@ -687,13 +690,13 @@
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label class="text-inverse" for="txtFieldExcellence">Field of Excellence</label>
-                                    <textarea class="form-control form-control-sm" id="txtFieldExcellence" placeholder="field of excellence"></textarea>
+                                    <textarea class="form-control form-control-sm" name="txtFieldExcellence" placeholder="field of excellence"></textarea>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label class="text-inverse" for="txtPrevWorkDet">Previous Work Details</label>
-                                    <textarea class="form-control form-control-sm" id="txtPrevWorkDet" placeholder="field of excellence"></textarea>
+                                    <textarea class="form-control form-control-sm" name="txtPrevWorkDet" placeholder="previous work details"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -701,13 +704,13 @@
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label class="text-inverse" for="fuCertificates">Add certification(s) if any</label>
-                                    <input class="form-control form-control-sm" type="file" id="fuCertificates" accept="application/pdf" multiple>
+                                    <input class="form-control form-control-sm" type="file" name="fuCertificates" accept="application/pdf" multiple>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label class="text-inverse" for="fuAwardsAchiev">Award/Achievements</label>
-                                    <input class="form-control form-control-sm" type="file" id="fuAwardsAchiev" accept="application/pdf" multiple>
+                                    <input class="form-control form-control-sm" type="file" name="fuAwardsAchiev" accept="application/pdf" multiple>
                                 </div>
                             </div>
                         </div>
@@ -715,13 +718,13 @@
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label class="text-inverse" for="txtLanguages">Language(s) known</label>
-                                    <input type="text" class="form-control form-control-sm" id="txtLanguages" placeholder="language(s)" required>
+                                    <input type="text" class="form-control form-control-sm" name="txtLanguages" placeholder="language(s)" required>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label class="text-inverse" for="txtExpYrs">Experience in years</label>
-                                    <input type="text" class="form-control form-control-sm" id="txtExpYrs" placeholder="total experience" required>
+                                    <input type="text" class="form-control form-control-sm" name="txtExpYrs" placeholder="total experience" required>
                                 </div>
                             </div>
                         </div>
@@ -729,12 +732,12 @@
                             <div class="col-lg-12 col-sm-12 col-12">
                                 <div class="form-group">
                                     <label class="text-inverse" for="fuUploadWork">Upload Your Work</label>
-                                    <input class="form-control form-control-sm" type="file" id="fuUploadWork" accept="application/pdf" multiple>
+                                    <input class="form-control form-control-sm" type="file" name="fuUploadWork" accept="application/pdf" multiple>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <input type="button" class="btn btn-sm btn-outline-primary form-control form-control-sm" value="Save" />
+                            <input type="button" class="btn btn-sm btn-outline-primary form-control form-control-sm" value="Save" id="btnUpload" />
                         </div>
                     </form>
                 </div>

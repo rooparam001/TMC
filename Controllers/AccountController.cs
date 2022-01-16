@@ -465,6 +465,163 @@ namespace TMC.Controllers
         }
         #endregion
 
+        #region Profile region
+        [HttpPost]
+        public async Task<JsonResult> SaveProfile(List<IFormFile> fuDegree, List<IFormFile> fuLetterofRef, List<IFormFile> fuCertificates, List<IFormFile> fuAwardsAchiev, List<IFormFile> fuUploadWork)
+        {
+            var resp = new ajaxResponse();
+            try
+            {
+                var inputProfileObj = new profileMasterViewModel()
+                {
+                    DATECREATED = DateTime.Now,
+                    ISENABLE = true,
+                    USERCITYID = Request.Form["CITY"],
+                    USEREMAIL = Request.Form["EMAILID"],
+                    USERLANGUAGES = Request.Form["LANGUAGES"],
+                    USERFLDOFEXCELLENCE = Request.Form["FLDOFEXCELLENCE"],
+                    USERPRVWORKEXP = Request.Form["PREVWORKDET"],
+                    USERROLE = Request.Form["ROLEID"],
+                    USERTITLE = Request.Form["FULLNAME"],
+                    USERTOTALEXPINYEARS = Request.Form["EXPYRS"]
+                };
+
+                try
+                {
+                    //saving user's degree(s)
+                    foreach (var currFile in fuDegree)
+                    {
+                        IFormFile source = currFile;
+                        string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
+                        filename = this.EnsureCorrectFilename(filename);
+                        using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "ProfileData")))
+                            await source.CopyToAsync(output);
+
+                        inputProfileObj.USERDEGREEURL += filename + ",";
+                    }
+
+                    //saving user's letter(s) of reference
+                    foreach (var currFile in fuLetterofRef)
+                    {
+                        IFormFile source = currFile;
+                        string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
+                        filename = this.EnsureCorrectFilename(filename);
+                        using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "ProfileData")))
+                            await source.CopyToAsync(output);
+
+                        inputProfileObj.USERLETTEROFREF += filename + ",";
+                    }
+
+                    //saving user's letter(s) of reference
+                    foreach (var currFile in fuCertificates)
+                    {
+                        IFormFile source = currFile;
+                        string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
+                        filename = this.EnsureCorrectFilename(filename);
+                        using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "ProfileData")))
+                            await source.CopyToAsync(output);
+
+                        inputProfileObj.USERCERTIFICATES += filename + ",";
+                    }
+
+                    //saving user's letter(s) of reference
+                    foreach (var currFile in fuAwardsAchiev)
+                    {
+                        IFormFile source = currFile;
+                        string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
+                        filename = this.EnsureCorrectFilename(filename);
+                        using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "ProfileData")))
+                            await source.CopyToAsync(output);
+
+                        inputProfileObj.USERAWARDS += filename + ",";
+                    }
+
+                    //saving user's letter(s) of reference
+                    foreach (var currFile in fuUploadWork)
+                    {
+                        IFormFile source = currFile;
+                        string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
+                        filename = this.EnsureCorrectFilename(filename);
+                        using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "ProfileData")))
+                            await source.CopyToAsync(output);
+
+                        inputProfileObj.USERUPLOADEDWORK += filename + ",";
+                    }
+
+                    resp = AppProfiles.SaveProfiles(inputProfileObj);
+                }
+                catch (Exception ex)
+                {
+                    resp = new ajaxResponse()
+                    {
+                        data = null,
+                        respmessage = ex.Message.ToString(),
+                        respstatus = ResponseStatus.error
+                    };
+                }
+
+            }
+            catch
+            {
+                resp = new ajaxResponse()
+                {
+                    data = null,
+                    respmessage = "Something went wrong",
+                    respstatus = ResponseStatus.error
+                };
+            }
+            return Json(resp);
+        }
+
+        [HttpGet]
+        public JsonResult DeleteProfile(string objID)
+        {
+            int modelID = 0;
+            int.TryParse(objID, out modelID);
+            var resp = new ajaxResponse()
+            {
+                respmessage = "Something went wrong.",
+                respstatus = ResponseStatus.error
+            };
+            if (modelID > 0)
+            {
+                resp.data = Director.DeleteDirectors(modelID);
+                resp.respstatus = ResponseStatus.success;
+                resp.respmessage = "Director deleted";
+            }
+            return Json(resp);
+        }
+
+        [HttpGet]
+        public JsonResult GetAllProfiles()
+        {
+            var resp = new ajaxResponse()
+            {
+                data = Director.GetAllDirectors().Select(x => new directorModel()
+                {
+                    ID = x.ID,
+                    ImageURL = x.OBJECTIMGURL,
+                    Title = x.OBJECTNAME,
+                    DateCreated = x.DATECREATED.ToString("dddd dd MMMM", CultureInfo.CreateSpecificCulture("en-US")),
+                    Description = x.OBJECTDESCRIPTION
+                }).ToList(),
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
+        }
+
+        [HttpGet]
+        public JsonResult GetProfile_ByID(int ID)
+        {
+            var resp = new ajaxResponse()
+            {
+                data = Director.GetSingleDirector_ByID(ID),
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
+        }
+        #endregion
+
         private string EnsureCorrectFilename(string filename)
         {
             if (filename.Contains("\\"))

@@ -43,8 +43,34 @@ namespace TMC.DBConnections
         public DbSet<TBL_DIRECTORMASTER> TBL_DIRECTORMASTER { get; set; }
         public DbSet<TBL_CITYMASTER> TBL_CITYMASTER { get; set; }
         public DbSet<TBL_ENQUIRYMASTER> TBL_ENQUIRYMASTER { get; set; }
+        public DbSet<TBL_PROFILESMASTER> TBL_PROFILESMASTER { get; set; }
 
 
+        public Tbl_RoleMaster fn_SaveRole(string objName)
+        {
+            var resp = new Tbl_RoleMaster()
+            {
+                DateCreated = DateTime.Now,
+                RoleName = objName.Trim().ToUpper()
+            };
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    if (context.Tbl_RoleMaster.Where(x => x.RoleName == resp.RoleName).ToList().Count > 0)
+                    {
+                        resp = context.Tbl_RoleMaster.Where(x => x.RoleName == resp.RoleName).FirstOrDefault();
+                    }
+                    else
+                    {
+                        context.Tbl_RoleMaster.Add(resp);
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex) { resp = new Tbl_RoleMaster(); }
+            return resp;
+        }
         public AccountMaster fn_GetUserByID(int ID)
         {
             var respObj = new AccountMaster();
@@ -430,6 +456,34 @@ namespace TMC.DBConnections
             }
             catch { outputObj = new List<TBL_ENQUIRYMASTER>(); }
             return outputObj;
+        }
+        public bool fn_SaveProfiles(TBL_PROFILESMASTER obj)
+        {
+            var resp = false;
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    context.TBL_PROFILESMASTER.Add(obj);
+                    context.SaveChanges();
+                }
+                resp = true;
+            }
+            catch (Exception ex) { resp = false; }
+            return resp;
+        }
+        public bool fn_ProfileVerifyifExists(TBL_PROFILESMASTER obj)
+        {
+            var resp = false;
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    resp = (context.TBL_PROFILESMASTER.Where(x => x.ISENABLE.Value && x.USERROLE == obj.USERROLE && x.USERTITLE == obj.USERTITLE)).ToList().Count > 0 ? true : false;
+                }
+            }
+            catch (Exception ex) { resp = false; }
+            return resp;
         }
     }
 }
