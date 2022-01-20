@@ -216,7 +216,7 @@ namespace TMC.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> SavePlay(List<IFormFile> thumbnailfiles, List<IFormFile> sliderfiles)
+        public async Task<JsonResult> SavePlay(List<IFormFile> thumbnailfiles, List<IFormFile> sliderfiles, List<IFormFile> censorcertificate, List<IFormFile> techrider)
         {
             var resp = new ajaxResponse();
             var relationModelObj = new TBL_PLAYSMASTER();
@@ -244,6 +244,13 @@ namespace TMC.Controllers
                     DATECREATED = DateTime.Now,
                     CITY = Request.Form["CITY"],
                     ID = Convert.ToInt16(string.IsNullOrEmpty(Request.Form["ID"]) ? 0 : Request.Form["ID"]),
+                    SYNOPSIS_SOCIALHANDLES = (string.IsNullOrEmpty(Request.Form["SYNOPSISFORSOCIALHANDLES"]) ? "" : Request.Form["SYNOPSISFORSOCIALHANDLES"].ToString()),
+                    CASTNCREDIT = (string.IsNullOrEmpty(Request.Form["CASTNCREDIT"]) ? "" : Request.Form["CASTNCREDIT"].ToString()),
+                    GROUPFACEBOOK_HANDLEURL = (string.IsNullOrEmpty(Request.Form["FACEBOOKHANDLEURL"]) ? "" : Request.Form["FACEBOOKHANDLEURL"].ToString()),
+                    GROUPTWITTER_HANDLEURL = (string.IsNullOrEmpty(Request.Form["TWITTERHANDLEURL"]) ? "" : Request.Form["TWITTERHANDLEURL"].ToString()),
+                    GROUPINSTAGARAM_HANDLEURL = (string.IsNullOrEmpty(Request.Form["INSTAGRAMHANDLEURL"]) ? "" : Request.Form["INSTAGRAMHANDLEURL"].ToString()),
+                    GROUPINFO = (string.IsNullOrEmpty(Request.Form["GROUPINFO"]) ? "" : Request.Form["GROUPINFO"].ToString()),
+                    GROUPTITLE = (string.IsNullOrEmpty(Request.Form["GROUPTITLE"]) ? "" : Request.Form["GROUPTITLE"].ToString())
                 };
 
 
@@ -266,12 +273,55 @@ namespace TMC.Controllers
                 }
                 catch (Exception ex)
                 {
-                    resp = new ajaxResponse()
+                    relationModelObj.IMAGEURL = "";
+                }
+
+                try
+                {
+                    //saving play's censor certificate
+                    if (censorcertificate != null)
                     {
-                        data = null,
-                        respmessage = ex.Message.ToString(),
-                        respstatus = ResponseStatus.error
-                    };
+                        if (censorcertificate.Count > 0)
+                        {
+                            foreach (var currFile in censorcertificate)
+                            {
+                                string filename = ContentDispositionHeaderValue.Parse(currFile.ContentDisposition).FileName.Trim('"');
+                                filename = this.EnsureCorrectFilename(filename);
+                                using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "allplays")))
+                                    await currFile.CopyToAsync(output);
+
+                                relationModelObj.CENSORCERTIFICATE = filename + ",";
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    relationModelObj.CENSORCERTIFICATE = "";
+                }
+
+                try
+                {
+                    //saving play's thumbnail
+                    if (techrider != null)
+                    {
+                        if (techrider.Count > 0)
+                        {
+                            foreach (var currFile in techrider)
+                            {
+                                string filename = ContentDispositionHeaderValue.Parse(currFile.ContentDisposition).FileName.Trim('"');
+                                filename = this.EnsureCorrectFilename(filename);
+                                using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "allplays")))
+                                    await currFile.CopyToAsync(output);
+
+                                relationModelObj.TECHRIDER = filename + ",";
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    relationModelObj.TECHRIDER = "";
                 }
 
                 try
@@ -474,7 +524,6 @@ namespace TMC.Controllers
             {
                 var inputProfileObj = new profileMasterViewModel()
                 {
-                    DATECREATED = DateTime.Now,
                     ISENABLE = true,
                     USERCITYID = Request.Form["CITY"],
                     USEREMAIL = Request.Form["EMAILID"],
@@ -585,9 +634,9 @@ namespace TMC.Controllers
             };
             if (modelID > 0)
             {
-                resp.data = Director.DeleteDirectors(modelID);
+                resp.data = AppProfiles.DeleteProfile(modelID);
                 resp.respstatus = ResponseStatus.success;
-                resp.respmessage = "Director deleted";
+                resp.respmessage = "Profile deleted";
             }
             return Json(resp);
         }
@@ -597,13 +646,15 @@ namespace TMC.Controllers
         {
             var resp = new ajaxResponse()
             {
-                data = Director.GetAllDirectors().Select(x => new directorModel()
+                data = AppProfiles.GetAllProfiles().Select(x => new profileMasterViewModel()
                 {
                     ID = x.ID,
-                    ImageURL = x.OBJECTIMGURL,
-                    Title = x.OBJECTNAME,
-                    DateCreated = x.DATECREATED.ToString("dddd dd MMMM", CultureInfo.CreateSpecificCulture("en-US")),
-                    Description = x.OBJECTDESCRIPTION
+                    DATECREATED = x.DATECREATED.Value.ToString("dddd dd MMMM", CultureInfo.CreateSpecificCulture("en-US")),
+                    USERCITYID = x.USERCITYID.Value.ToString(),
+                    USEREMAIL = x.USEREMAIL,
+                    USERLANGUAGES = x.USERLANGUAGES,
+                    USERROLE = x.USERROLE.ToString(),
+                    USERTOTALEXPINYEARS = x.USERTOTALEXPINYEARS
                 }).ToList(),
                 respstatus = ResponseStatus.success
             };
@@ -615,9 +666,151 @@ namespace TMC.Controllers
         {
             var resp = new ajaxResponse()
             {
-                data = Director.GetSingleDirector_ByID(ID),
+                data = AppProfiles.GetSingleProfile_ByID(ID),
                 respstatus = ResponseStatus.success
             };
+            return Json(resp);
+        }
+        #endregion
+
+        #region Give away region
+        [HttpGet]
+        public JsonResult DeleteGiveaway(string objID)
+        {
+            int modelID = 0;
+            int.TryParse(objID, out modelID);
+            var resp = new ajaxResponse()
+            {
+                respmessage = "Something went wrong.",
+                respstatus = ResponseStatus.error
+            };
+            if (modelID > 0)
+            {
+                resp.data = GiveAways.Delete(modelID);
+                resp.respstatus = ResponseStatus.success;
+                resp.respmessage = "Giveaway deleted";
+            }
+            return Json(resp);
+        }
+
+        [HttpGet]
+        public JsonResult GetAllGiveaways()
+        {
+            var resp = new ajaxResponse()
+            {
+                data = GiveAways.getAllOrByID(),
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
+        }
+
+        [HttpGet]
+        public JsonResult GetSingleGiveaway(int objID)
+        {
+            var resp = new ajaxResponse()
+            {
+                data = GiveAways.getAllOrByID(objID),
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> SaveGiveaway(List<IFormFile> thumbnailfiles)
+        {
+            var resp = new ajaxResponse();
+            var relationModelObj = new giveawayViewModel();
+            var giveawayModelObj = new TBL_GIVEAWAYMASTER();
+            try
+            {
+                resp.data = null;
+                int.TryParse(Request.Form["NUMBER_OF_SHOWS"], out int _noofshows);
+
+                relationModelObj = new giveawayViewModel()
+                {
+                    OBJTITLE = (string.IsNullOrEmpty(Request.Form["TITLE"]) ? "" : Request.Form["TITLE"].ToString()),
+                    CITY = (string.IsNullOrEmpty(Request.Form["CITY"]) ? "" : Request.Form["CITY"].ToString()),
+                    OBJAVAILABILITY = (string.IsNullOrEmpty(Request.Form["AVAILABILITY"]) ? "" : Request.Form["AVAILABILITY"].ToString()),
+                    OBJCONTACTDETAILS = (string.IsNullOrEmpty(Request.Form["CONTACTDETAILS"]) ? "" : Request.Form["CONTACTDETAILS"].ToString()),
+                    ISACCEPTED = false,
+                    ISENABLE = true
+                };
+
+
+                try
+                {
+                    giveawayModelObj = GiveAways.Save(relationModelObj);
+                    if (relationModelObj != null)
+                    {
+                        if (relationModelObj.ID > 0)
+                        {
+                            if (thumbnailfiles != null)
+                            {
+                                if (thumbnailfiles.Count > 0)
+                                {
+                                    if (Slider.DelSlider(relationModelObj.ID))
+                                    {
+                                        //saving play's slider images
+                                        foreach (IFormFile currsource in thumbnailfiles)
+                                        {
+                                            string filename = ContentDispositionHeaderValue.Parse(currsource.ContentDisposition).FileName.Trim('"');
+                                            filename = this.EnsureCorrectFilename(filename);
+                                            using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "sliders")))
+                                            {
+                                                await currsource.CopyToAsync(output);
+                                                Slider.SaveSlider(new slider_inputoutputmodel()
+                                                {
+                                                    OBJECTID = relationModelObj.ID,
+                                                    ObjectType = SliderObjectType.GiveAway,
+                                                    OBJECTURL = new string[] { filename }
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            resp.respmessage = "Giveaway saved";
+                            resp.respstatus = ResponseStatus.success;
+                        }
+                        else
+                            resp = new ajaxResponse()
+                            {
+                                data = null,
+                                respmessage = "Something went wrong.",
+                                respstatus = ResponseStatus.error
+                            };
+                    }
+                    else
+                        resp = new ajaxResponse()
+                        {
+                            data = null,
+                            respmessage = "Something went wrong.",
+                            respstatus = ResponseStatus.error
+                        };
+
+                }
+                catch (Exception ex)
+                {
+                    resp = new ajaxResponse()
+                    {
+                        data = null,
+                        respmessage = ex.Message.ToString(),
+                        respstatus = ResponseStatus.error
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                resp = new ajaxResponse()
+                {
+                    data = null,
+                    respmessage = ex.Message.ToString(),
+                    respstatus = ResponseStatus.error
+                };
+
+            }
+
             return Json(resp);
         }
         #endregion
@@ -651,6 +844,10 @@ namespace TMC.Controllers
                 case "directors":
                     {
                         return _webHostEnvironment.WebRootPath + ApplicationStaticProps.appBasePath_Director_Image + filename;
+                    }
+                case "ProfileData":
+                    {
+                        return _webHostEnvironment.WebRootPath + ApplicationStaticProps.appBasePath_Profile_Data + filename;
                     }
                 default:
                     {

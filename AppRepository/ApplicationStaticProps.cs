@@ -39,5 +39,13 @@ namespace TMC.AppRepository
             }
         }
 
+        public static string appBasePath_Profile_Data
+        {
+            get
+            {
+                return "\\blogs\\ProfileData\\";
+            }
+        }
+
     }
 }

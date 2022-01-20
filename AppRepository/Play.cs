@@ -160,7 +160,7 @@ namespace TMC.AppRepository
                                 languageList = languageList.Substring(0, languageList.Length - 1);
                         }
 
-                        sliderList = playObj.IMAGEURL + "," + (string.Join(",", new TMCDBContext().TBL_SLIDERMASTER.Where(x => x.OBJECTID == ID && x.OBJECTTYPE == (int)SliderObjectType.Plays).Select(y => y.OBJECTURL.ToString())));
+                        sliderList = playObj.IMAGEURL + "," + Slider.GetCommaSeparated(ID, SliderObjectType.Plays);
                         if (sliderList.StartsWith(","))
                             sliderList = sliderList.Substring(1, sliderList.Length);
                         while (sliderList.EndsWith(","))

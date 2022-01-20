@@ -1,4 +1,4 @@
-﻿<script src="~/js/accountplays.js"></script>
+﻿<script src="~/js/accountlistyourplay.js"></script>
 <style type="text/css">
     form {
         margin-top: 2%;
@@ -65,15 +65,15 @@
                             </div>
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
-                                    <label class="text-inverse" for="txtplaydate">Date</label>
-                                    <input type="date" class="form-control form-control-sm" id="txtplaydate" placeholder="play's date" required>
+                                    <label class="text-inverse" for="txtplaydate">First Show</label>
+                                    <input type="date" class="form-control form-control-sm" id="txtplaydate" placeholder="play's first show" required>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12 col-sm-12 col-12">
                                 <div class="form-group">
-                                    <label class="text-inverse" for="txtplaytrailerlink">Upload HD trailer of your play /link of your play</label>
+                                    <label class="text-inverse" for="txtplaytrailerlink">Upload HD trailer of your play/link of your play</label>
                                     <input type="text" class="form-control form-control-sm" id="txtplaytrailerlink" placeholder="play's link" required>
                                 </div>
                             </div>
@@ -737,8 +737,8 @@
                         <div class="row">
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
-                                    <label class="text-inverse" for="txtareasynopsis">Synopsis</label>
-                                    <textarea id="txtareasynopsis" class="form-control form-control-sm" placeholder="play's synopsis" rows="4" required></textarea>
+                                    <label class="text-inverse" for="txtareasynopsisSocialHandles">Synopsis for social handles</label>
+                                    <textarea id="txtareasynopsisSocialHandles" class="form-control form-control-sm" placeholder="play's synopsis" rows="4" required></textarea>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-6 col-12">
@@ -749,16 +749,10 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-6 col-sm-6 col-12">
+                            <div class="col-lg-12 col-sm-12 col-12">
                                 <div class="form-group">
-                                    <label class="text-inverse" for="txtareasynopsisSocialHandles">Synopsis for social handles</label>
-                                    <textarea id="txtareasynopsisSocialHandles" class="form-control form-control-sm" placeholder="play's synopsis" rows="4" required></textarea>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="txtnameoncheque">Name on cheque</label>
-                                    <input type="text" class="form-control form-control-sm" id="txtnameoncheque" placeholder="name on cheque" required>
+                                    <label class="text-inverse" for="txtareasynopsis">Synopsis</label>
+                                    <textarea id="txtareasynopsis" class="form-control form-control-sm" placeholder="play's synopsis" rows="4" required></textarea>
                                 </div>
                             </div>
                         </div>
@@ -766,13 +760,13 @@
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label for="formFile" class="form-label">Censor Certificate</label>
-                                    <input class="form-control form-control-sm" type="file" id="formFile" accept="image/*">
+                                    <input class="form-control form-control-sm" type="file" id="fucensorcertificate" accept="image/*">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label for="formFile" class="form-label">Banner Image</label>
-                                    <input class="form-control form-control-sm" type="file" id="formFile" accept="image/*">
+                                    <input class="form-control form-control-sm" type="file" id="fubannerimage" accept="image/*">
                                 </div>
                             </div>
                         </div>
@@ -788,12 +782,12 @@
                             <div class="col-lg-12 col-sm-12 col-12">
                                 <div class="form-group">
                                     <label for="sliderFile" class="form-label">HD Pictures /Posters of your Play</label>
-                                    <input class="form-control form-control-sm" type="file" multiple id="sliderFile" accept="application/pdf">
+                                    <input class="form-control form-control-sm" type="file" multiple id="fusliderFile" accept="application/pdf">
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <input type="button" class="btn btn-sm btn-outline-primary form-control form-control-sm" value="Save" />
+                            <input type="button" id="btnUpload" class="btn btn-sm btn-outline-primary form-control form-control-sm" value="Save" />
                         </div>
                     </form>
                 </div>

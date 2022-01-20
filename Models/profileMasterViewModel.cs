@@ -32,7 +32,7 @@ namespace TMC.Models
 
         public string USERUPLOADEDWORK { get; set; }
 
-        public DateTime DATECREATED { get; set; }
+        public string DATECREATED { get; set; }
 
         public bool ISENABLE { get; set; }
     }

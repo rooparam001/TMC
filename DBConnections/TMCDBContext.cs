@@ -44,6 +44,7 @@ namespace TMC.DBConnections
         public DbSet<TBL_CITYMASTER> TBL_CITYMASTER { get; set; }
         public DbSet<TBL_ENQUIRYMASTER> TBL_ENQUIRYMASTER { get; set; }
         public DbSet<TBL_PROFILESMASTER> TBL_PROFILESMASTER { get; set; }
+        public DbSet<TBL_GIVEAWAYMASTER> TBL_GIVEAWAYMASTER { get; set; }
 
 
         public Tbl_RoleMaster fn_SaveRole(string objName)
@@ -484,6 +485,69 @@ namespace TMC.DBConnections
             }
             catch (Exception ex) { resp = false; }
             return resp;
+        }
+        public bool fn_DeleteProfile(int objID)
+        {
+            var resp = false;
+            try
+            {
+                var relationObj = new TBL_PROFILESMASTER();
+                relationObj = this.TBL_PROFILESMASTER.Where(x => x.ID == objID && x.ISENABLE.Value).FirstOrDefault();
+                if (relationObj != null)
+                    if (relationObj.ID > 0)
+                    {
+                        relationObj.ISENABLE = false;
+                        this.TBL_PROFILESMASTER.Update(relationObj);
+                        this.SaveChanges();
+                        resp = true;
+                    }
+            }
+            catch { resp = false; }
+            return resp;
+        }
+        public List<TBL_PROFILESMASTER> fn_getallProfiles(int ID = 0)
+        {
+            var outputObj = new List<TBL_PROFILESMASTER>();
+            try
+            {
+                outputObj = this.TBL_PROFILESMASTER.Where(x => (ID == 0 ? true : x.ID == ID) && x.ISENABLE.Value).ToList();
+            }
+            catch { outputObj = new List<TBL_PROFILESMASTER>(); }
+            return outputObj;
+        }
+        public TBL_GIVEAWAYMASTER fn_SaveGiveaway(TBL_GIVEAWAYMASTER obj)
+        {
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    if (obj.ID > 0)
+                    {
+                        context.TBL_GIVEAWAYMASTER.Update(obj);
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        context.TBL_GIVEAWAYMASTER.Add(obj);
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex) { obj.ID = 0; }
+            return obj;
+        }
+        public List<TBL_GIVEAWAYMASTER> fn_getallGiveaways(int ID = 0)
+        {
+            var respObj = new List<TBL_GIVEAWAYMASTER>();
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    respObj = context.TBL_GIVEAWAYMASTER.Where(x => (ID > 0 ? x.ID == ID : true) && x.ISENABLE).ToList();
+                }
+            }
+            catch { respObj = new List<TBL_GIVEAWAYMASTER>(); }
+            return respObj;
         }
     }
 }

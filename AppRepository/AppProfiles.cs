@@ -1,6 +1,8 @@
 ﻿using EntitesInterfaces.AppModels;
 using EntitesInterfaces.DBEntities;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using TMC.DBConnections;
 using TMC.Models;
@@ -20,7 +22,7 @@ namespace TMC.AppRepository
                     {
                         var profileObj = new TBL_PROFILESMASTER()
                         {
-                            DATECREATED = obj.DATECREATED,
+                            DATECREATED = DateTime.Now,
                             ISENABLE = obj.ISENABLE,
                             USERAWARDS = obj.USERAWARDS,
                             USERCERTIFICATES = obj.USERCERTIFICATES,
@@ -93,29 +95,31 @@ namespace TMC.AppRepository
 
             return resp;
         }
-        public static bool DeleteDirectors(int objID)
+        public static bool DeleteProfile(int objID)
         {
             bool resp = false;
 
             if (objID > 0)
-                resp = new TMCDBContext().fn_DeleteDirectors(objID);
+                resp = new TMCDBContext().fn_DeleteProfile(objID);
 
             return resp;
         }
-        public static List<TBL_DIRECTORMASTER> GetAllDirectors(int ID = 0)
+        public static List<TBL_PROFILESMASTER> GetAllProfiles(int ID = 0)
         {
-            return new TMCDBContext().fn_getallDirectors();
+            return new TMCDBContext().fn_getallProfiles();
         }
 
-        public static directorModel GetSingleDirector_ByID(int ID)
+        public static profileMasterViewModel GetSingleProfile_ByID(int ID)
         {
-            return new TMCDBContext().fn_getallDirectors(ID).Select(x => new directorModel()
+            return new TMCDBContext().fn_getallProfiles(ID).Select(x => new profileMasterViewModel()
             {
                 ID = x.ID,
-                ImageURL = x.OBJECTIMGURL,
-                Title = x.OBJECTNAME,
-                DateCreated = x.DATECREATED.ToString(),
-                Description = x.OBJECTDESCRIPTION
+                DATECREATED = x.DATECREATED.Value.ToString("dddd dd MMMM", CultureInfo.CreateSpecificCulture("en-US")),
+                USERCITYID = x.USERCITYID.Value.ToString(),
+                USEREMAIL = x.USEREMAIL,
+                USERLANGUAGES = x.USERLANGUAGES,
+                USERROLE = x.USERROLE.ToString(),
+                USERTOTALEXPINYEARS = x.USERTOTALEXPINYEARS
             }).FirstOrDefault();
         }
     }
