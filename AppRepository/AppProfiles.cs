@@ -56,9 +56,9 @@ namespace TMC.AppRepository
                         }
 
                         //setting user's city
-                        if (!string.IsNullOrEmpty(obj.USERCITYID))
+                        if (!string.IsNullOrEmpty(obj.USERCITY))
                         {
-                            profileObj.USERCITYID = new TMCDBContext().fn_SaveCity(obj.USERCITYID.Trim());
+                            profileObj.USERCITYID = new TMCDBContext().fn_SaveCity(obj.USERCITY.Trim());
                         }
 
                         //setting user's role
@@ -95,7 +95,7 @@ namespace TMC.AppRepository
 
             return resp;
         }
-        public static bool DeleteProfile(int objID)
+        public static bool Delete(int objID)
         {
             bool resp = false;
 
@@ -104,23 +104,89 @@ namespace TMC.AppRepository
 
             return resp;
         }
-        public static List<TBL_PROFILESMASTER> GetAllProfiles(int ID = 0)
+        public static List<profileMasterViewModel> GetAllProfiles()
         {
-            return new TMCDBContext().fn_getallProfiles();
+            var resp = new List<profileMasterViewModel>();
+
+            try
+            {
+                resp = new TMCDBContext().fn_getallProfiles().Select(x => new profileMasterViewModel()
+                {
+                    ID = x.ID,
+                    DATECREATED = x.DATECREATED.Value.ToString("dddd dd MMMM", CultureInfo.CreateSpecificCulture("en-US")),
+                    USEREMAIL = x.USEREMAIL,
+                    USERROLE = new TMCDBContext().fn_GetRoleByID(x.USERROLE),
+                    USERTITLE = x.USERTITLE,
+                    PROFILETYPEOF = x.PROFILETYPEOF
+                }).ToList();
+
+            }
+            catch (Exception ex) { resp = new List<profileMasterViewModel>(); }
+            return resp;
         }
 
         public static profileMasterViewModel GetSingleProfile_ByID(int ID)
         {
-            return new TMCDBContext().fn_getallProfiles(ID).Select(x => new profileMasterViewModel()
+            var resp = new profileMasterViewModel();
+            var languageList = "";
+            var cityID = 0;
+            try
             {
-                ID = x.ID,
-                DATECREATED = x.DATECREATED.Value.ToString("dddd dd MMMM", CultureInfo.CreateSpecificCulture("en-US")),
-                USERCITYID = x.USERCITYID.Value.ToString(),
-                USEREMAIL = x.USEREMAIL,
-                USERLANGUAGES = x.USERLANGUAGES,
-                USERROLE = x.USERROLE.ToString(),
-                USERTOTALEXPINYEARS = x.USERTOTALEXPINYEARS
-            }).FirstOrDefault();
+
+                resp = new TMCDBContext().fn_getallProfiles(ID).Select(x => new profileMasterViewModel()
+                {
+                    ID = x.ID,
+                    DATECREATED = x.DATECREATED.Value.ToString("dddd dd MMMM", CultureInfo.CreateSpecificCulture("en-US")),
+                    USERCITY = x.USERCITYID.Value.ToString(),
+                    USEREMAIL = x.USEREMAIL,
+                    USERLANGUAGES = x.USERLANGUAGES,
+                    USERROLE = new TMCDBContext().fn_GetRoleByID(x.USERROLE),
+                    USERTOTALEXPINYEARS = x.USERTOTALEXPINYEARS,
+                    USERAWARDS = x.USERAWARDS,
+                    USERCERTIFICATES = x.USERCERTIFICATES,
+                    USERDEGREEURL = x.USERDEGREEURL,
+                    USERFLDOFEXCELLENCE = x.USERFLDOFEXCELLENCE,
+                    USERLETTEROFREF = x.USERLETTEROFREF,
+                    USERPRVWORKEXP = x.USERPRVWORKEXP,
+                    USERTITLE = x.USERTITLE,
+                    USERUPLOADEDWORK = x.USERUPLOADEDWORK,
+                    PROFILETYPEOF = x.PROFILETYPEOF
+                }).FirstOrDefault();
+
+                if (!string.IsNullOrEmpty(resp.USERCITY.Trim()))
+                {
+                    int.TryParse(resp.USERCITY.Trim(), out cityID);
+                    if (cityID > 0)
+                    {
+                        resp.USERCITY = new TMCDBContext().fn_GetSingleCityByID(cityID).CITY;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(resp.USERLANGUAGES))
+                {
+                    foreach (var currLang in resp.USERLANGUAGES.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        if (!string.IsNullOrEmpty(currLang))
+                        {
+                            var objID = 0;
+                            int.TryParse(currLang, out objID);
+                            if (objID > 0)
+                            {
+                                languageList += "," + new TMCDBContext().fn_GetSingleLanguageByID(objID).LANGUAGEVAL;
+                            }
+
+                        }
+                    }
+                    if (languageList.StartsWith(","))
+                        languageList = languageList.Substring(1, languageList.Length - 1);
+                    while (languageList.EndsWith(","))
+                        languageList = languageList.Substring(0, languageList.Length - 1);
+                }
+                if (!string.IsNullOrEmpty(languageList))
+                    resp.USERLANGUAGES = languageList;
+            }
+            catch { resp = new profileMasterViewModel(); }
+            return resp;
         }
     }
 }

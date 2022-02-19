@@ -1,0 +1,219 @@
+﻿@{
+    ViewData["Title"] = "Profile";
+}
+<script src="~/js/accountprofiles.js"></script>
+<style type="text/css">
+    form {
+        margin-top: 2%;
+    }
+</style>
+<main role="main">
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">view profiles</h1>
+        </div>
+    </section>
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-group btn-group-sm pr-0" role="group" aria-label="Basic outlined example">
+                        <a href="/account/ListYourProfile" target="_blank" class="btn btn-outline-success" name="btnAdd"><i class="bi bi-plus-circle-dotted"></i> &nbsp; Add New</a>
+                    </div>
+                    <table class="table table-light">
+                        <thead>
+                            <tr>
+                                <th>
+                                    No.
+                                </th>
+                                <th>
+                                    Title
+                                </th>
+                                <th>
+                                    Role
+                                </th>
+                                <th>
+                                    Type of
+                                </th>
+                                <th>
+                                    Email Add
+                                </th>
+                                <th>
+                                    Date Created
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div class="modal fade" id="modalViewProfile" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h4 id="modalheading"></h4>
+                <hr />
+                <section style="background-color: #eee;">
+                    <div class="container py-5">
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="card mb-4">
+                                    <div class="card-body text-center">
+                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                        <h5 class="my-3" name="profile_title">John Smith</h5>
+                                        <p class="text-muted mb-1" name="profile_role">Full Stack Developer</p>
+                                        <p class="text-muted mb-4" name="profile_city">Bay Area, San Francisco, CA</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Full Name</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0" name="profile_title">Johnatan Smith</p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Role</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0" name="profile_role">Johnatan Smith</p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Type of</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0" name="profile_typeof">example@example.com</p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Email</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0" name="profile_email">(097) 234-5678</p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">City</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0" name="profile_city">(098) 765-4321</p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Field of Excellence</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0" name="profile_fldexcellence">Bay Area, San Francisco, CA</p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Previous Work Details</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0" name="profile_previousworkdetails">Bay Area, San Francisco, CA</p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Language(s) known</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0" name="profile_languages">Bay Area, San Francisco, CA</p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Experience in years</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0" name="profile_totexp">Bay Area, San Francisco, CA</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Degree</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0" name="profile_degree">Johnatan Smith</p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Letter Of References</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0" name="profile_letterofref">Johnatan Smith</p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Certification(s)</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0" name="profile_certification">Johnatan Smith</p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Award/Achievements</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0" name="profile_awards">Johnatan Smith</p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Work</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0" name="profile_work">Johnatan Smith</p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

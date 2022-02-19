@@ -45,6 +45,7 @@ namespace TMC.DBConnections
         public DbSet<TBL_ENQUIRYMASTER> TBL_ENQUIRYMASTER { get; set; }
         public DbSet<TBL_PROFILESMASTER> TBL_PROFILESMASTER { get; set; }
         public DbSet<TBL_GIVEAWAYMASTER> TBL_GIVEAWAYMASTER { get; set; }
+        public DbSet<TBL_HOMEPAGESETTINGS> TBL_HOMEPAGESETTINGS { get; set; }
 
 
         public Tbl_RoleMaster fn_SaveRole(string objName)
@@ -70,6 +71,19 @@ namespace TMC.DBConnections
                 }
             }
             catch (Exception ex) { resp = new Tbl_RoleMaster(); }
+            return resp;
+        }
+        public string fn_GetRoleByID(int ID)
+        {
+            var resp = "";
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    resp = context.Tbl_RoleMaster.Where(x => x.ID == ID).FirstOrDefault().RoleName;
+                }
+            }
+            catch (Exception ex) { resp = ""; }
             return resp;
         }
         public AccountMaster fn_GetUserByID(int ID)
@@ -381,11 +395,27 @@ namespace TMC.DBConnections
             try
             {
                 var context = new TMCDBContext();
-                context.TBL_SLIDERMASTER.RemoveRange(context.TBL_SLIDERMASTER.Where(x => x.OBJECTID == ObjID && x.OBJECTTYPE == (int)SliderObjectType.Plays).ToList());
+                //context.TBL_SLIDERMASTER.RemoveRange(context.TBL_SLIDERMASTER.Where(x => x.OBJECTID == ObjID && x.OBJECTTYPE == (int)SliderObjectType.Plays).ToList());
+                context.TBL_SLIDERMASTER.RemoveRange(context.TBL_SLIDERMASTER.Where(x => x.OBJECTID == ObjID).ToList());
                 context.SaveChanges();
                 resp = true;
             }
             catch (Exception ex) { resp = false; }
+            return resp;
+        }
+        public sliderListViewModel fn_GetSlider(int ObjID)
+        {
+            var resp = new sliderListViewModel();
+            try
+            {
+                var context = new TMCDBContext();
+                resp.lst = context.TBL_SLIDERMASTER.Where(x => x.OBJECTTYPE == (int)SliderObjectType.MainPage).Select(x => new sliderViewModel()
+                {
+                    ID = x.ID,
+                    SliderImgURL = x.OBJECTURL
+                }).ToList();
+            }
+            catch (Exception ex) { resp = new sliderListViewModel(); }
             return resp;
         }
         public bool fn_SaveDirectors(TBL_DIRECTORMASTER obj)
@@ -548,6 +578,80 @@ namespace TMC.DBConnections
             }
             catch { respObj = new List<TBL_GIVEAWAYMASTER>(); }
             return respObj;
+        }
+        public bool fn_DeleteGiveAway(int objID)
+        {
+            var resp = false;
+            try
+            {
+                var relationObj = new TBL_GIVEAWAYMASTER();
+                relationObj = this.TBL_GIVEAWAYMASTER.Where(x => x.ID == objID && x.ISENABLE).FirstOrDefault();
+                if (relationObj != null)
+                    if (relationObj.ID > 0)
+                    {
+                        relationObj.ISENABLE = false;
+                        this.TBL_GIVEAWAYMASTER.Update(relationObj);
+                        this.SaveChanges();
+                        resp = true;
+                    }
+            }
+            catch { resp = false; }
+            return resp;
+        }
+        public bool fn_AcceptGiveAway(int objID)
+        {
+            var resp = false;
+            try
+            {
+                var relationObj = new TBL_GIVEAWAYMASTER();
+                relationObj = this.TBL_GIVEAWAYMASTER.Where(x => x.ID == objID && x.ISENABLE).FirstOrDefault();
+                if (relationObj != null)
+                    if (relationObj.ID > 0)
+                    {
+                        relationObj.ISACCEPTED = true;
+                        this.TBL_GIVEAWAYMASTER.Update(relationObj);
+                        this.SaveChanges();
+                        resp = true;
+                    }
+            }
+            catch { resp = false; }
+            return resp;
+        }
+
+        public bool fn_SaveHomePageSetting(TBL_HOMEPAGESETTINGS obj)
+        {
+            var resp = false;
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    obj.ISENABLE = true;
+                    context.TBL_HOMEPAGESETTINGS.Add(obj);
+                    context.SaveChanges();
+                }
+                resp = true;
+            }
+            catch (Exception ex) { resp = false; }
+            return resp;
+        }
+        public bool fn_DeleteHomePageSetting(int objID)
+        {
+            var resp = false;
+            try
+            {
+                var relationObj = new TBL_HOMEPAGESETTINGS();
+                relationObj = this.TBL_HOMEPAGESETTINGS.Where(x => x.ID == objID && x.ISENABLE).FirstOrDefault();
+                if (relationObj != null)
+                    if (relationObj.ID > 0)
+                    {
+                        relationObj.ISENABLE = false;
+                        this.TBL_HOMEPAGESETTINGS.Update(relationObj);
+                        this.SaveChanges();
+                        resp = true;
+                    }
+            }
+            catch { resp = false; }
+            return resp;
         }
     }
 }

@@ -7,7 +7,7 @@ body {
 
 /* width */
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 7px;
 }
 
 /* Track */
@@ -17,7 +17,8 @@ body {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #888;
+    background: #3d0000;
+;
 }
 
     /* Handle on hover */
@@ -38,6 +39,10 @@ html {
 p {
     font-family: "Montserrat", sans-serif;
     color: #8d97ad;
+    font-weight: 300;
+}
+
+.jumbotron-heading {
     font-weight: 300;
 }
 

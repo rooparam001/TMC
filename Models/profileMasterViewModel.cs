@@ -12,7 +12,7 @@ namespace TMC.Models
 
         public string USEREMAIL { get; set; }
 
-        public string USERCITYID { get; set; }
+        public string USERCITY { get; set; }
 
         public string USERDEGREEURL { get; set; }
 
@@ -35,5 +35,6 @@ namespace TMC.Models
         public string DATECREATED { get; set; }
 
         public bool ISENABLE { get; set; }
+        public string PROFILETYPEOF { get; set; }
     }
 }

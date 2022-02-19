@@ -1,15 +1,26 @@
 ﻿$(document).ready(function () {
 
-    $("#btnUpload").click(function () {
-        _listyourprofileMaster.title = $('#txtTitle').val();
-        _listyourprofileMaster.availability = $('#txtAvailability').val();
-        _listyourprofileMaster.city = $('#ddlplaycity option:selected').val();
-        _listyourprofileMaster.contactdetails = $('#txtContactDet').val();
+    $('ul.tabs li').click(function () {
+        var tab_id = $(this).attr('data-tab');
+
+        $('ul.tabs li').removeClass('current');
+        $('.tab-content').removeClass('current');
+
+        $(this).addClass('current');
+        $("#" + tab_id).addClass('current');
+    });
+
+    _playsMaster.fnloadData();
+    $('button[class="btn-addnewSlider"]').click(function () {
+        $("#modalAddNew").modal();
+    });
+
+    $('#btnUpload').click(function () {
 
         // Checking whether FormData is available in browser
         if (window.FormData !== undefined) {
 
-            var fileUpload = $("#fuUploadPictures").get(0);
+            var fileUpload = $("#formFile").get(0);
             var files = fileUpload.files;
 
             // Create FormData object
@@ -17,17 +28,17 @@
 
             // Looping over all files and add it to FormData object
             for (var i = 0; i < files.length; i++) {
-                fileData.append('thumbnailfiles', files[i]);
+                fileData.append('sliderfiles', files[i]);
             }
 
+
             // Adding one more key to FormData object
-            fileData.append('TITLE', _listyourprofileMaster.roleID);
-            fileData.append('CITY', _listyourprofileMaster.city);
-            fileData.append('AVAILABILITY', _listyourprofileMaster.fieldExcellence);
-            fileData.append('CONTACTDETAILS', _listyourprofileMaster.prevWorkDet);
+            fileData.append('TITLE', $('#txtplaytitle').val());
+            fileData.append('DESCRIPTION', $('#txtplaytrailerlink').val());
+            fileData.append('ID', $('#HFID').val());
 
             $.ajax({
-                url: '/Account/SaveProfile',
+                url: '/Account/SavePlay',
                 type: "post",
                 contentType: false, // Not to set any content header
                 processData: false, // Not to process data
@@ -35,6 +46,8 @@
                 data: fileData,
                 success: function (result) {
                     alert(result.respmessage);
+                    $("#modalAddNew").modal();
+                    _playsMaster.fnloadData();
                 },
                 error: function (err) {
                     alert(err.statusText);
@@ -44,10 +57,8 @@
             alert("FormData is not supported.");
         }
     });
-});
-var _giveawayMaster = {
-    title: '',
-    city: '',
-    availability: '',
-    contactdetails: ''
+
+})
+var _homepageMaster = {
+
 };

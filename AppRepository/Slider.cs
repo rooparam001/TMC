@@ -24,7 +24,7 @@ namespace TMC.AppRepository
             return resp;
         }
 
-        public static bool DelSlider(int ObjID)
+        public static bool Delete(int ObjID)
         {
             bool resp = false;
             resp = new TMCDBContext().fn_DelSlider(ObjID);
@@ -33,10 +33,13 @@ namespace TMC.AppRepository
         public static string GetCommaSeparated(int ObjectID, SliderObjectType objectType)
         {
             var respObj = "";
-            if (ObjectID > 0)
-            {
-                respObj = (string.Join(",", new TMCDBContext().TBL_SLIDERMASTER.Where(x => x.OBJECTID == ObjectID && x.OBJECTTYPE == (int)objectType).Select(y => y.OBJECTURL.ToString())));
-            }
+            respObj = (string.Join(",", new TMCDBContext().TBL_SLIDERMASTER.Where(x => x.OBJECTID == ObjectID && x.OBJECTTYPE == (int)objectType).Select(y => y.OBJECTURL.ToString())));
+            return respObj;
+        }
+        public static string GetCommaSeparated_ListModel(int ObjectID, SliderObjectType objectType)
+        {
+            var respObj = "";
+            respObj = (string.Join(",", new TMCDBContext().TBL_SLIDERMASTER.Where(x => x.OBJECTID == ObjectID && x.OBJECTTYPE == (int)objectType).Select(y => y.OBJECTURL.ToString())));
             return respObj;
         }
     }

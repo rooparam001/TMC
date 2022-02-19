@@ -35,22 +35,41 @@ namespace TMC.AppRepository
             var respObj = false;
             if (ID > 0)
             {
-                var obj = new TBL_GIVEAWAYMASTER();
-                obj = new TMCDBContext().fn_getallGiveaways(ID).FirstOrDefault();
-                if (obj != null)
-                {
-                    if (obj.ID > 0)
-                    {
-                        obj.ISENABLE = false;
-                        new TMCDBContext().fn_SaveGiveaway(obj);
-                        respObj = true;
-                    }
-                }
+                return new TMCDBContext().fn_DeleteGiveAway(ID);
             }
             return respObj;
         }
 
-        public static List<giveawayViewModel> getAllOrByID(int ID = 0)
+        public static bool Accept(int ID)
+        {
+            var respObj = false;
+            if (ID > 0)
+            {
+                return new TMCDBContext().fn_AcceptGiveAway(ID);
+            }
+            return respObj;
+        }
+
+        public static List<giveawayViewModel> getAll()
+        {
+            var respObj = new List<giveawayViewModel>();
+            try
+            {
+                respObj = new TMCDBContext().fn_getallGiveaways().Select(x => new giveawayViewModel()
+                {
+                    CITY = new TMCDBContext().fn_GetSingleCityByID(x.CITY).CITY,
+                    DATECREATED = x.DATECREATED.ToString("dddd, dd MMMM yyyy"),
+                    ENTEREDBY = x.ENTEREDBY,
+                    ID = x.ID,
+                    ISACCEPTED = x.ISACCEPTED,
+                    OBJTITLE = x.OBJTITLE
+                }).ToList();
+            }
+            catch { respObj = new List<giveawayViewModel>(); }
+            return respObj;
+        }
+
+        public static List<giveawayViewModel> getByID(int ID = 0)
         {
             var respObj = new List<giveawayViewModel>();
             try

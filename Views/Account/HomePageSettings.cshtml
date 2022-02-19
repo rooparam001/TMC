@@ -1,0 +1,118 @@
+﻿<script src="~/js/homepagesetting.js"></script>
+<link href="~/css/homepagesettings.css" rel="stylesheet" />
+<main role="main">
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">setup your own homepage</h1>
+        </div>
+    </section>
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="col-md-12">
+                <div class="row">
+
+                    <ul class="tabs">
+                        <li class="tab-link current" data-tab="divSliders">Sliders</li>
+                        <li class="tab-link" data-tab="tab-2">Tab Two</li>
+                        <li class="tab-link" data-tab="tab-3">Tab Three</li>
+                        <li class="tab-link" data-tab="tab-4">Tab Four</li>
+                    </ul>
+
+                    <div id="divSliders" class="tab-content current">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-sm btn-outline-primary float-right btn-addnewSlider" value="Add New">
+                                <i class="bi bi-plus" data-bs-toggle="tooltip" title="Add New Slider"></i>
+                                add new
+                            </button>
+                            <br />
+                            <br />
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <img class="card-img-top" src="~/TMC/Images/White logo.png" alt="Card image" style="width:100%">
+                                        <div class="card-body">
+                                            <h4 class="card-title">John Doe</h4>
+                                            <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
+                                            <i class="bi bi-trash del-slider float-right" style="cursor:pointer;" data-bs-toggle="tooltip" alt-key="213" title="Delete"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <img class="card-img-top" src="~/TMC/Images/White logo.png" alt="Card image" style="width:100%">
+                                        <div class="card-body">
+                                            <h4 class="card-title">John Doe</h4>
+                                            <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
+                                            <i class="bi bi-trash del-slider float-right" style="cursor:pointer;" data-bs-toggle="tooltip" alt-key="213" title="Delete"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <img class="card-img-top" src="~/TMC/Images/White logo.png" alt="Card image" style="width:100%">
+                                        <div class="card-body">
+                                            <h4 class="card-title">John Doe</h4>
+                                            <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
+                                            <i class="bi bi-trash del-slider float-right" style="cursor:pointer;" data-bs-toggle="tooltip" alt-key="213" title="Delete"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-2" class="tab-content">
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </div>
+                    <div id="tab-3" class="tab-content">
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    </div>
+                    <div id="tab-4" class="tab-content">
+                        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Modal -->
+<div class="modal fade" id="modalAddNew" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h4>add new slider</h4>
+                <input type="hidden" id="HFID" />
+                <hr />
+                <form>
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label class="text-inverse" for="txtplaytitle">Title</label>
+                                <input type="text" class="form-control form-control-sm" id="txtslidertitle" placeholder="play's title" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label class="text-inverse" for="txtplayactor">Description(<label class="label">optional</label>)</label>
+                                <input type="text" class="form-control form-control-sm" id="txtsliderdescription" placeholder="slider's description" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label class="text-inverse" for="formFile">Image</label>
+                                <input class="form-control form-control-sm" type="file" id="formFile" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnUpload" class="btn btn-primary"><i class="bi bi-x"></i> &nbsp; save</button>
+            </div>
+        </div>
+    </div>
+</div>

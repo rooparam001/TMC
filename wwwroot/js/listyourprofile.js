@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-
+    
     $("#btnUpload").click(function () {
         _listyourprofileMaster.roleID = $('[name="selectUserRole"] option:selected').val();
         _listyourprofileMaster.fullname = $('[name="txtFullName"]').val();

@@ -1,74 +1,5 @@
 ﻿$(document).ready(function () {
-
     _playsMaster.fnloadData();
-    $('button[name="btnAdd"]').click(function () {
-        $("#modalAddNew").modal();
-    });
-
-    $('#btnUpload').click(function () {
-
-        // Checking whether FormData is available in browser
-        if (window.FormData !== undefined) {
-
-            var fileUpload = $("#formFile").get(0);
-            var files = fileUpload.files;
-
-            // Create FormData object
-            var fileData = new FormData();
-
-            // Looping over all files and add it to FormData object
-            for (var i = 0; i < files.length; i++) {
-                fileData.append('thumbnailfiles', files[i]);
-            }
-
-            fileUpload = $("#sliderFile").get(0);
-            files = fileUpload.files;
-
-            // Looping over all files and add it to FormData object
-            for (var i = 0; i < files.length; i++) {
-                fileData.append('sliderfiles', files[i]);
-            }
-
-            // Adding one more key to FormData object
-            fileData.append('TITLE', $('#txtplaytitle').val());
-            fileData.append('ACTOR', $('#txtplayactor').val());
-            fileData.append('DIRECTOR', $('#txtplaydirector').val());
-            fileData.append('NUMBER_OF_SHOWS', $('#txtnumberofshow').val());
-            fileData.append('PREMIERDATE', $('#txtplaydate').val());
-            fileData.append('SYNOPSIS', $('#txtareasynopsis').val());
-            fileData.append('TRAILERLINK', $('#txtplaytrailerlink').val());
-            fileData.append('WRITER', $('#txtplaywriter').val());
-            fileData.append('GENRE', $('#txtplaygenre').val());
-            fileData.append('LANGUAGE', $('#txtplaylanguage').val());
-            fileData.append('SUITABLEFORAGE', $('#txtplayage').val());
-            fileData.append('DURATION', $('#txtplayduration').val());
-            fileData.append('CITY', $('#ddlplaycity option:selected').val());
-            fileData.append('ID', $('#HFID').val());
-
-            $.ajax({
-                url: '/Account/SavePlay',
-                type: "post",
-                contentType: false, // Not to set any content header
-                processData: false, // Not to process data
-                dataType: 'json',
-                data: fileData,
-                success: function (result) {
-                    alert(result.respmessage);
-                    $("#modalAddNew").modal();
-                    _playsMaster.fnloadData();
-                },
-                error: function (err) {
-                    alert(err.statusText);
-                }
-            });
-        } else {
-            alert("FormData is not supported.");
-        }
-    });
-
-    $('#btnDeleteAll').click(function () {
-        _playsMaster.fnDelAllData();
-    });
 });
 
 _playsMaster = {
@@ -148,23 +79,6 @@ _playsMaster = {
             },
             error: function (err) {
                 returnObj = '';
-            }
-        });
-    },
-    fnDelAllData: function () {
-
-        $.ajax({
-            url: '/Account/DeleteAllExistingPlays',
-            type: "get",
-            contentType: false, // Not to set any content header
-            processData: false, // Not to process data
-            dataType: 'json',
-            success: function (result) {
-                alert(result.respmessage);
-                _playsMaster.fnloadData();
-            },
-            error: function (err) {
-                alert(err.statusText);
             }
         });
     }

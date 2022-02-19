@@ -32,10 +32,13 @@ namespace TMC.Controllers
 
         public ActionResult UpComingPlays() => View();
         public ActionResult Plays() => View();
+        public ActionResult Profiles() => View();
+        public ActionResult GiveAway() => View();
         public ActionResult Directors() => View();
         public ActionResult ListYourPlay() => View();
         public ActionResult ListYourProfile() => View();
-        public ActionResult GiveAway() => View();
+        public ActionResult ListYourGiveAway() => View();
+        public ActionResult HomePageSettings() => View();
 
         #region UpComing Plays region
         [HttpGet]
@@ -335,7 +338,7 @@ namespace TMC.Controllers
                             {
                                 if (sliderfiles.Count > 0)
                                 {
-                                    if (Slider.DelSlider(relationModelObj.ID))
+                                    if (Slider.Delete(relationModelObj.ID))
                                     {
                                         //saving play's slider images
                                         foreach (IFormFile currsource in sliderfiles)
@@ -525,7 +528,7 @@ namespace TMC.Controllers
                 var inputProfileObj = new profileMasterViewModel()
                 {
                     ISENABLE = true,
-                    USERCITYID = Request.Form["CITY"],
+                    USERCITY = Request.Form["CITY"],
                     USEREMAIL = Request.Form["EMAILID"],
                     USERLANGUAGES = Request.Form["LANGUAGES"],
                     USERFLDOFEXCELLENCE = Request.Form["FLDOFEXCELLENCE"],
@@ -634,9 +637,9 @@ namespace TMC.Controllers
             };
             if (modelID > 0)
             {
-                resp.data = AppProfiles.DeleteProfile(modelID);
+                resp.data = AppProfiles.Delete(modelID);
                 resp.respstatus = ResponseStatus.success;
-                resp.respmessage = "Profile deleted";
+                resp.respmessage = "Profile deactivated";
             }
             return Json(resp);
         }
@@ -644,29 +647,24 @@ namespace TMC.Controllers
         [HttpGet]
         public JsonResult GetAllProfiles()
         {
+            var respModel = new List<profileMasterViewModel>();
+            respModel = AppProfiles.GetAllProfiles();
             var resp = new ajaxResponse()
             {
-                data = AppProfiles.GetAllProfiles().Select(x => new profileMasterViewModel()
-                {
-                    ID = x.ID,
-                    DATECREATED = x.DATECREATED.Value.ToString("dddd dd MMMM", CultureInfo.CreateSpecificCulture("en-US")),
-                    USERCITYID = x.USERCITYID.Value.ToString(),
-                    USEREMAIL = x.USEREMAIL,
-                    USERLANGUAGES = x.USERLANGUAGES,
-                    USERROLE = x.USERROLE.ToString(),
-                    USERTOTALEXPINYEARS = x.USERTOTALEXPINYEARS
-                }).ToList(),
-                respstatus = ResponseStatus.success
+                data = respModel,
+                respstatus = ResponseStatus.success,
+                respmessage = (respModel.Count > 0 ? "Success" : "Something went wrong,please try again later.")
             };
+
             return Json(resp);
         }
 
         [HttpGet]
-        public JsonResult GetProfile_ByID(int ID)
+        public JsonResult GetProfile_ByID(int objID)
         {
             var resp = new ajaxResponse()
             {
-                data = AppProfiles.GetSingleProfile_ByID(ID),
+                data = AppProfiles.GetSingleProfile_ByID(objID),
                 respstatus = ResponseStatus.success
             };
             return Json(resp);
@@ -694,11 +692,30 @@ namespace TMC.Controllers
         }
 
         [HttpGet]
+        public JsonResult AcceptGiveaway(string objID)
+        {
+            int modelID = 0;
+            int.TryParse(objID, out modelID);
+            var resp = new ajaxResponse()
+            {
+                respmessage = "Something went wrong.",
+                respstatus = ResponseStatus.error
+            };
+            if (modelID > 0)
+            {
+                resp.data = GiveAways.Accept(modelID);
+                resp.respstatus = ResponseStatus.success;
+                resp.respmessage = "Giveaway accepted";
+            }
+            return Json(resp);
+        }
+
+        [HttpGet]
         public JsonResult GetAllGiveaways()
         {
             var resp = new ajaxResponse()
             {
-                data = GiveAways.getAllOrByID(),
+                data = GiveAways.getAll(),
                 respstatus = ResponseStatus.success
             };
             return Json(resp);
@@ -709,7 +726,7 @@ namespace TMC.Controllers
         {
             var resp = new ajaxResponse()
             {
-                data = GiveAways.getAllOrByID(objID),
+                data = GiveAways.getByID(objID),
                 respstatus = ResponseStatus.success
             };
             return Json(resp);
@@ -717,6 +734,137 @@ namespace TMC.Controllers
 
         [HttpPost]
         public async Task<JsonResult> SaveGiveaway(List<IFormFile> thumbnailfiles)
+        {
+            var resp = new ajaxResponse();
+            var relationModelObj = new giveawayViewModel();
+            var giveawayModelObj = new TBL_GIVEAWAYMASTER();
+            try
+            {
+                resp.data = null;
+                int.TryParse(Request.Form["NUMBER_OF_SHOWS"], out int _noofshows);
+
+                relationModelObj = new giveawayViewModel()
+                {
+                    OBJTITLE = (string.IsNullOrEmpty(Request.Form["TITLE"]) ? "" : Request.Form["TITLE"].ToString()),
+                    CITY = (string.IsNullOrEmpty(Request.Form["CITY"]) ? "" : Request.Form["CITY"].ToString()),
+                    OBJAVAILABILITY = (string.IsNullOrEmpty(Request.Form["AVAILABILITY"]) ? "" : Request.Form["AVAILABILITY"].ToString()),
+                    OBJCONTACTDETAILS = (string.IsNullOrEmpty(Request.Form["CONTACTDETAILS"]) ? "" : Request.Form["CONTACTDETAILS"].ToString()),
+                    ISACCEPTED = false,
+                    ISENABLE = true
+                };
+
+
+                try
+                {
+                    giveawayModelObj = GiveAways.Save(relationModelObj);
+                    if (giveawayModelObj != null)
+                    {
+                        if (giveawayModelObj.ID > 0)
+                        {
+                            if (thumbnailfiles != null)
+                            {
+                                if (thumbnailfiles.Count > 0)
+                                {
+                                    if (Slider.Delete(giveawayModelObj.ID))
+                                    {
+                                        //saving play's slider images
+                                        foreach (IFormFile currsource in thumbnailfiles)
+                                        {
+                                            string filename = ContentDispositionHeaderValue.Parse(currsource.ContentDisposition).FileName.Trim('"');
+                                            filename = this.EnsureCorrectFilename(filename);
+                                            using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "sliders")))
+                                            {
+                                                await currsource.CopyToAsync(output);
+                                                Slider.SaveSlider(new slider_inputoutputmodel()
+                                                {
+                                                    OBJECTID = giveawayModelObj.ID,
+                                                    ObjectType = SliderObjectType.GiveAway,
+                                                    OBJECTURL = new string[] { filename }
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            resp.respmessage = "Giveaway saved";
+                            resp.respstatus = ResponseStatus.success;
+                        }
+                        else
+                            resp = new ajaxResponse()
+                            {
+                                data = null,
+                                respmessage = "Something went wrong.",
+                                respstatus = ResponseStatus.error
+                            };
+                    }
+                    else
+                        resp = new ajaxResponse()
+                        {
+                            data = null,
+                            respmessage = "Something went wrong.",
+                            respstatus = ResponseStatus.error
+                        };
+
+                }
+                catch (Exception ex)
+                {
+                    resp = new ajaxResponse()
+                    {
+                        data = null,
+                        respmessage = ex.Message.ToString(),
+                        respstatus = ResponseStatus.error
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                resp = new ajaxResponse()
+                {
+                    data = null,
+                    respmessage = ex.Message.ToString(),
+                    respstatus = ResponseStatus.error
+                };
+
+            }
+
+            return Json(resp);
+        }
+        #endregion
+
+        #region Home Page Settings
+        [HttpGet]
+        public JsonResult DeleteSlider(string objID)
+        {
+            int modelID = 0;
+            int.TryParse(objID, out modelID);
+            var resp = new ajaxResponse()
+            {
+                respmessage = "Something went wrong.",
+                respstatus = ResponseStatus.error
+            };
+            if (modelID > 0)
+            {
+                resp.data = Slider.Delete(modelID);
+                resp.respstatus = ResponseStatus.success;
+                resp.respmessage = "Giveaway deleted";
+            }
+            return Json(resp);
+        }
+
+        [HttpGet]
+        public JsonResult GetAllSliders()
+        {
+            var resp = new ajaxResponse()
+            {
+                data = Slider.GetCommaSeparated(0, SliderObjectType.MainPage),
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> SaveHomePageSlider(List<IFormFile> thumbnailfiles)
         {
             var resp = new ajaxResponse();
             var relationModelObj = new giveawayViewModel();
@@ -748,7 +896,7 @@ namespace TMC.Controllers
                             {
                                 if (thumbnailfiles.Count > 0)
                                 {
-                                    if (Slider.DelSlider(relationModelObj.ID))
+                                    if (Slider.Delete(relationModelObj.ID))
                                     {
                                         //saving play's slider images
                                         foreach (IFormFile currsource in thumbnailfiles)

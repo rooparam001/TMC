@@ -1,7 +1,4 @@
-﻿@{
-    ViewData["Title"] = "Profile";
-}
-<script src="~/js/listyourprofile.js"></script>
+﻿<script src="~/js/accountgiveaway.js"></script>
 <style type="text/css">
     form {
         margin-top: 2%;
@@ -10,7 +7,7 @@
 <main role="main">
     <section class="jumbotron text-center">
         <div class="container">
-            <h1 class="jumbotron-heading">upload profile</h1>
+            <h1 class="jumbotron-heading">give away</h1>
         </div>
     </section>
 
@@ -18,71 +15,18 @@
         <div class="container">
             <div class="col-md-12">
                 <div class="row">
-                    <select class="form-control form-control-sm custom-select-sm" style="width:100%;" name="selectUserRole">
-                        <option value="writer">
-                            Writer
-                        </option>
-                        <option value="producer">
-                            Producer
-                        </option>
-                        <option value="actor">
-                            Actor
-                        </option>
-                        <option value="set designer">
-                            Set Designer
-                        </option>
-                        <option value="light designer">
-                            Light Designer
-                        </option>
-                        <option value="graphic designer">
-                            Graphic Designer
-                        </option>
-                        <option value="production manager">
-                            Production Manager
-                        </option>
-                        <option value="stage manager">
-                            Stage Manager
-                        </option>
-                        <option value="light operator">
-                            Light Operator
-                        </option>
-                        <option value="sound operator">
-                            Sound Operator
-                        </option>
-                        <option value="back stage">
-                            Back Stage
-                        </option>
-                    </select>
-                </div>
-                <div class="row">
                     <form style="width: 100%;">
-                        <div class="row">
-                            <div class="col-lg-12 col-sm-12 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="txtTypeOf">Type of..</label>
-                                    <input type="text" class="form-control form-control-sm" name="txtTypeOf" placeholder="type of" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12 col-sm-12 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="txtFullName">Title</label>
-                                    <input type="text" class="form-control form-control-sm" name="txtFullName" placeholder="full name" required>
-                                </div>
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
-                                    <label class="text-inverse" for="txtEmail">Email Address</label>
-                                    <input type="text" class="form-control form-control-sm" name="txtEmail" placeholder="email address" required>
+                                    <label class="text-inverse" for="txtTitle">Title</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtTitle" placeholder="item's title" required>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label class="text-inverse" for="txtplaycity">City</label>
-                                    <select class="form-control form-control-sm" name="ddlplaycity">
+                                    <select class="form-control form-control-sm" id="ddlplaycity">
                                         <option>Adilabad</option>
                                         <option>Agra</option>
                                         <option>Ahmedabad</option>
@@ -683,69 +627,27 @@
                         <div class="row">
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
-                                    <label class="text-inverse" for="fuDegree">Degree</label>
-                                    <input class="form-control form-control-sm" type="file" name="fuDegree" accept="application/pdf" multiple>
+                                    <label class="text-inverse" for="txtAvailability">Availability</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtAvailability" placeholder="availability" required>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-6 col-12">
                                 <div class="form-group">
-                                    <label class="text-inverse" for="fuLetterofRef">Letter Of References</label>
-                                    <input class="form-control form-control-sm" type="file" name="fuLetterofRef" accept="application/pdf">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="txtFieldExcellence">Field of Excellence</label>
-                                    <textarea class="form-control form-control-sm" name="txtFieldExcellence" placeholder="field of excellence"></textarea>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="txtPrevWorkDet">Previous Work Details</label>
-                                    <textarea class="form-control form-control-sm" name="txtPrevWorkDet" placeholder="previous work details"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="fuCertificates">Add certification(s) if any</label>
-                                    <input class="form-control form-control-sm" type="file" name="fuCertificates" accept="application/pdf" multiple>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="fuAwardsAchiev">Award/Achievements</label>
-                                    <input class="form-control form-control-sm" type="file" name="fuAwardsAchiev" accept="application/pdf" multiple>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="txtLanguages">Language(s) known</label>
-                                    <input type="text" class="form-control form-control-sm" name="txtLanguages" placeholder="language(s)" required>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label class="text-inverse" for="txtExpYrs">Experience in years</label>
-                                    <input type="text" class="form-control form-control-sm" name="txtExpYrs" placeholder="total experience" required>
+                                    <label class="text-inverse" for="txtContactDet">Contact Details</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtContactDet" placeholder="contact details" required>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12 col-sm-12 col-12">
                                 <div class="form-group">
-                                    <label class="text-inverse" for="fuUploadWork">Upload Your Work</label>
-                                    <input class="form-control form-control-sm" type="file" name="fuUploadWork" accept="application/pdf" multiple>
+                                    <label class="text-inverse" for="fuUploadPictures">Upload Picture(s)</label>
+                                    <input class="form-control form-control-sm" type="file" id="fuUploadPictures" accept="image/*" multiple>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <input type="button" class="btn btn-sm btn-outline-primary form-control form-control-sm" value="Save" id="btnUpload" />
+                            <input type="button" class="btn btn-sm btn-outline-primary form-control form-control-sm" id="btnUpload" value="Save" />
                         </div>
                     </form>
                 </div>
