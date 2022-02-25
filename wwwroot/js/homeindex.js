@@ -22,7 +22,7 @@ _allPlaysMaster = {
                 }
                 var colcount = 3; var rowcount = 0; var innerhtml = '';
                 $(data.data).each(function (index, relationModelObj) {
-                    
+
                     if (colcount == 3) {
                         if (rowcount == 0)
                             innerhtml += '<div class="carousel-item active"><div class="row">';
@@ -41,9 +41,30 @@ _allPlaysMaster = {
                         colcount = 3;
                         innerhtml += ('</div></div>');
                     }
-                    
+
                 });
                 playdataTable.append(innerhtml);
+            },
+            error: function (err) {
+                alert(err.statusText);
+            }
+        });
+
+        $.ajax({
+            url: '/Account/GetAllHomePageSliders',
+            dataType: "json",
+            method: 'GET',
+            success: function (data) {
+
+                var sliderdataTable = $('.carousel-inner');
+                sliderdataTable.empty();
+                $(data.data.lst).each(function (index, relationModelObj) {
+
+                    sliderdataTable.append('<div class="carousel-item ' + (index == 0 ? 'active' : '') + '"><img class="d-block w-100" src="/Blogs/Sliders/' + relationModelObj.sliderImgURL + '" alt="First slide">' +
+                        '<div class="carousel-caption d-none d-md-block"><h5>' + (relationModelObj.title ? relationModelObj.title : '') + '</h5>' +
+                        '<p>' + (relationModelObj.description ? relationModelObj.description : '') + '</p></div></div>');
+                });
+
             },
             error: function (err) {
                 alert(err.statusText);

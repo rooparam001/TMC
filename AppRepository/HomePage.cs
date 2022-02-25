@@ -5,17 +5,15 @@ namespace TMC.AppRepository
 {
     public static class HomePage
     {
-        public static bool SaveSetting(TBL_HOMEPAGESETTINGS obj)
+        public static TBL_HOMEPAGESETTINGS Save(TBL_HOMEPAGESETTINGS obj)
         {
-            bool resp = false;
-
             if (obj != null)
-                if (!string.IsNullOrEmpty(obj.OBJECTDESCRIPTION) && !string.IsNullOrEmpty(obj.OBJECTTITLE))
-                    resp = new TMCDBContext().fn_SaveHomePageSetting(obj);
+                if (!string.IsNullOrEmpty(obj.OBJECTTITLE) && obj.OBJECTTYPE > 0)
+                    obj = new TMCDBContext().fn_SaveHomePageSetting(obj);
 
-            return resp;
+            return obj;
         }
-        public static bool DeleteSetting(int objID)
+        public static bool Delete(int objID)
         {
             bool resp = false;
 

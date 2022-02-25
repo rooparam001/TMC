@@ -69,9 +69,9 @@ namespace TMC.AppRepository
             return respObj;
         }
 
-        public static List<giveawayViewModel> getByID(int ID = 0)
+        public static giveawayViewModel getByID(int ID = 0)
         {
-            var respObj = new List<giveawayViewModel>();
+            var respObj = new giveawayViewModel();
             try
             {
                 respObj = new TMCDBContext().fn_getallGiveaways(ID: ID).Select(x => new giveawayViewModel()
@@ -86,9 +86,9 @@ namespace TMC.AppRepository
                     OBJCONTACTDETAILS = x.OBJCONTACTDETAILS,
                     OBJTITLE = x.OBJTITLE,
                     OBJPICTURES = Slider.GetCommaSeparated(ID, SliderObjectType.GiveAway)
-                }).ToList();
+                }).FirstOrDefault();
             }
-            catch { respObj = new List<giveawayViewModel>(); }
+            catch { respObj = new giveawayViewModel(); }
             return respObj;
         }
     }

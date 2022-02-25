@@ -10,8 +10,9 @@
         $("#" + tab_id).addClass('current');
     });
 
-    _playsMaster.fnloadData();
-    $('button[class="btn-addnewSlider"]').click(function () {
+    _homepageMaster.fnloadData();
+
+    $('.btn-addnewSlider').click(function () {
         $("#modalAddNew").modal();
     });
 
@@ -28,17 +29,16 @@
 
             // Looping over all files and add it to FormData object
             for (var i = 0; i < files.length; i++) {
-                fileData.append('sliderfiles', files[i]);
+                fileData.append('thumbnailfiles', files[i]);
             }
 
 
             // Adding one more key to FormData object
-            fileData.append('TITLE', $('#txtplaytitle').val());
-            fileData.append('DESCRIPTION', $('#txtplaytrailerlink').val());
-            fileData.append('ID', $('#HFID').val());
+            fileData.append('TITLE', $('#txtslidertitle').val());
+            fileData.append('DESCRIPTION', $('#txtsliderdescription').val());
 
             $.ajax({
-                url: '/Account/SavePlay',
+                url: '/Account/SaveHomePageSlider',
                 type: "post",
                 contentType: false, // Not to set any content header
                 processData: false, // Not to process data
@@ -47,7 +47,7 @@
                 success: function (result) {
                     alert(result.respmessage);
                     $("#modalAddNew").modal();
-                    _playsMaster.fnloadData();
+                    _homepageMaster.fnloadData();
                 },
                 error: function (err) {
                     alert(err.statusText);
@@ -60,5 +60,46 @@
 
 })
 var _homepageMaster = {
+    fnloadData: function () {
+        $.ajax({
+            url: '/Account/GetAllHomePageSliders',
+            dataType: "json",
+            method: 'GET',
+            success: function (data) {
 
+                var sliderdataTable = $('.slider-data');
+                sliderdataTable.empty();
+                $(data.data.lst).each(function (index, relationModelObj) {
+
+                    sliderdataTable.append('<div class="col-md-4"><div class="card">' +
+                        '<img class="card-img-top" src="/Blogs/Sliders/' + relationModelObj.sliderImgURL + '" alt="Card image" style="width:100%"><div class="card-body">' +
+                        '<h4 class="card-title">' + (relationModelObj.description ? relationModelObj.description : 'title not available') + '</h4>' +
+                        '<i class="bi bi-trash del-slider float-right" style="cursor:pointer;" data-bs-toggle="tooltip" onClick="_homepageMaster.fnDelData_ID(' + relationModelObj.id + ')" title="Delete">' +
+                        '</i></div></div></div>');
+                });
+
+            },
+            error: function (err) {
+                alert(err.statusText);
+            }
+        });
+    },
+    fnDelData_ID: function (ID) {
+        if (confirm('Do you wish to delete?')) {
+            $.ajax({
+                url: '/Account/DeleteSlider',
+                dataType: "json",
+                method: 'get',
+                contentType: "application/json; charset=utf-8",
+                data: { objID: ID },
+                success: function (result) {
+                    alert(result.respmessage);
+                    _homepageMaster.fnloadData();
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        }
+    },
 };

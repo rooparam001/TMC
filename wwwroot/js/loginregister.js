@@ -20,7 +20,8 @@
         accountMaster.validateUserName($(this).val());
     });
 
-    $('input[name="Email"]').keyup(function () {
+    $('input[name="mail"],input[name="regmail"]').keyup(function () {
+
         accountMaster.validateUserEmail($(this).val());
     });
 
@@ -36,11 +37,58 @@
         accountMaster.validateUserConfirmPassword($('input[name="UPassword"]').val(), $(this).val());
     });
 
-    $(document).on('click', '#formRegister button[type=submit]', function (e) {
+    $(document).on('click', '#formRegister button[type=button]', function (e) {
 
         if (accountMaster.nameError || accountMaster.emailError || accountMaster.contactNumberError || accountMaster.passwordError) {
             alert('Please complete the form');
             e.preventDefault();
+        } else {
+
+            $.ajax({
+                url: '/Account/register',
+                dataType: "json",
+                method: 'get',
+                contentType: "application/json; charset=utf-8",
+                data: { UserName: $('input[name="UserName"]').val(), UserEmail: $('input[name="regmail"]').val(), ContactNumber: $('input[name="ContactNumber"]').val(), UPassword: $('input[name="UPassword"]').val() },
+                success: function (result) {
+                    if (result.respstatus)
+                        accountMaster.resetForms();
+
+                    alert(result.respmessage);
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        }
+
+    });
+
+    $(document).on('click', '#formLogin button[type=button]', function (e) {
+        
+        if (accountMaster.emailError || accountMaster.passwordError) {
+            alert('Please complete the form');
+            e.preventDefault();
+        } else {
+
+            $.ajax({
+                url: '/Account/login',
+                dataType: "json",
+                method: 'get',
+                contentType: "application/json; charset=utf-8",
+                data: { Email: $('input[name="mail"]').val(), UPassword: $('input[name="UPassword"]').val() },
+                success: function (result) {
+                    
+                    if (result.respstatus == 0) {
+                        window.location.href = '/Home/Index/';
+                    }
+                    else
+                        alert(result.respmessage);
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
         }
 
     });
@@ -70,7 +118,6 @@ var accountMaster = {
 
     },
     validateUserEmail: function (email) {
-
         if (email.length == '') {
             $('#errEmail').show();
             $('#errEmail').html("field can't be empty.");
@@ -94,7 +141,7 @@ var accountMaster = {
                 accountMaster.emailError = true;
             }
         }
-
+        /*
         if (!this.emailError) {
             $.get(url = '/account/validateUserEmail', data = email, success = function (data) {
                 if (data) {
@@ -104,7 +151,7 @@ var accountMaster = {
                 }
             });
         }
-
+        */
     },
     validateUserNumber: function (cNumber) {
 
@@ -193,5 +240,9 @@ var accountMaster = {
                 this.passwordError = true;
             }
         }
+    },
+    resetForms: function () {
+        $('.email-login')[0].reset();
+        $('.email-signup')[0].reset();
     }
 };

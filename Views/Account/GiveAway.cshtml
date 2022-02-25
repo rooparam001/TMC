@@ -1,7 +1,19 @@
-﻿<script src="~/js/listyourgiveaway.js"></script>
+﻿@{
+    ViewData["Title"] = "Giveaway";
+}
+<script src="~/js/listyourgiveaway.js"></script>
 <style type="text/css">
     form {
         margin-top: 2%;
+    }
+
+    .img-fluid {
+        margin: 1%;
+    }
+
+    .card-body {
+        max-height: 70vh;
+        overflow-y: auto;
     }
 </style>
 <main role="main">
@@ -10,7 +22,6 @@
             <h1 class="jumbotron-heading">give aways</h1>
         </div>
     </section>
-
     <div class="album py-5 bg-light">
         <div class="container">
             <div class="row">
@@ -49,3 +60,91 @@
     </div>
 
 </main>
+<div class="modal fade" id="modalViewGiveAaway" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h4 id="modalheading"></h4>
+                <hr />
+                <section style="background-color: #eee;">
+                    <div class="container py-5">
+
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-sm-5">
+                                                    <p class="mb-0">Title</p>
+                                                </div>
+                                                <div class="col-sm-7">
+                                                    <p class="text-muted mb-0" name="giveaway_title">Johnatan Smith</p>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-sm-5">
+                                                    <p class="mb-0">City</p>
+                                                </div>
+                                                <div class="col-sm-7">
+                                                    <p class="text-muted mb-0" name="giveaway_city">Johnatan Smith</p>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-sm-5">
+                                                    <p class="mb-0">Entered By</p>
+                                                </div>
+                                                <div class="col-sm-7">
+                                                    <p class="text-muted mb-0" name="giveaway_enteredby">example@example.com</p>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-sm-5">
+                                                    <p class="mb-0">Accept Status</p>
+                                                </div>
+                                                <div class="col-sm-7">
+                                                    <p class="text-muted mb-0" name="giveaway_acceptstatus">(097) 234-5678</p>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-sm-5">
+                                                    <p class="mb-0">Availability</p>
+                                                </div>
+                                                <div class="col-sm-7">
+                                                    <p class="text-muted mb-0" name="giveaway_availability">(098) 765-4321</p>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-sm-5">
+                                                    <p class="mb-0">Contact Details</p>
+                                                </div>
+                                                <div class="col-sm-7">
+                                                    <p class="text-muted mb-0" name="giveaway_contactdetails">Bay Area, San Francisco, CA</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <p class="mb-0">Pictures</p>
+                                                <p class="text-muted mb-0" name="giveaway_pictures">Johnatan Smith</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

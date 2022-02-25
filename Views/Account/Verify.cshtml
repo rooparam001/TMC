@@ -18,27 +18,27 @@
             log in with Google
         </a>
     </div>
-    <form asp-action="login" asp-controller="Account" class="email-login">
+    <form class="email-login" id="formLogin">
         <div class="u-form-group">
-            <input type="email" placeholder="Email" />
+            <input type="email" placeholder="Email" name="mail" />
         </div>
         <div class="u-form-group">
-            <input type="password" placeholder="Password" />
+            <input type="password" placeholder="Password" name="UPassword" />
         </div>
         <div class="u-form-group">
-            <button id="btnLogin" type="submit">Log in</button>
+            <button id="btnLogin" type="button">Log in</button>
         </div>
         <div class="u-form-group">
             <a href="#" class="forgot-password">Forgot password?</a>
         </div>
     </form>
-    <form asp-action="register" asp-controller="Account" class="email-signup" id="formRegister">
+    <form class="email-signup" id="formRegister">
         <div class="u-form-group">
             <input type="text" placeholder="Name" name="UserName" /><br />
             <span class="is-invalid" id="errName"></span>
         </div>
         <div class="u-form-group">
-            <input type="email" placeholder="Email" name="Email" /><br />
+            <input type="text" placeholder="Email" name="regmail" /><br />
             <span class="is-invalid" id="errEmail"></span>
         </div>
         <div class="u-form-group">
@@ -54,7 +54,7 @@
             <span class="is-invalid" id="errConfirmPassword"></span>
         </div>
         <div class="u-form-group">
-            <button id="btnRegister" type="submit">Sign Up</button>
+            <button id="btnRegister" type="button">Sign Up</button>
         </div>
     </form>
 </div>

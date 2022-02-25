@@ -1,5 +1,8 @@
 ﻿using EntitesInterfaces.AppModels;
 using EntitesInterfaces.DBEntities;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +12,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using TMC.AppRepository;
 using TMC.Models;
@@ -25,19 +29,102 @@ namespace TMC.Controllers
         }
         public IActionResult Verify() => View();
         public ActionResult login() => View();
-        public ActionResult register(string UserName, string Email, string ContactNumber, string UPassword)
+        [HttpGet]
+        public JsonResult register(string UserName, string UserEmail, string ContactNumber, string UPassword)
         {
-            return View();
+            var resp = new ajaxResponse();
+
+            var outputModelData = new registerloginUserViewModel()
+            {
+                ContactNumber = ContactNumber,
+                Email = UserEmail,
+                Password = UPassword,
+                UserName = UserName
+            };
+            outputModelData = AppUsers.Save(outputModelData);
+            resp = new ajaxResponse()
+            {
+                data = null,
+                respmessage = (outputModelData.UserStatus ? "You're a registered user now, please proceed via login." : outputModelData.validationMessage),
+                respstatus = (outputModelData.UserStatus ? ResponseStatus.success : ResponseStatus.error)
+            };
+            return Json(resp);
+        }
+        [HttpGet]
+        public JsonResult login(string Email, string UPassword)
+        {
+            var resp = new ajaxResponse();
+            var obj = new registerloginUserViewModel()
+            {
+                Email = Email,
+                Password = UPassword
+            };
+            obj = AppUsers.GetUserByEmailPassword(obj);
+            if (obj.UserStatus)
+            {
+                var _accountObj = new AccountMaster();
+                _accountObj = AppUsers.fn_GetUserByEmail(Email.Trim());
+                if (_accountObj != null)
+                {
+                    if (!string.IsNullOrEmpty(_accountObj.Role))
+                    {
+                        var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+                        identity.AddClaim(new Claim(ClaimTypes.Name, _accountObj.UserName));
+                        identity.AddClaim(new Claim(ClaimTypes.Role, _accountObj.Role));
+                        identity.AddClaim(new Claim("UserID", _accountObj.ID.ToString()));
+
+                        var authProperties = new AuthenticationProperties
+                        {
+                            AllowRefresh = true,
+                            ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30),
+                            IsPersistent = true
+                        };
+
+                        var principal = new ClaimsPrincipal(identity);
+                        HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
+                    }
+                    else
+                        obj = new registerloginUserViewModel()
+                        {
+                            UserStatus = false,
+                            validationMessage = "Invalid User found."
+                        };
+                }
+                else
+                    obj = new registerloginUserViewModel()
+                    {
+                        UserStatus = false,
+                        validationMessage = "Invalid User found."
+                    };
+            }
+            resp = new ajaxResponse()
+            {
+                data = null,
+                respmessage = (obj.UserStatus ? "" : obj.validationMessage),
+                respstatus = (obj.UserStatus ? ResponseStatus.success : ResponseStatus.error)
+            };
+            return Json(resp);
         }
 
+        [Authorize(Roles = "ADMINISTRATOR")]
         public ActionResult UpComingPlays() => View();
+        [Authorize(Roles = "ADMINISTRATOR")]
         public ActionResult Plays() => View();
+        [Authorize(Roles = "ADMINISTRATOR")]
         public ActionResult Profiles() => View();
+        [Authorize(Roles = "ADMINISTRATOR")]
         public ActionResult GiveAway() => View();
+        [Authorize(Roles = "ADMINISTRATOR")]
         public ActionResult Directors() => View();
+        [Authorize(Roles = "ADMINISTRATOR")]
+        public ActionResult Tickets() => View();
+        [Authorize]
         public ActionResult ListYourPlay() => View();
+        [Authorize]
         public ActionResult ListYourProfile() => View();
+        [Authorize]
         public ActionResult ListYourGiveAway() => View();
+        [Authorize(Roles = "ADMINISTRATOR")]
         public ActionResult HomePageSettings() => View();
 
         #region UpComing Plays region
@@ -338,7 +425,7 @@ namespace TMC.Controllers
                             {
                                 if (sliderfiles.Count > 0)
                                 {
-                                    if (Slider.Delete(relationModelObj.ID))
+                                    if (Slider.Delete_ByObjectID(relationModelObj.ID))
                                     {
                                         //saving play's slider images
                                         foreach (IFormFile currsource in sliderfiles)
@@ -348,11 +435,14 @@ namespace TMC.Controllers
                                             using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "sliders")))
                                             {
                                                 await currsource.CopyToAsync(output);
-                                                Slider.SaveSlider(new slider_inputoutputmodel()
+                                                Slider.Save(new slider_inputoutputmodel()
                                                 {
                                                     OBJECTID = relationModelObj.ID,
                                                     ObjectType = SliderObjectType.Plays,
-                                                    OBJECTURL = new string[] { filename }
+                                                    SliderLst = new List<sliderViewModel>()
+                                                    {
+
+                                                    }
                                                 });
                                             }
                                         }
@@ -765,7 +855,7 @@ namespace TMC.Controllers
                             {
                                 if (thumbnailfiles.Count > 0)
                                 {
-                                    if (Slider.Delete(giveawayModelObj.ID))
+                                    if (Slider.Delete_ByObjectID(giveawayModelObj.ID))
                                     {
                                         //saving play's slider images
                                         foreach (IFormFile currsource in thumbnailfiles)
@@ -775,11 +865,14 @@ namespace TMC.Controllers
                                             using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "sliders")))
                                             {
                                                 await currsource.CopyToAsync(output);
-                                                Slider.SaveSlider(new slider_inputoutputmodel()
+                                                Slider.Save(new slider_inputoutputmodel()
                                                 {
                                                     OBJECTID = giveawayModelObj.ID,
                                                     ObjectType = SliderObjectType.GiveAway,
-                                                    OBJECTURL = new string[] { filename }
+                                                    SliderLst = new List<sliderViewModel>() { new sliderViewModel() {
+                                                    Description="",
+                                                    SliderImgURL=filename
+                                                    }}
                                                 });
                                             }
                                         }
@@ -845,19 +938,19 @@ namespace TMC.Controllers
             };
             if (modelID > 0)
             {
-                resp.data = Slider.Delete(modelID);
+                resp.data = Slider.Delete_ByID(modelID);
                 resp.respstatus = ResponseStatus.success;
-                resp.respmessage = "Giveaway deleted";
+                resp.respmessage = "Slider deleted";
             }
             return Json(resp);
         }
 
         [HttpGet]
-        public JsonResult GetAllSliders()
+        public JsonResult GetAllHomePageSliders()
         {
             var resp = new ajaxResponse()
             {
-                data = Slider.GetCommaSeparated(0, SliderObjectType.MainPage),
+                data = Slider.GetCommaSeparated_ListModel(0, SliderObjectType.MainPage),
                 respstatus = ResponseStatus.success
             };
             return Json(resp);
@@ -867,27 +960,24 @@ namespace TMC.Controllers
         public async Task<JsonResult> SaveHomePageSlider(List<IFormFile> thumbnailfiles)
         {
             var resp = new ajaxResponse();
-            var relationModelObj = new giveawayViewModel();
-            var giveawayModelObj = new TBL_GIVEAWAYMASTER();
+            var relationModelObj = new TBL_HOMEPAGESETTINGS();
             try
             {
                 resp.data = null;
                 int.TryParse(Request.Form["NUMBER_OF_SHOWS"], out int _noofshows);
 
-                relationModelObj = new giveawayViewModel()
+                relationModelObj = new TBL_HOMEPAGESETTINGS()
                 {
-                    OBJTITLE = (string.IsNullOrEmpty(Request.Form["TITLE"]) ? "" : Request.Form["TITLE"].ToString()),
-                    CITY = (string.IsNullOrEmpty(Request.Form["CITY"]) ? "" : Request.Form["CITY"].ToString()),
-                    OBJAVAILABILITY = (string.IsNullOrEmpty(Request.Form["AVAILABILITY"]) ? "" : Request.Form["AVAILABILITY"].ToString()),
-                    OBJCONTACTDETAILS = (string.IsNullOrEmpty(Request.Form["CONTACTDETAILS"]) ? "" : Request.Form["CONTACTDETAILS"].ToString()),
-                    ISACCEPTED = false,
+                    OBJECTTITLE = (string.IsNullOrEmpty(Request.Form["TITLE"]) ? "" : Request.Form["TITLE"].ToString()),
+                    OBJECTDESCRIPTION = "",
+                    OBJECTTYPE = (int)HomePageSettingObjectType.Slider,
                     ISENABLE = true
                 };
 
 
                 try
                 {
-                    giveawayModelObj = GiveAways.Save(relationModelObj);
+                    relationModelObj = HomePage.Save(relationModelObj);
                     if (relationModelObj != null)
                     {
                         if (relationModelObj.ID > 0)
@@ -896,29 +986,30 @@ namespace TMC.Controllers
                             {
                                 if (thumbnailfiles.Count > 0)
                                 {
-                                    if (Slider.Delete(relationModelObj.ID))
+                                    //saving play's slider images
+                                    foreach (IFormFile currsource in thumbnailfiles)
                                     {
-                                        //saving play's slider images
-                                        foreach (IFormFile currsource in thumbnailfiles)
+                                        string filename = ContentDispositionHeaderValue.Parse(currsource.ContentDisposition).FileName.Trim('"');
+                                        filename = this.EnsureCorrectFilename(filename);
+                                        using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "sliders")))
                                         {
-                                            string filename = ContentDispositionHeaderValue.Parse(currsource.ContentDisposition).FileName.Trim('"');
-                                            filename = this.EnsureCorrectFilename(filename);
-                                            using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "sliders")))
+                                            await currsource.CopyToAsync(output);
+                                            Slider.Save(new slider_inputoutputmodel()
                                             {
-                                                await currsource.CopyToAsync(output);
-                                                Slider.SaveSlider(new slider_inputoutputmodel()
-                                                {
-                                                    OBJECTID = relationModelObj.ID,
-                                                    ObjectType = SliderObjectType.GiveAway,
-                                                    OBJECTURL = new string[] { filename }
-                                                });
-                                            }
+                                                OBJECTID = relationModelObj.ID,
+                                                ObjectType = SliderObjectType.MainPage,
+                                                SliderLst = new List<sliderViewModel>() { new sliderViewModel() {
+                                                    Description=(string.IsNullOrEmpty(Request.Form["DESCRIPTION"]) ? "" : Request.Form["DESCRIPTION"].ToString()),
+                                                    SliderImgURL=filename,
+                                                    Title=(string.IsNullOrEmpty(Request.Form["TITLE"]) ? "" : Request.Form["DESCRIPTITLETION"].ToString())
+                                                    }}
+                                            });
                                         }
                                     }
                                 }
                             }
 
-                            resp.respmessage = "Giveaway saved";
+                            resp.respmessage = "Setting saved";
                             resp.respstatus = ResponseStatus.success;
                         }
                         else
@@ -963,6 +1054,23 @@ namespace TMC.Controllers
         }
         #endregion
 
+        #region Inquiries
+        [HttpGet]
+        public JsonResult GetAllInquiries()
+        {
+            var respModel = new List<inquiryViewModel>();
+            respModel = Enquiries.fn_getallUnSeenEnquiries();
+            var resp = new ajaxResponse()
+            {
+                data = respModel,
+                respstatus = ResponseStatus.success,
+                respmessage = (respModel.Count > 0 ? "Success" : "Something went wrong,please try again later.")
+            };
+
+            return Json(resp);
+        } 
+        #endregion
+
         private string EnsureCorrectFilename(string filename)
         {
             if (filename.Contains("\\"))
@@ -972,7 +1080,6 @@ namespace TMC.Controllers
 
             return filename;
         }
-
         private string GetPathAndFilename(string filename, string fileType)
         {
             switch (fileType)
@@ -1003,11 +1110,15 @@ namespace TMC.Controllers
                     }
             };
         }
-
         [HttpGet]
         public JsonResult validateUserEmail(string email)
         {
             return Json(true);
+        }
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction(nameof(Verify));
         }
     }
 }

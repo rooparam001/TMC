@@ -91,10 +91,6 @@ namespace TMC.DBConnections
             var respObj = new AccountMaster();
             try
             {
-                //using (var context = new TMCDBContext())
-                //{
-
-                //}
                 respObj = this.Tbl_AccountMaster.Where(x => x.ID == ID).Select(y => new AccountMaster()
                 {
                     ContactNumber = y.ContactNumber,
@@ -109,7 +105,51 @@ namespace TMC.DBConnections
             catch (Exception ex) { respObj = new AccountMaster(); }
             return respObj;
         }
-        public AccountMaster fn_GetUserByContactNumber(int MobNo)
+        public registerloginUserViewModel fn_SaveUser(registerloginUserViewModel obj)
+        {
+            var tblObj = new Tbl_AccountMaster()
+            {
+                ContactNumber = obj.ContactNumber,
+                DateCreated = DateTime.Now,
+                Email = obj.Email.Trim(),
+                RoleID = this.fn_SaveRole("Viewer").ID,
+                UserName = obj.UserName.Trim(),
+                UserPassword = obj.Password.Trim(),
+                UserStatus = true
+            };
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    context.Tbl_AccountMaster.Add(tblObj);
+                    context.SaveChanges();
+                    obj.UserStatus = true;
+                }
+            }
+            catch (Exception ex) { obj = new registerloginUserViewModel() { UserStatus = false }; }
+            return obj;
+        }
+        public int fn_ValidateUniqueEmailID(string Email)
+        {
+            var respObj = 0;
+            try
+            {
+                respObj = this.Tbl_AccountMaster.Where(x => x.Email == Email).Count();
+            }
+            catch (Exception ex) { respObj = 0; }
+            return respObj;
+        }
+        public int fn_ValidateUniqueContactNumber(string MobNo)
+        {
+            var respObj = 0;
+            try
+            {
+                respObj = this.Tbl_AccountMaster.Where(x => x.ContactNumber == MobNo).Count();
+            }
+            catch (Exception ex) { respObj = 0; }
+            return respObj;
+        }
+        public AccountMaster fn_GetUserByContactNumber(string MobNo)
         {
             var respObj = new AccountMaster();
             try
@@ -128,23 +168,14 @@ namespace TMC.DBConnections
             catch (Exception ex) { respObj = new AccountMaster(); }
             return respObj;
         }
-        public AccountMaster fn_GetUserByEmail(string Email)
+        public Tbl_AccountMaster fn_GetUserByEmail(string Email)
         {
-            var respObj = new AccountMaster();
+            var respObj = new Tbl_AccountMaster();
             try
             {
-                respObj = this.Tbl_AccountMaster.Where(x => x.Email == Email).Select(y => new AccountMaster()
-                {
-                    ContactNumber = y.ContactNumber,
-                    DateCreated = y.DateCreated.ToString("dddd, dd MMMM yyyy"),
-                    Email = y.Email,
-                    ID = y.ID,
-                    UserName = y.UserName,
-                    UserStatus = y.UserStatus,
-                    Role = this.Tbl_RoleMaster.Where(x => x.ID == y.RoleID).Select(y => y.RoleName).FirstOrDefault()
-                }).FirstOrDefault();
+                respObj = this.Tbl_AccountMaster.Where(x => x.Email == Email).FirstOrDefault();
             }
-            catch (Exception ex) { respObj = new AccountMaster(); }
+            catch (Exception ex) { respObj = new Tbl_AccountMaster(); }
             return respObj;
         }
         public TBL_PLAYSMASTER fn_GetSinglePlayByID(int ID)
@@ -389,14 +420,17 @@ namespace TMC.DBConnections
             catch (Exception ex) { resp = false; }
             return resp;
         }
-        public bool fn_DelSlider(int ObjID)
+        public bool fn_DelSlider(int ObjID, bool isObjectID = true)
         {
             var resp = false;
             try
             {
                 var context = new TMCDBContext();
                 //context.TBL_SLIDERMASTER.RemoveRange(context.TBL_SLIDERMASTER.Where(x => x.OBJECTID == ObjID && x.OBJECTTYPE == (int)SliderObjectType.Plays).ToList());
-                context.TBL_SLIDERMASTER.RemoveRange(context.TBL_SLIDERMASTER.Where(x => x.OBJECTID == ObjID).ToList());
+                if (isObjectID)
+                    context.TBL_SLIDERMASTER.RemoveRange(context.TBL_SLIDERMASTER.Where(x => x.OBJECTID == ObjID).ToList());
+                else
+                    context.TBL_SLIDERMASTER.RemoveRange(context.TBL_SLIDERMASTER.Where(x => x.ID == ObjID).ToList());
                 context.SaveChanges();
                 resp = true;
             }
@@ -618,9 +652,8 @@ namespace TMC.DBConnections
             return resp;
         }
 
-        public bool fn_SaveHomePageSetting(TBL_HOMEPAGESETTINGS obj)
+        public TBL_HOMEPAGESETTINGS fn_SaveHomePageSetting(TBL_HOMEPAGESETTINGS obj)
         {
-            var resp = false;
             try
             {
                 using (var context = new TMCDBContext())
@@ -629,10 +662,9 @@ namespace TMC.DBConnections
                     context.TBL_HOMEPAGESETTINGS.Add(obj);
                     context.SaveChanges();
                 }
-                resp = true;
             }
-            catch (Exception ex) { resp = false; }
-            return resp;
+            catch (Exception ex) { obj = new TBL_HOMEPAGESETTINGS(); }
+            return obj;
         }
         public bool fn_DeleteHomePageSetting(int objID)
         {
