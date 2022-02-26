@@ -73,6 +73,19 @@ namespace TMC.DBConnections
             catch (Exception ex) { resp = new Tbl_RoleMaster(); }
             return resp;
         }
+        public List<Tbl_RoleMaster> fn_GetAllRoles()
+        {
+            var resp = new List<Tbl_RoleMaster>();
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    resp = context.Tbl_RoleMaster.ToList();
+                }
+            }
+            catch (Exception ex) { resp = new List<Tbl_RoleMaster>(); }
+            return resp;
+        }
         public string fn_GetRoleByID(int ID)
         {
             var resp = "";
@@ -544,7 +557,7 @@ namespace TMC.DBConnections
             {
                 using (var context = new TMCDBContext())
                 {
-                    resp = (context.TBL_PROFILESMASTER.Where(x => x.ISENABLE.Value && x.USERROLE == obj.USERROLE && x.USERTITLE == obj.USERTITLE)).ToList().Count > 0 ? true : false;
+                    resp = (context.TBL_PROFILESMASTER.Where(x => x.ISENABLE && x.USERROLE == obj.USERROLE && x.USERTITLE == obj.USERTITLE)).ToList().Count > 0 ? true : false;
                 }
             }
             catch (Exception ex) { resp = false; }
@@ -556,7 +569,7 @@ namespace TMC.DBConnections
             try
             {
                 var relationObj = new TBL_PROFILESMASTER();
-                relationObj = this.TBL_PROFILESMASTER.Where(x => x.ID == objID && x.ISENABLE.Value).FirstOrDefault();
+                relationObj = this.TBL_PROFILESMASTER.Where(x => x.ID == objID && x.ISENABLE).FirstOrDefault();
                 if (relationObj != null)
                     if (relationObj.ID > 0)
                     {
@@ -574,9 +587,9 @@ namespace TMC.DBConnections
             var outputObj = new List<TBL_PROFILESMASTER>();
             try
             {
-                outputObj = this.TBL_PROFILESMASTER.Where(x => (ID == 0 ? true : x.ID == ID) && x.ISENABLE.Value).ToList();
+                outputObj = this.TBL_PROFILESMASTER.Where(x => (ID == 0 ? true : x.ID == ID) && x.ISENABLE).ToList();
             }
-            catch { outputObj = new List<TBL_PROFILESMASTER>(); }
+            catch (Exception ex) { outputObj = new List<TBL_PROFILESMASTER>(); }
             return outputObj;
         }
         public TBL_GIVEAWAYMASTER fn_SaveGiveaway(TBL_GIVEAWAYMASTER obj)
@@ -600,14 +613,14 @@ namespace TMC.DBConnections
             catch (Exception ex) { obj.ID = 0; }
             return obj;
         }
-        public List<TBL_GIVEAWAYMASTER> fn_getallGiveaways(int ID = 0)
+        public List<TBL_GIVEAWAYMASTER> fn_getallGiveaways(int ID = 0, int city = 0, string searchTxt = "")
         {
             var respObj = new List<TBL_GIVEAWAYMASTER>();
             try
             {
                 using (var context = new TMCDBContext())
                 {
-                    respObj = context.TBL_GIVEAWAYMASTER.Where(x => (ID > 0 ? x.ID == ID : true) && x.ISENABLE).ToList();
+                    respObj = context.TBL_GIVEAWAYMASTER.Where(x => (ID > 0 ? x.ID == ID : true) && (city == 0 ? true : x.CITY == city) && (string.IsNullOrEmpty(searchTxt) ? true : x.OBJTITLE.Contains(searchTxt)) && x.ISENABLE).ToList();
                 }
             }
             catch { respObj = new List<TBL_GIVEAWAYMASTER>(); }

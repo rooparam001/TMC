@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    
+
     $("#btnUpload").click(function () {
         _listyourprofileMaster.roleID = $('[name="selectUserRole"] option:selected').val();
         _listyourprofileMaster.fullname = $('[name="txtFullName"]').val();
@@ -9,7 +9,10 @@
         _listyourprofileMaster.prevWorkDet = $('[name="txtPrevWorkDet"]').val();
         _listyourprofileMaster.languages = $('[name="txtLanguages"]').val();
         _listyourprofileMaster.expYrs = $('[name="txtExpYrs"]').val();
-
+        _listyourprofileMaster.typeOf = $('[name="txtTypeOf"]').val();
+        _listyourprofileMaster.age = $('[name="txtAge"]').val();
+        _listyourprofileMaster.gender = $('[name="selectGender"]').val();
+        
         // Checking whether FormData is available in browser
         if (window.FormData !== undefined) {
 
@@ -65,6 +68,9 @@
             fileData.append('PREVWORKDET', _listyourprofileMaster.prevWorkDet);
             fileData.append('LANGUAGES', _listyourprofileMaster.languages);
             fileData.append('EXPYRS', _listyourprofileMaster.expYrs);
+            fileData.append('PROFILETYPEOF', _listyourprofileMaster.typeOf);
+            fileData.append('USERAGE', _listyourprofileMaster.age);
+            fileData.append('USERGENDER', _listyourprofileMaster.gender);
 
             $.ajax({
                 url: '/Account/SaveProfile',
@@ -93,5 +99,8 @@ var _listyourprofileMaster = {
     fieldExcellence: '',
     prevWorkDet: '',
     languages: '',
-    expYrs: ''
+    expYrs: '',
+    typeOf: '',
+    age: 0,
+    gender: ''
 };

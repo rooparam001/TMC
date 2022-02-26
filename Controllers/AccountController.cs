@@ -340,7 +340,8 @@ namespace TMC.Controllers
                     GROUPTWITTER_HANDLEURL = (string.IsNullOrEmpty(Request.Form["TWITTERHANDLEURL"]) ? "" : Request.Form["TWITTERHANDLEURL"].ToString()),
                     GROUPINSTAGARAM_HANDLEURL = (string.IsNullOrEmpty(Request.Form["INSTAGRAMHANDLEURL"]) ? "" : Request.Form["INSTAGRAMHANDLEURL"].ToString()),
                     GROUPINFO = (string.IsNullOrEmpty(Request.Form["GROUPINFO"]) ? "" : Request.Form["GROUPINFO"].ToString()),
-                    GROUPTITLE = (string.IsNullOrEmpty(Request.Form["GROUPTITLE"]) ? "" : Request.Form["GROUPTITLE"].ToString())
+                    GROUPTITLE = (string.IsNullOrEmpty(Request.Form["GROUPTITLE"]) ? "" : Request.Form["GROUPTITLE"].ToString()),
+                    PLAYLINK = (string.IsNullOrEmpty(Request.Form["PLAYLINK"]) ? "" : Request.Form["PLAYLINK"].ToString())
                 };
 
 
@@ -625,7 +626,10 @@ namespace TMC.Controllers
                     USERPRVWORKEXP = Request.Form["PREVWORKDET"],
                     USERROLE = Request.Form["ROLEID"],
                     USERTITLE = Request.Form["FULLNAME"],
-                    USERTOTALEXPINYEARS = Request.Form["EXPYRS"]
+                    USERTOTALEXPINYEARS = Request.Form["EXPYRS"],
+                    PROFILETYPEOF = Request.Form["PROFILETYPEOF"],
+                    USERAGE = (string.IsNullOrEmpty(Request.Form["USERAGE"]) ? 0 : Convert.ToInt32(Request.Form["USERAGE"].ToString())),
+                    USERGENDER = Request.Form["USERGENDER"],
                 };
 
                 try
@@ -1068,7 +1072,7 @@ namespace TMC.Controllers
             };
 
             return Json(resp);
-        } 
+        }
         #endregion
 
         private string EnsureCorrectFilename(string filename)

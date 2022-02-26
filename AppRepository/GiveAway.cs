@@ -50,19 +50,20 @@ namespace TMC.AppRepository
             return respObj;
         }
 
-        public static List<giveawayViewModel> getAll()
+        public static List<giveawayViewModel> getAll(int ID = 0, int city = 0, string searchTxt = "")
         {
             var respObj = new List<giveawayViewModel>();
             try
             {
-                respObj = new TMCDBContext().fn_getallGiveaways().Select(x => new giveawayViewModel()
+                respObj = new TMCDBContext().fn_getallGiveaways(ID, city, searchTxt).Select(x => new giveawayViewModel()
                 {
                     CITY = new TMCDBContext().fn_GetSingleCityByID(x.CITY).CITY,
                     DATECREATED = x.DATECREATED.ToString("dddd, dd MMMM yyyy"),
                     ENTEREDBY = x.ENTEREDBY,
                     ID = x.ID,
                     ISACCEPTED = x.ISACCEPTED,
-                    OBJTITLE = x.OBJTITLE
+                    OBJTITLE = x.OBJTITLE,
+                    OBJPICTURES = Slider.GetCommaSeparated(x.ID, SliderObjectType.GiveAway)
                 }).ToList();
             }
             catch { respObj = new List<giveawayViewModel>(); }

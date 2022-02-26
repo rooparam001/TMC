@@ -36,5 +36,8 @@ namespace TMC.Models
 
         public bool ISENABLE { get; set; }
         public string PROFILETYPEOF { get; set; }
+        public int USERAGE { get; set; }
+        public string USERGENDER { get; set; }
+        public string ImageURL { get; set; }
     }
 }

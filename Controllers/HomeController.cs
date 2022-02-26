@@ -1,6 +1,8 @@
 ﻿using EntitesInterfaces.AppModels;
+using EntitesInterfaces.DBEntities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -26,7 +28,8 @@ namespace TMC.Controllers
 
         public IActionResult AllPlays() => View();
         public IActionResult AllDirectors() => View();
-
+        public IActionResult Giveaway() => View();
+        public IActionResult Backstage() => View();
         public IActionResult Plays(int objToken)
         {
             if (objToken > 0)
@@ -37,6 +40,17 @@ namespace TMC.Controllers
             {
                 return View("AllPlays");
             }
+        }
+
+        [HttpGet]
+        public JsonResult GetAllGiveaways(int ID = 0, int city = 0, string searchTxt = "")
+        {
+            var resp = new ajaxResponse()
+            {
+                data = GiveAways.getAll(ID, city, searchTxt),
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
         }
 
         [HttpGet]
@@ -67,6 +81,20 @@ namespace TMC.Controllers
             var resp = new ajaxResponse()
             {
                 data = Play.fn_GetAllCities(),
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
+        }
+
+        [HttpGet]
+        public JsonResult GetAllRoles()
+        {
+            var outputModel = new List<Tbl_RoleMaster>();
+            outputModel = AppUsers.fn_GetAllRoles();
+            outputModel = outputModel.Where(x => x.RoleName != "VIEWER" && x.RoleName != "ADMINISTRATOR").ToList();
+            var resp = new ajaxResponse()
+            {
+                data = outputModel,
                 respstatus = ResponseStatus.success
             };
             return Json(resp);
@@ -139,6 +167,21 @@ namespace TMC.Controllers
                 }).ToList(),
                 respstatus = ResponseStatus.success
             };
+            return Json(resp);
+        }
+
+        [HttpGet]
+        public JsonResult GetAllProfiles(int city = 0, int role = 0, string gender = "", string language = "")
+        {
+            var respModel = new List<profileMasterViewModel>();
+            respModel = AppProfiles.GetAllProfiles(city, role, gender, language);
+            var resp = new ajaxResponse()
+            {
+                data = respModel,
+                respstatus = ResponseStatus.success,
+                respmessage = (respModel.Count > 0 ? "Success" : "Something went wrong, please try again later.")
+            };
+
             return Json(resp);
         }
 

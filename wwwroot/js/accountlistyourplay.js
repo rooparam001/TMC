@@ -61,6 +61,7 @@
             fileData.append('TWITTERHANDLEURL', $('#txtinstagram').val());
             fileData.append('SYNOPSISFORSOCIALHANDLES', $('#txtareasynopsisSocialHandles').val());
             fileData.append('GROUPINFO', $('#txtareagroupinfo').val());
+            fileData.append('PLAYLINK', $('#txtplaylink').val());
             fileData.append('SYNOPSIS', $('#txtareasynopsis').val());
             fileData.append('ID', $('#HFID').val());
 

@@ -1,54 +1,48 @@
-﻿@{
-    ViewData["Title"] = "Profile";
-}
-<script src="~/js/accountprofiles.js"></script>
+﻿<link href="~/css/alldirectors.css" rel="stylesheet" />
+<script src="~/js/homebackstage.js"></script>
 <style type="text/css">
-    form {
-        margin-top: 2%;
+    .filter-area {
+        margin: 2% 0 2% 0;
     }
 </style>
 <main role="main">
     <section class="jumbotron text-center">
         <div class="container">
-            <h1 class="jumbotron-heading">view profiles</h1>
+            <h1 class="jumbotron-heading">backstage crew...</h1>
         </div>
     </section>
 
     <div class="album py-5 bg-light">
         <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="btn-group btn-group-sm pr-0" role="group" aria-label="Basic outlined example">
-                        <a href="/account/ListYourProfile" target="_blank" class="btn btn-outline-success" name="btnAdd"><i class="bi bi-plus-circle-dotted"></i> &nbsp; Add New</a>
+            <div class="col-md-12">
+                <div class="row filter-area">
+                    <div class="col-md-2">
+                        <select class="form-control form-control-sm ddlRoleType">
+                        </select>
                     </div>
-                    <table class="table table-light">
-                        <thead>
-                            <tr>
-                                <th>
-                                    No.
-                                </th>
-                                <th>
-                                    Title
-                                </th>
-                                <th>
-                                    Role
-                                </th>
-                                <th>
-                                    Type of
-                                </th>
-                                <th>
-                                    Email Add
-                                </th>
-                                <th>
-                                    Date Created
-                                </th>
-                                <th>
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="col-md-2">
+                        <select class="form-control form-control-sm ddlCity">
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-control form-control-sm ddlLanguage">
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-control form-control-sm ddlGender">
+                            <option>
+                                Female
+                            </option>
+                            <option>
+                                Male
+                            </option>
+                            <option>
+                                Others
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row data-view">
                 </div>
             </div>
         </div>

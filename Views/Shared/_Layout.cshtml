@@ -75,6 +75,7 @@
                             <div class="dropdown-menu" aria-labelledby="navbarJoinUs">
                                 <a class="dropdown-item" href="/account/ListYourProfile/">List your Profile</a>
                                 <a class="dropdown-item" href="/account/ListYourPlay/">List your Play</a>
+                                <a class="dropdown-item" href="/account/ListYourGiveAway/">List your Giveaway</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -100,10 +101,18 @@
                                 else
                                 {
                                     <a class="dropdown-item" href="/account/verify">Login</a>
-                                    <a class="dropdown-item" href="/account/GiveAway">Giveaway</a>
                                 }
                             </div>
                         </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/home/Backstage/">Backstage</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/home/Giveaway">Giveaways</a>
+                            </li>
+                        }
                     </ul>
                     <form class="form-inline">
                         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">

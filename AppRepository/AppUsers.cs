@@ -1,5 +1,6 @@
 ﻿using EntitesInterfaces.AppModels;
 using EntitesInterfaces.DBEntities;
+using System.Collections.Generic;
 using TMC.DBConnections;
 using TMC.Models;
 
@@ -125,6 +126,11 @@ namespace TMC.AppRepository
             }
             catch { respObj = new AccountMaster(); }
             return respObj;
+        }
+
+        public static List<Tbl_RoleMaster> fn_GetAllRoles()
+        {
+            return new TMCDBContext().fn_GetAllRoles();
         }
     }
 }

@@ -33,7 +33,10 @@ namespace TMC.AppRepository
                             USERPRVWORKEXP = obj.USERPRVWORKEXP,
                             USERTITLE = obj.USERTITLE,
                             USERTOTALEXPINYEARS = obj.USERTOTALEXPINYEARS,
-                            USERUPLOADEDWORK = obj.USERUPLOADEDWORK
+                            USERUPLOADEDWORK = obj.USERUPLOADEDWORK,
+                            PROFILETYPEOF = obj.PROFILETYPEOF,
+                            USERGENDER = obj.USERGENDER,
+                            USERAGE = obj.USERAGE
                         };
 
                         //setting user's languages
@@ -104,21 +107,36 @@ namespace TMC.AppRepository
 
             return resp;
         }
-        public static List<profileMasterViewModel> GetAllProfiles()
+        public static List<profileMasterViewModel> GetAllProfiles(int city = 0, int role = 0, string gender = "", string language = "")
         {
             var resp = new List<profileMasterViewModel>();
-
+            var respCopy = new List<profileMasterViewModel>();
             try
             {
-                resp = new TMCDBContext().fn_getallProfiles().Select(x => new profileMasterViewModel()
+                respCopy = new TMCDBContext().fn_getallProfiles()
+                    .Where(x => (city == 0 ? true : x.USERCITYID == city) && (role == 0 ? true : x.USERROLE == role) && (string.IsNullOrEmpty(gender) ? true : (string.IsNullOrEmpty(x.USERGENDER) ? true : x.USERGENDER.ToLower() == gender.ToLower())) && x.ISENABLE)
+                    .Select(x => new profileMasterViewModel()
+                    {
+                        ID = x.ID,
+                        DATECREATED = x.DATECREATED.Value.ToString("dddd dd MMMM", CultureInfo.CreateSpecificCulture("en-US")),
+                        USEREMAIL = x.USEREMAIL,
+                        USERROLE = new TMCDBContext().fn_GetRoleByID(x.USERROLE),
+                        USERTITLE = x.USERTITLE,
+                        PROFILETYPEOF = x.PROFILETYPEOF
+                    }).ToList();
+
+
+                if (!string.IsNullOrEmpty(language))
                 {
-                    ID = x.ID,
-                    DATECREATED = x.DATECREATED.Value.ToString("dddd dd MMMM", CultureInfo.CreateSpecificCulture("en-US")),
-                    USEREMAIL = x.USEREMAIL,
-                    USERROLE = new TMCDBContext().fn_GetRoleByID(x.USERROLE),
-                    USERTITLE = x.USERTITLE,
-                    PROFILETYPEOF = x.PROFILETYPEOF
-                }).ToList();
+                    foreach (var currProfile in respCopy)
+                    {
+                        if (currProfile.USERLANGUAGES.Split(',').Contains(language))
+                            resp.Add(currProfile);
+                    }
+                }
+                else
+                    resp = respCopy;
+
 
             }
             catch (Exception ex) { resp = new List<profileMasterViewModel>(); }
