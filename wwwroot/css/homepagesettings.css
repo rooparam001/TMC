@@ -1,6 +1,7 @@
 ﻿.tab-pane {
     margin-top: 3%;
 }
+
 ul.tabs {
     margin: 0px;
     padding: 0px;
@@ -29,3 +30,8 @@ ul.tabs {
     .tab-content.current {
         display: inherit;
     }
+
+.table {
+    background-color: #3d0000;
+    color: #ffe1e6;
+}

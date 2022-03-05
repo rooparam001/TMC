@@ -188,7 +188,17 @@ namespace TMC.AppRepository
                             TITLE = playObj.TITLE,
                             TRAILERLINK = playObj.TRAILERLINK,
                             WRITER = playObj.WRITER,
-                            CITY = new TMCDBContext().fn_GetSingleCityByID(cityID).CITY
+                            CITY = new TMCDBContext().fn_GetSingleCityByID(cityID).CITY,
+                            CASTNCREDIT = playObj.CASTNCREDIT,
+                            CENSORCERTIFICATE = playObj.CENSORCERTIFICATE,
+                            GROUPFACEBOOK_HANDLEURL = playObj.GROUPFACEBOOK_HANDLEURL,
+                            GROUPINFO = playObj.GROUPINFO,
+                            GROUPINSTAGARAM_HANDLEURL = playObj.GROUPINSTAGARAM_HANDLEURL,
+                            GROUPTITLE = playObj.GROUPTITLE,
+                            GROUPTWITTER_HANDLEURL = playObj.GROUPTWITTER_HANDLEURL,
+                            PLAYLINK = playObj.PLAYLINK,
+                            SYNOPSIS_SOCIALHANDLES = playObj.SYNOPSIS_SOCIALHANDLES,
+                            TECHRIDER = playObj.TECHRIDER
                         };
                     }
             }

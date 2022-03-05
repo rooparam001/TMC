@@ -19,5 +19,15 @@
         public string DURATION { get; set; }
         public string AGESUITABLEFOR { get; set; }
         public string CITY { get; set; }
+        public string GROUPTITLE { get; set; }
+        public string CASTNCREDIT { get; set; }
+        public string GROUPFACEBOOK_HANDLEURL { get; set; }
+        public string GROUPINSTAGARAM_HANDLEURL { get; set; }
+        public string GROUPTWITTER_HANDLEURL { get; set; }
+        public string SYNOPSIS_SOCIALHANDLES { get; set; }
+        public string GROUPINFO { get; set; }
+        public string CENSORCERTIFICATE { get; set; }
+        public string TECHRIDER { get; set; }
+        public string PLAYLINK { get; set; }
     }
 }

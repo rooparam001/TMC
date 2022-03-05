@@ -1,8 +1,17 @@
-﻿<link href="~/css/alldirectors.css" rel="stylesheet" />
+﻿@{
+    ViewData["Title"] = "Artists";
+}
+<link href="~/css/alldirectors.css" rel="stylesheet" />
 <script src="~/js/homebackstage.js"></script>
 <style type="text/css">
     .filter-area {
         margin: 2% 0 2% 0;
+    }
+
+    .card-body {
+        background-color: none;
+        color: none;
+        border-color: none;
     }
 </style>
 <main role="main">
@@ -12,7 +21,7 @@
         </div>
     </section>
 
-    <div class="album py-5 bg-light">
+    <div class="album py-5">
         <div class="container">
             <div class="col-md-12">
                 <div class="row filter-area">

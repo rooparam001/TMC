@@ -1,4 +1,8 @@
-﻿.media-container-row {
+﻿.fa-angle-left, .fa-angle-right {
+    font-size: 2em;
+}
+
+.media-container-row {
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
@@ -152,4 +156,7 @@
     -o-transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
+}
+h3 {
+    color: antiquewhite;
 }

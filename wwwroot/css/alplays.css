@@ -2,6 +2,10 @@
     --jumbotron-padding-y: 3rem;
 }
 
+.btn {
+    padding: 30%;
+}
+
 .card-img-top {
     height: 15em;
 }
@@ -28,20 +32,21 @@ i {
     overflow-y: auto;
 }
 
-.filter-area .filter-item-td {
+.filter-area .filter-item-td, .filter-item {
     cursor: pointer;
     font-size: 14px;
     text-transform: capitalize;
+    padding: 6%;
 }
 
     .filter-area .filter-item-td:hover {
-        background-color: lightgrey;
-        text-decoration: underline;
-        /*color: #bd1515;*/
+        border-radius: 7%;
+        background-color: #ffc7c761;
     }
 
 .filter-item-selected {
-    background-color: #d3d3d3;
+    border-radius: 7%;
+    background-color: #ffc7c761;
 }
 
 .filter-selected-list-items-object {
@@ -51,7 +56,6 @@ i {
 }
 
     .filter-selected-list-items-object a {
-        color: #bbb;
         cursor: pointer;
         opacity: 0.6;
         margin: 0 0 0 .3em;
@@ -67,7 +71,7 @@ i {
     }
 
     .filter-selected-list-items-object a .fa-times-circle {
-        color: #fff;
+        /*color: #fff;*/
     }
 
 .filter-selected-item-remove {
@@ -75,4 +79,8 @@ i {
     color: white;
     padding: 0 1% 0 1%;
     background-color: #ffb340;
+}
+
+.table {
+    color: #ffe1e6;
 }

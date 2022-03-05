@@ -276,7 +276,11 @@ namespace TMC.DBConnections
             {
                 using (var context = new TMCDBContext())
                 {
-                    context.TBL_PLAYSMASTER.Add(obj);
+                    if (obj.ID == 0)
+                        context.TBL_PLAYSMASTER.Add(obj);
+                    else
+                        context.TBL_PLAYSMASTER.Update(obj);
+
                     context.SaveChanges();
                 }
             }

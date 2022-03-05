@@ -43,6 +43,17 @@ namespace TMC.Controllers
         }
 
         [HttpGet]
+        public JsonResult GetAllUpcomingPlay()
+        {
+            var resp = new ajaxResponse()
+            {
+                data = Play.fn_GetAllPlays(),
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
+        }
+
+        [HttpGet]
         public JsonResult GetAllGiveaways(int ID = 0, int city = 0, string searchTxt = "")
         {
             var resp = new ajaxResponse()

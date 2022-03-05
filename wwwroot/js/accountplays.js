@@ -52,34 +52,6 @@ _playsMaster = {
         }
     },
     fnEditData_ID: function (ID) {
-        $.ajax({
-            url: '/Account/GetSinglePlay',
-            dataType: "json",
-            method: 'get',
-            contentType: "application/json; charset=utf-8",
-            data: { objID: ID },
-            success: function (result) {
-                if (result.data) {
-                    $("#modalAddNew").modal();
-                    $('#txtplaytitle').val(result.data.title);
-                    $('#txtplayactor').val(result.data.actor);
-                    $('#txtplaydirector').val(result.data.director);
-                    $('#txtnumberofshow').val(result.data.numbeR_OF_SHOWS);
-                    $('#txtplaydate').val(result.data.premierdate);
-                    $('#txtareasynopsis').val(result.data.synopsis);
-                    $('#txtplaytrailerlink').val(result.data.trailerlink);
-                    $('#txtplaywriter').val(result.data.writer);
-                    $('#txtplaygenre').val(result.data.genre);
-                    $('#txtplaylanguage').val(result.data.langauage);
-                    $('#txtplayage').val(result.data.agesuitablefor);
-                    $('#txtplayduration').val(result.data.duration);
-                    $('#ddlplaycity').val(result.data.city);
-                    $('#HFID').val(result.data.id);
-                }
-            },
-            error: function (err) {
-                returnObj = '';
-            }
-        });
+        window.location.href = ('/account/ListYourPlay/?editobj=' + ID);
     }
 };

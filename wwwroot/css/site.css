@@ -3,6 +3,7 @@
 body {
     font-family: 'Poppins', sans-serif;
     transition: all 200ms linear;
+    background-color: #200e10;
 }
 
 /* width */
@@ -18,7 +19,7 @@ body {
 /* Handle */
 ::-webkit-scrollbar-thumb {
     background: #3d0000;
-;
+    ;
 }
 
     /* Handle on hover */
@@ -42,8 +43,13 @@ p {
     font-weight: 300;
 }
 
+.jumbotron {
+    background-color: #200e10;
+}
+
 .jumbotron-heading {
     font-weight: 300;
+    color: antiquewhite;
 }
 
 .bg-light-blue {
@@ -65,6 +71,39 @@ p {
 .nav-item:hover .nav-link {
     color: #8167a9 !important;
 }
+
+#modalheading {
+    background-color: #3d0000;
+    color: antiquewhite;
+    padding: 1%;
+}
+
+.card {
+    background-color: none;
+    border: none;
+}
+
+.card-text {
+    color: #ffe1e6;
+}
+
+.card-body {
+    background-color: #3d0000;
+    color: #ffe1e6;
+    border-color: #3d0000;
+}
+
+.btn {
+    background-color: #ff0000;
+    color: white;
+    border-radius: 0.4rem;
+    border-color: #ff0000;
+}
+
+    .btn:hover {
+        background-color: #fb5555;
+        border-color: #fb5555;
+    }
 
 .input {
     width: 100%;
