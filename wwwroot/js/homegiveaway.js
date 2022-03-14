@@ -33,8 +33,13 @@ _allGiveawayMaster = {
 
                     for (i = 0; i < arrayOfFiles.length; i++) {
 
-                        if (arrayOfFiles[i])
-                            htmlStr += '<div class="carousel-item ' + (i == 0 ? 'active' : '') + '"><img class="d-block w-100" src="/Blogs/Sliders/' + arrayOfFiles[i] + '" alt="First slide"></div>';
+                        if (arrayOfFiles[i]) {
+                            if (arrayOfFiles[i].indexOf('.pdf') > 0)
+                                htmlStr += '<div class="carousel-item ' + (i == 0 ? 'active' : '') + '"><a href="/Blogs/Sliders/' + arrayOfFiles[i] + ' " target="_blank""><img class="d-blockcard-img-top" src="/TMC/Images/blue-circle-document-file.png""/></a></div>';
+                            else
+                                htmlStr += '<div class="carousel-item ' + (i == 0 ? 'active' : '') + '"><img class="d-block card-img-top" src="/Blogs/Sliders/' + arrayOfFiles[i] + '" alt="First slide"></div>';
+
+                        }
                     }
 
                     htmlStr += '</div><a class="carousel-control-prev" href="#divCarousel' + cnt + '" role="button" data-slide="prev"><i class="fas fa-angle-left"></i></a><a class="carousel-control-next" href="#divCarousel' + cnt + '" role="button" data-slide="next"><i class="fas fa-angle-right"></i></a></div>';

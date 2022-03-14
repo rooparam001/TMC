@@ -3,7 +3,10 @@
 body {
     font-family: 'Poppins', sans-serif;
     transition: all 200ms linear;
-    background-color: #200e10;
+    /*background-color: #200e10;*/
+
+    background: rgb(32,14,16);
+    background: linear-gradient(90deg, rgba(32,14,16,1) 0%, rgba(54,39,41,1) 40%, rgba(32,14,16,1) 100%);
 }
 
 /* width */
@@ -44,7 +47,8 @@ p {
 }
 
 .jumbotron {
-    background-color: #200e10;
+    /*background-color: #200e10;*/
+    background-color: transparent;
 }
 
 .jumbotron-heading {
@@ -69,7 +73,21 @@ p {
 }
 
 .nav-item:hover .nav-link {
-    color: #8167a9 !important;
+    /*color: #8167a9 !important;*/
+    color: #cf9e5c !important;
+}
+
+.dropdown-item {
+    color: white;
+}
+
+    .dropdown-item:hover {
+        background-color: #661515;
+        color: #cf9e5c !important;
+    }
+
+.dropdown-menu {
+    background-color: #661515;
 }
 
 #modalheading {

@@ -12,7 +12,7 @@
         _listyourprofileMaster.typeOf = $('[name="txtTypeOf"]').val();
         _listyourprofileMaster.age = $('[name="txtAge"]').val();
         _listyourprofileMaster.gender = $('[name="selectGender"]').val();
-        
+
         // Checking whether FormData is available in browser
         if (window.FormData !== undefined) {
 
@@ -58,6 +58,12 @@
             for (var i = 0; i < files.length; i++) {
                 fileData.append('fuUploadWork', files[i]);
             }
+
+            fileUpload = $("[name='formFile']").get(0);
+            files = fileUpload.files;
+
+            // Looping over all files and add it to FormData object
+            fileData.append('fuProfilePicture', files[0]);
 
             // Adding one more key to FormData object
             fileData.append('ROLEID', _listyourprofileMaster.roleID);

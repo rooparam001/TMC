@@ -127,6 +127,11 @@ var _profileMaster = {
 
                 $('#modalheading').html(data.data.userrole);
 
+                if (data.data.imageURL)
+                    $('[name="profile_picture"]').attr('src', '/Blogs/ProfileData/' + data.data.imageURL);
+                else
+                    $('[name="profile_picture"]').attr('src', 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp');
+
                 $('[name="profile_title"]').html(data.data.usertitle);
                 $('[name="profile_role"]').html(data.data.userrole);
                 $('[name="profile_city"]').html(data.data.usercity);

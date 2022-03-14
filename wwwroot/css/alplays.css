@@ -3,11 +3,16 @@
 }
 
 .btn {
-    padding: 30%;
+    /*padding: 30%;*/
+    margin-left:3%;
 }
 
 .card-img-top {
     height: 15em;
+}
+
+.card-body {
+    height: 279px;
 }
 
 footer {

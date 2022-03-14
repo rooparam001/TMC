@@ -93,8 +93,12 @@ var _giveawayMaster = {
                 if (data.data.objpictures) {
                     arrayOfFiles = data.data.objpictures.split(",");
                     for (i = 0; i < arrayOfFiles.length; i++) {
-                        if (arrayOfFiles[i])
-                            htmlStr += '<img class="img-fluid" src="/Blogs/Sliders/' + arrayOfFiles[i] + '"" />';
+                        if (arrayOfFiles[i]) {
+                            if (arrayOfFiles[i].indexOf('.pdf'))
+                                htmlStr += '<a href="/Blogs/Sliders/' + arrayOfFiles[i] + '" target="_blank""><img class="img-fluid" src="/TMC/Images/blue-circle-document-file.png""/></a>';
+                            else
+                                htmlStr += '<img class="img-fluid" src="/Blogs/Sliders/' + arrayOfFiles[i] + '"" />';
+                        }
                     }
                     $('[name="giveaway_pictures"]').html(htmlStr);
                 }

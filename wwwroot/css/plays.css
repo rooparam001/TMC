@@ -1,9 +1,11 @@
 ﻿.table {
     font-size: 14px;
+    color: #8d97ad;
 }
 
 .lbltitle {
     font-size: 4em;
+    color: #f99b82;
 }
 
 .lbladdedondate {
@@ -12,12 +14,14 @@
 
 .play-details {
     margin-top: 4%;
+    color: #8d97ad;
 }
 
     .play-details h3 {
         margin-bottom: 4%;
         border-left: 4px solid darkorange;
         padding-left: 2%;
+        color: antiquewhite;
     }
 
 .spangenres {
@@ -35,12 +39,14 @@
 
 .play-story {
     margin-top: 4%;
+    color: #8d97ad;
 }
 
     .play-story h3 {
         margin-bottom: 2%;
         border-left: 4px solid darkorange;
         padding-left: 2%;
+        color: antiquewhite;
     }
 
 .play-heading-details {

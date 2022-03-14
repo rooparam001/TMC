@@ -36,7 +36,8 @@ namespace TMC.AppRepository
                             USERUPLOADEDWORK = obj.USERUPLOADEDWORK,
                             PROFILETYPEOF = obj.PROFILETYPEOF,
                             USERGENDER = obj.USERGENDER,
-                            USERAGE = obj.USERAGE
+                            USERAGE = obj.USERAGE,
+                            PROFILEPICTURE = obj.ImageURL
                         };
 
                         //setting user's languages
@@ -122,7 +123,8 @@ namespace TMC.AppRepository
                         USEREMAIL = x.USEREMAIL,
                         USERROLE = new TMCDBContext().fn_GetRoleByID(x.USERROLE),
                         USERTITLE = x.USERTITLE,
-                        PROFILETYPEOF = x.PROFILETYPEOF
+                        PROFILETYPEOF = x.PROFILETYPEOF,
+                        ImageURL = x.PROFILEPICTURE
                     }).ToList();
 
 
@@ -168,7 +170,8 @@ namespace TMC.AppRepository
                     USERPRVWORKEXP = x.USERPRVWORKEXP,
                     USERTITLE = x.USERTITLE,
                     USERUPLOADEDWORK = x.USERUPLOADEDWORK,
-                    PROFILETYPEOF = x.PROFILETYPEOF
+                    PROFILETYPEOF = x.PROFILETYPEOF,
+                    ImageURL = x.PROFILEPICTURE
                 }).FirstOrDefault();
 
                 if (!string.IsNullOrEmpty(resp.USERCITY.Trim()))

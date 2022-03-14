@@ -611,7 +611,7 @@ namespace TMC.Controllers
 
         #region Profile region
         [HttpPost]
-        public async Task<JsonResult> SaveProfile(List<IFormFile> fuDegree, List<IFormFile> fuLetterofRef, List<IFormFile> fuCertificates, List<IFormFile> fuAwardsAchiev, List<IFormFile> fuUploadWork)
+        public async Task<JsonResult> SaveProfile(List<IFormFile> fuDegree, List<IFormFile> fuLetterofRef, List<IFormFile> fuCertificates, List<IFormFile> fuAwardsAchiev, List<IFormFile> fuUploadWork, List<IFormFile> fuProfilePicture)
         {
             var resp = new ajaxResponse();
             try
@@ -629,7 +629,7 @@ namespace TMC.Controllers
                     USERTOTALEXPINYEARS = Request.Form["EXPYRS"],
                     PROFILETYPEOF = Request.Form["PROFILETYPEOF"],
                     USERAGE = (string.IsNullOrEmpty(Request.Form["USERAGE"]) ? 0 : Convert.ToInt32(Request.Form["USERAGE"].ToString())),
-                    USERGENDER = Request.Form["USERGENDER"],
+                    USERGENDER = Request.Form["USERGENDER"]
                 };
 
                 try
@@ -694,6 +694,21 @@ namespace TMC.Controllers
                         inputProfileObj.USERUPLOADEDWORK += filename + ",";
                     }
 
+                    //saving user's profile picture
+                    if (fuProfilePicture != null)
+                    {
+                        if (fuProfilePicture.Count > 0)
+                        {
+                            var currFile = fuProfilePicture[0];
+                            IFormFile source = currFile;
+                            string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
+                            filename = this.EnsureCorrectFilename(filename);
+                            using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "ProfileData")))
+                                await source.CopyToAsync(output);
+
+                            inputProfileObj.ImageURL = filename;
+                        }
+                    }
                     resp = AppProfiles.SaveProfiles(inputProfileObj);
                 }
                 catch (Exception ex)
