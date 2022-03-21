@@ -9,17 +9,22 @@
         _allGiveawayMaster.city = $(this).val();
         _allGiveawayMaster.fnloadData();
     });
+    $(".ddlType").change(function () {
+        _allGiveawayMaster.giveawayType = $(this).val();
+        _allGiveawayMaster.fnloadData();
+    });
 });
 
 _allGiveawayMaster = {
     searchText: '',
     selectedCity: '',
+    giveawayType: 0,
     fnloadData: function () {
         $.ajax({
             url: '/Home/GetAllGiveaways',
             dataType: "json",
             method: 'GET',
-            data: { city: _allGiveawayMaster.city, searchTxt: _allGiveawayMaster.searchText },
+            data: { city: _allGiveawayMaster.city, searchTxt: _allGiveawayMaster.searchText, giveawayType: _allGiveawayMaster.giveawayType },
             success: function (data) {
 
                 var sliderdataTable = $('.dataview');

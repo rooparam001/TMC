@@ -46,7 +46,42 @@ namespace TMC.DBConnections
         public DbSet<TBL_PROFILESMASTER> TBL_PROFILESMASTER { get; set; }
         public DbSet<TBL_GIVEAWAYMASTER> TBL_GIVEAWAYMASTER { get; set; }
         public DbSet<TBL_HOMEPAGESETTINGS> TBL_HOMEPAGESETTINGS { get; set; }
+        public DbSet<TBL_CHATMESSAGEMASTER> TBL_CHATMESSAGEMASTER { get; set; }
+        public DbSet<TBL_CHATGROUPMASTER> TBL_CHATGROUPMASTER { get; set; }
 
+        public bool fn_CheckChatGroupExists(ChatServiceViewModel model)
+        {
+            var respObj = false;
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    respObj = context.TBL_CHATGROUPMASTER.Where(x => (x.HOSTID == model.SenderID && x.PARTYID == model.ReceiverID.ToString()) || (x.HOSTID == model.ReceiverID && x.PARTYID == model.SenderID.ToString())).ToList().Count > 0 ? true : false;
+                }
+            }
+            catch { respObj = false; }
+            return respObj;
+        }
+        public TBL_CHATGROUPMASTER fn_SaveChatGroup(ChatServiceViewModel model)
+        {
+            var respObj = new TBL_CHATGROUPMASTER();
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    respObj = new TBL_CHATGROUPMASTER()
+                    {
+                        DATECREATED = DateTime.Now,
+                        GROUPNAME = string.Concat(model.ReceiverID.ToString() + model.SenderID.ToString()),
+                        HOSTID = model.SenderID,
+                        PARTYID = model.ReceiverID.ToString()
+                    };
+                    context.TBL_CHATGROUPMASTER.Add(respObj);
+                }
+            }
+            catch { respObj = new TBL_CHATGROUPMASTER(); }
+            return respObj;
+        }
 
         public Tbl_RoleMaster fn_SaveRole(string objName)
         {
@@ -617,14 +652,14 @@ namespace TMC.DBConnections
             catch (Exception ex) { obj.ID = 0; }
             return obj;
         }
-        public List<TBL_GIVEAWAYMASTER> fn_getallGiveaways(int ID = 0, int city = 0, string searchTxt = "")
+        public List<TBL_GIVEAWAYMASTER> fn_getallGiveaways(int ID = 0, int city = 0, string searchTxt = "", int isPDF = 0)
         {
             var respObj = new List<TBL_GIVEAWAYMASTER>();
             try
             {
                 using (var context = new TMCDBContext())
                 {
-                    respObj = context.TBL_GIVEAWAYMASTER.Where(x => (ID > 0 ? x.ID == ID : true) && (city == 0 ? true : x.CITY == city) && (string.IsNullOrEmpty(searchTxt) ? true : x.OBJTITLE.Contains(searchTxt)) && x.ISENABLE).ToList();
+                    respObj = context.TBL_GIVEAWAYMASTER.Where(x => (isPDF == 0 ? true : (isPDF == 1 ? x.ISPDF : !x.ISPDF)) && (ID > 0 ? x.ID == ID : true) && (city == 0 ? true : x.CITY == city) && (string.IsNullOrEmpty(searchTxt) ? true : x.OBJTITLE.Contains(searchTxt)) && x.ISENABLE).ToList();
                 }
             }
             catch { respObj = new List<TBL_GIVEAWAYMASTER>(); }

@@ -126,6 +126,7 @@ namespace TMC.Controllers
         public ActionResult ListYourGiveAway() => View();
         [Authorize(Roles = "ADMINISTRATOR")]
         public ActionResult HomePageSettings() => View();
+        public ActionResult message() => View();
 
         #region UpComing Plays region
         [HttpGet]
@@ -847,10 +848,24 @@ namespace TMC.Controllers
             var resp = new ajaxResponse();
             var relationModelObj = new giveawayViewModel();
             var giveawayModelObj = new TBL_GIVEAWAYMASTER();
+            var isPDF = false;
             try
             {
                 resp.data = null;
                 int.TryParse(Request.Form["NUMBER_OF_SHOWS"], out int _noofshows);
+
+                if (thumbnailfiles != null)
+                {
+                    if (thumbnailfiles.Count > 0)
+                    {
+                        foreach (IFormFile currsource in thumbnailfiles)
+                        {
+                            string filename = ContentDispositionHeaderValue.Parse(currsource.ContentDisposition).FileName.Trim('"');
+                            if (filename.Contains(".pdf"))
+                                isPDF = true;
+                        }
+                    }
+                }
 
                 relationModelObj = new giveawayViewModel()
                 {
@@ -859,7 +874,8 @@ namespace TMC.Controllers
                     OBJAVAILABILITY = (string.IsNullOrEmpty(Request.Form["AVAILABILITY"]) ? "" : Request.Form["AVAILABILITY"].ToString()),
                     OBJCONTACTDETAILS = (string.IsNullOrEmpty(Request.Form["CONTACTDETAILS"]) ? "" : Request.Form["CONTACTDETAILS"].ToString()),
                     ISACCEPTED = false,
-                    ISENABLE = true
+                    ISENABLE = true,
+                    isPDF = isPDF
                 };
 
 

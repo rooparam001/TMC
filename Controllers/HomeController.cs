@@ -54,11 +54,11 @@ namespace TMC.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetAllGiveaways(int ID = 0, int city = 0, string searchTxt = "")
+        public JsonResult GetAllGiveaways(int ID = 0, int city = 0, string searchTxt = "", int giveawayType = 0)
         {
             var resp = new ajaxResponse()
             {
-                data = GiveAways.getAll(ID, city, searchTxt),
+                data = GiveAways.getAll(ID, city, searchTxt, giveawayType),
                 respstatus = ResponseStatus.success
             };
             return Json(resp);

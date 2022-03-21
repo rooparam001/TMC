@@ -23,7 +23,8 @@ namespace TMC.AppRepository
                     OBJAVAILABILITY = obj.OBJAVAILABILITY.Trim(),
                     OBJCONTACTDETAILS = obj.OBJCONTACTDETAILS.Trim(),
                     OBJTITLE = obj.OBJTITLE.Trim(),
-                    ID = obj.ID
+                    ID = obj.ID,
+                    ISPDF = obj.isPDF
                 });
             }
 
@@ -50,12 +51,12 @@ namespace TMC.AppRepository
             return respObj;
         }
 
-        public static List<giveawayViewModel> getAll(int ID = 0, int city = 0, string searchTxt = "")
+        public static List<giveawayViewModel> getAll(int ID = 0, int city = 0, string searchTxt = "", int isPDF = 0)
         {
             var respObj = new List<giveawayViewModel>();
             try
             {
-                respObj = new TMCDBContext().fn_getallGiveaways(ID, city, searchTxt).Select(x => new giveawayViewModel()
+                respObj = new TMCDBContext().fn_getallGiveaways(ID, city, searchTxt, isPDF).Select(x => new giveawayViewModel()
                 {
                     CITY = new TMCDBContext().fn_GetSingleCityByID(x.CITY).CITY,
                     DATECREATED = x.DATECREATED.ToString("dddd, dd MMMM yyyy"),
