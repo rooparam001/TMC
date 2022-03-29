@@ -22,7 +22,7 @@ _allPlaysMaster = {
                 }
                 var colcount = 3; var rowcount = 0; var innerhtml = '';
                 $(data.data).each(function (index, relationModelObj) {
-                    debugger;
+                    
                     if (colcount == 3) {
                         if (rowcount == 0)
                             innerhtml += '<div class="carousel-item active"><div class="row">';

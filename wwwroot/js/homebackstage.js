@@ -48,7 +48,8 @@ var _profileMaster = {
                         '<div class="card-body"><p class="card-text">' + relationModelObj.usertitle + '</p><p style="display:none;" alt-id=' + relationModelObj.id + '>' + relationModelObj.userrole + '</p>' +
                         '<div class="d-flex justify-content-between align-items-center">' +
                         '<button type="button" class="btn btn-sm btn-outline-primary" onclick="_profileMaster.fnViewProfile_ID(' + relationModelObj.id + ')">'
-                        + '<i class="fas fa-eye"></i> View</button></div></div></div></div>');
+                        + '<i class="fas fa-eye"></i> View</button><button type="button" onclick="chatService.fnloadnewgroup(' + relationModelObj.accountID + ')" class="btn btn-sm btn-outline-warning">'
+                        + '<i class="far fa-comments"></i> Contact</button></div></div></div></div>');
                 });
 
             },

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -120,12 +121,12 @@ namespace TMC.Controllers
         public ActionResult Tickets() => View();
         [Authorize]
         public ActionResult ListYourPlay() => View();
-        [Authorize]
         public ActionResult ListYourProfile() => View();
         [Authorize]
         public ActionResult ListYourGiveAway() => View();
         [Authorize(Roles = "ADMINISTRATOR")]
         public ActionResult HomePageSettings() => View();
+        [Authorize]
         public ActionResult message() => View();
 
         #region UpComing Plays region
@@ -633,84 +634,111 @@ namespace TMC.Controllers
                     USERGENDER = Request.Form["USERGENDER"]
                 };
 
+                var outputModelData = new registerloginUserViewModel()
+                {
+                    ContactNumber = Request.Form["CONTACTNUMBER"],
+                    Email = Request.Form["EMAILID"],
+                    Password = Request.Form["PASSWORD"],
+                    UserName = Request.Form["FULLNAME"],
+                    userrole = inputProfileObj.USERROLE
+                };
+
+
                 try
                 {
-                    //saving user's degree(s)
-                    foreach (var currFile in fuDegree)
+                    //adding new account based on the information
+                    outputModelData = AppUsers.Save(outputModelData);
+
+                    if (!outputModelData.UserStatus)
                     {
-                        IFormFile source = currFile;
-                        string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
-                        filename = this.EnsureCorrectFilename(filename);
-                        using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "ProfileData")))
-                            await source.CopyToAsync(output);
-
-                        inputProfileObj.USERDEGREEURL += filename + ",";
-                    }
-
-                    //saving user's letter(s) of reference
-                    foreach (var currFile in fuLetterofRef)
-                    {
-                        IFormFile source = currFile;
-                        string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
-                        filename = this.EnsureCorrectFilename(filename);
-                        using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "ProfileData")))
-                            await source.CopyToAsync(output);
-
-                        inputProfileObj.USERLETTEROFREF += filename + ",";
-                    }
-
-                    //saving user's letter(s) of reference
-                    foreach (var currFile in fuCertificates)
-                    {
-                        IFormFile source = currFile;
-                        string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
-                        filename = this.EnsureCorrectFilename(filename);
-                        using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "ProfileData")))
-                            await source.CopyToAsync(output);
-
-                        inputProfileObj.USERCERTIFICATES += filename + ",";
-                    }
-
-                    //saving user's letter(s) of reference
-                    foreach (var currFile in fuAwardsAchiev)
-                    {
-                        IFormFile source = currFile;
-                        string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
-                        filename = this.EnsureCorrectFilename(filename);
-                        using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "ProfileData")))
-                            await source.CopyToAsync(output);
-
-                        inputProfileObj.USERAWARDS += filename + ",";
-                    }
-
-                    //saving user's letter(s) of reference
-                    foreach (var currFile in fuUploadWork)
-                    {
-                        IFormFile source = currFile;
-                        string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
-                        filename = this.EnsureCorrectFilename(filename);
-                        using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "ProfileData")))
-                            await source.CopyToAsync(output);
-
-                        inputProfileObj.USERUPLOADEDWORK += filename + ",";
-                    }
-
-                    //saving user's profile picture
-                    if (fuProfilePicture != null)
-                    {
-                        if (fuProfilePicture.Count > 0)
+                        resp = new ajaxResponse()
                         {
-                            var currFile = fuProfilePicture[0];
+                            data = null,
+                            respmessage = outputModelData.validationMessage,
+                            respstatus = ResponseStatus.error
+                        };
+                    }
+                    else
+                    {
+                        //saving user's degree(s)
+                        foreach (var currFile in fuDegree)
+                        {
                             IFormFile source = currFile;
                             string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
                             filename = this.EnsureCorrectFilename(filename);
                             using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "ProfileData")))
                                 await source.CopyToAsync(output);
 
-                            inputProfileObj.ImageURL = filename;
+                            inputProfileObj.USERDEGREEURL += filename + ",";
                         }
+
+                        //saving user's letter(s) of reference
+                        foreach (var currFile in fuLetterofRef)
+                        {
+                            IFormFile source = currFile;
+                            string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
+                            filename = this.EnsureCorrectFilename(filename);
+                            using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "ProfileData")))
+                                await source.CopyToAsync(output);
+
+                            inputProfileObj.USERLETTEROFREF += filename + ",";
+                        }
+
+                        //saving user's letter(s) of reference
+                        foreach (var currFile in fuCertificates)
+                        {
+                            IFormFile source = currFile;
+                            string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
+                            filename = this.EnsureCorrectFilename(filename);
+                            using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "ProfileData")))
+                                await source.CopyToAsync(output);
+
+                            inputProfileObj.USERCERTIFICATES += filename + ",";
+                        }
+
+                        //saving user's letter(s) of reference
+                        foreach (var currFile in fuAwardsAchiev)
+                        {
+                            IFormFile source = currFile;
+                            string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
+                            filename = this.EnsureCorrectFilename(filename);
+                            using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "ProfileData")))
+                                await source.CopyToAsync(output);
+
+                            inputProfileObj.USERAWARDS += filename + ",";
+                        }
+
+                        //saving user's letter(s) of reference
+                        foreach (var currFile in fuUploadWork)
+                        {
+                            IFormFile source = currFile;
+                            string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
+                            filename = this.EnsureCorrectFilename(filename);
+                            using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "ProfileData")))
+                                await source.CopyToAsync(output);
+
+                            inputProfileObj.USERUPLOADEDWORK += filename + ",";
+                        }
+
+                        //saving user's profile picture
+                        if (fuProfilePicture != null)
+                        {
+                            if (fuProfilePicture.Count > 0)
+                            {
+                                var currFile = fuProfilePicture[0];
+                                IFormFile source = currFile;
+                                string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
+                                filename = this.EnsureCorrectFilename(filename);
+                                using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "ProfileData")))
+                                    await source.CopyToAsync(output);
+
+                                inputProfileObj.ImageURL = filename;
+                            }
+                        }
+                        resp = AppProfiles.SaveProfiles(inputProfileObj);
                     }
-                    resp = AppProfiles.SaveProfiles(inputProfileObj);
+
+
                 }
                 catch (Exception ex)
                 {
@@ -1106,6 +1134,104 @@ namespace TMC.Controllers
         }
         #endregion
 
+        #region Chat region
+
+        [HttpGet]
+        public JsonResult LoadNewGroup(int userID)
+        {
+            var resp = new ajaxResponse()
+            {
+                data = ChatService.SaveGroup(new ChatServiceMessageListModel()
+                {
+                    SenderID = _getuserLoggedinID(),
+                    UserID = userID
+                }),
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
+        }
+
+        [HttpGet]
+        public JsonResult GetAllChat(int groupID)
+        {
+            var resp = new ajaxResponse()
+            {
+                data = ChatService.GetGroupChat(groupID, _getuserLoggedinID()),
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
+        }
+
+        [HttpGet]
+        public JsonResult GetAllContactList()
+        {
+            var resp = new ajaxResponse()
+            {
+                data = ChatService.GetAll(_getuserLoggedinID()),
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
+        }
+
+        [HttpPost]
+        public JsonResult SaveChat()
+        {
+            var resp = new ajaxResponse();
+            var relationModelObj = new ChatServiceMessageListModel();
+            try
+            {
+                resp.data = null;
+
+                relationModelObj = new ChatServiceMessageListModel()
+                {
+                    ChatMessage = Request.Form["ChatMessage"],
+                    GroupID = Convert.ToInt32(Request.Form["GroupID"]),
+                    SenderID = _getuserLoggedinID(),
+                    UserID = 0
+                };
+
+                try
+                {
+                    if (ChatService.SaveChat(relationModelObj))
+                        resp = new ajaxResponse()
+                        {
+                            data = null,
+                            respmessage = "",
+                            respstatus = ResponseStatus.success
+                        };
+                    else
+                        resp = new ajaxResponse()
+                        {
+                            data = null,
+                            respmessage = "Message could not be sent.",
+                            respstatus = ResponseStatus.error
+                        };
+                }
+                catch (Exception ex)
+                {
+                    resp = new ajaxResponse()
+                    {
+                        data = null,
+                        respmessage = ex.Message.ToString(),
+                        respstatus = ResponseStatus.error
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                resp = new ajaxResponse()
+                {
+                    data = null,
+                    respmessage = ex.Message.ToString(),
+                    respstatus = ResponseStatus.error
+                };
+
+            }
+
+            return Json(resp);
+        }
+        #endregion
+
         private string EnsureCorrectFilename(string filename)
         {
             if (filename.Contains("\\"))
@@ -1154,6 +1280,13 @@ namespace TMC.Controllers
         {
             await HttpContext.SignOutAsync();
             return RedirectToAction(nameof(Verify));
+        }
+
+        public int _getuserLoggedinID()
+        {
+            var userID = 0;
+            int.TryParse(User.FindFirst("UserID").Value, out userID);
+            return userID;
         }
     }
 }

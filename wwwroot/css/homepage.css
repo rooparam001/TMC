@@ -76,6 +76,10 @@
     color: darkgrey;
 }
 
+#carouselExampleIndicators3 .card-body {
+    height: 30vh;
+}
+
 .card-img i {
     color: white;
     padding: 0.5em;
@@ -157,6 +161,7 @@
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
 }
+
 h3 {
     color: antiquewhite;
 }

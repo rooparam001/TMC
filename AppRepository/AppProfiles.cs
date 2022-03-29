@@ -71,7 +71,7 @@ namespace TMC.AppRepository
                             profileObj.USERROLE = new TMCDBContext().fn_SaveRole(obj.USERROLE).ID;
                         }
                         //checking if profile already exists
-                        if (!new TMCDBContext().fn_ProfileVerifyifExists(profileObj))
+                        //if (!new TMCDBContext().fn_ProfileVerifyifExists(profileObj))
                         {
                             //saving the final response
                             if (new TMCDBContext().fn_SaveProfiles(profileObj))
@@ -80,11 +80,11 @@ namespace TMC.AppRepository
                                 resp.respstatus = ResponseStatus.success;
                             }
                         }
-                        else
+                        /*else
                         {
                             resp.respmessage = "Profile already exists";
                             resp.respstatus = ResponseStatus.success;
-                        }
+                        }*/
                     }
             }
             catch
@@ -124,7 +124,8 @@ namespace TMC.AppRepository
                         USERROLE = new TMCDBContext().fn_GetRoleByID(x.USERROLE),
                         USERTITLE = x.USERTITLE,
                         PROFILETYPEOF = x.PROFILETYPEOF,
-                        ImageURL = x.PROFILEPICTURE
+                        ImageURL = x.PROFILEPICTURE,
+                        AccountID = new TMCDBContext().fn_GetUserByEmail(x.USEREMAIL).ID
                     }).ToList();
 
 

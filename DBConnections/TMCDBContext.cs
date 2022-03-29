@@ -16,6 +16,11 @@ namespace TMC.DBConnections
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<ChatServiceContactModel>(
+            eb =>
+            {
+                eb.HasNoKey();
+            });
             base.OnModelCreating(builder);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -48,38 +53,123 @@ namespace TMC.DBConnections
         public DbSet<TBL_HOMEPAGESETTINGS> TBL_HOMEPAGESETTINGS { get; set; }
         public DbSet<TBL_CHATMESSAGEMASTER> TBL_CHATMESSAGEMASTER { get; set; }
         public DbSet<TBL_CHATGROUPMASTER> TBL_CHATGROUPMASTER { get; set; }
+        public DbSet<ChatServiceContactModel> ChatServiceContactModel { get; set; }
 
-        public bool fn_CheckChatGroupExists(ChatServiceViewModel model)
-        {
-            var respObj = false;
-            try
-            {
-                using (var context = new TMCDBContext())
-                {
-                    respObj = context.TBL_CHATGROUPMASTER.Where(x => (x.HOSTID == model.SenderID && x.PARTYID == model.ReceiverID.ToString()) || (x.HOSTID == model.ReceiverID && x.PARTYID == model.SenderID.ToString())).ToList().Count > 0 ? true : false;
-                }
-            }
-            catch { respObj = false; }
-            return respObj;
-        }
-        public TBL_CHATGROUPMASTER fn_SaveChatGroup(ChatServiceViewModel model)
+        public TBL_CHATGROUPMASTER fn_CheckChatGroupExists(int partyID1, int partyID2)
         {
             var respObj = new TBL_CHATGROUPMASTER();
             try
             {
                 using (var context = new TMCDBContext())
                 {
-                    respObj = new TBL_CHATGROUPMASTER()
-                    {
-                        DATECREATED = DateTime.Now,
-                        GROUPNAME = string.Concat(model.ReceiverID.ToString() + model.SenderID.ToString()),
-                        HOSTID = model.SenderID,
-                        PARTYID = model.ReceiverID.ToString()
-                    };
-                    context.TBL_CHATGROUPMASTER.Add(respObj);
+                    respObj = context.TBL_CHATGROUPMASTER.Where(x => (x.HOSTID == partyID1 && x.PARTYID == partyID2) || (x.HOSTID == partyID2 && x.PARTYID == partyID1)).FirstOrDefault();
                 }
             }
             catch { respObj = new TBL_CHATGROUPMASTER(); }
+            return respObj;
+        }
+
+        public TBL_CHATGROUPMASTER fn_SaveChatGroup(TBL_CHATGROUPMASTER obj)
+        {
+            try
+            {
+                var obj1 = fn_CheckChatGroupExists(partyID1: obj.HOSTID, partyID2: obj.PARTYID);
+                if (obj1 != null)
+                {
+                    if (obj1.ID > 0)
+                    {
+                        return obj1;
+                    }
+                }
+                using (var context = new TMCDBContext())
+                {
+                    context.TBL_CHATGROUPMASTER.Add(obj);
+                    context.SaveChanges();
+                }
+            }
+            catch { obj = new TBL_CHATGROUPMASTER(); }
+            return obj;
+        }
+        public bool fn_SaveChat(TBL_CHATMESSAGEMASTER obj)
+        {
+            var respObj = false;
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    context.TBL_CHATMESSAGEMASTER.Add(obj);
+                    context.SaveChanges();
+                }
+            }
+            catch { respObj = false; }
+            return respObj;
+        }
+
+        public List<ChatServiceContactModel> fn_GetAllChatContactsByUserID(int ID)
+        {
+            var respObj = new List<ChatServiceContactModel>();
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    respObj = context.ChatServiceContactModel.FromSqlRaw<ChatServiceContactModel>("EXEC USP_GETCHATLIST_HOMEPAGE @USERID=" + ID).ToList();
+                    /*var chatcontactlist = context.TBL_CHATGROUPMASTER.Where(x => x.HOSTID == ID || x.PARTYID == ID.ToString()).ToList();
+                    if (chatcontactlist != null)
+                    {
+                        if (chatcontactlist.Count > 0)
+                        {
+                            objList = (List<ChatServiceContactModel>)(from main in chatcontactlist
+                                                                      join temp in context.TBL_PROFILESMASTER.Where(x => x.ISENABLE)
+                                                                      on main.HOSTID equals temp.ID
+                                                                      select new ChatServiceContactModel()
+                                                                      {
+                                                                          ContactID = temp.ID,
+                                                                          ContactName = temp.USERTITLE,
+                                                                          ContactPic = temp.PROFILEPICTURE,
+                                                                          GroupID = main.ID,
+                                                                          LastDateTime = context.TBL_CHATMESSAGEMASTER.Where(x => x.CHATMASTERID == main.ID).OrderByDescending(x => x.DATECREATED).Select(y => y.DATECREATED.ToString("dddd, dd MMMM yyyy")).FirstOrDefault()
+                                                                      });
+
+                            objList.AddRange(from main in chatcontactlist
+                                             join temp in context.TBL_PROFILESMASTER.Where(x => x.ISENABLE)
+                                             on main.PARTYID equals temp.ID.ToString()
+                                             select new ChatServiceContactModel()
+                                             {
+                                                 ContactID = temp.ID,
+                                                 ContactName = temp.USERTITLE,
+                                                 ContactPic = temp.PROFILEPICTURE,
+                                                 GroupID = main.ID,
+                                                 LastDateTime = context.TBL_CHATMESSAGEMASTER.Where(x => x.CHATMASTERID == main.ID).OrderByDescending(x => x.DATECREATED).Select(y => y.DATECREATED.ToString("dddd, dd MMMM yyyy")).FirstOrDefault()
+                                             });
+
+                            respObj = objList.Distinct().ToList();
+                        }
+                    }*/
+
+                }
+            }
+            catch (Exception ex) { respObj = new List<ChatServiceContactModel>(); }
+            return respObj;
+        }
+
+        public List<ChatServiceMessageListModel> fn_GetAllChatByGroupID(int GroupID, int HostID)
+        {
+            var respObj = new List<ChatServiceMessageListModel>();
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    respObj = context.TBL_CHATMESSAGEMASTER.Where(x => x.CHATMASTERID == GroupID).Select(y => new ChatServiceMessageListModel()
+                    {
+                        GroupID = GroupID,
+                        SenderID = y.SENDERID,
+                        ChatMessage = y.CHATMESSAGE,
+                        isSenderSelfAccount = (y.SENDERID == HostID ? true : false),
+                        DateCreated = y.DATECREATED.ToString("HH:mm")
+                    }).ToList();
+                }
+            }
+            catch { respObj = new List<ChatServiceMessageListModel>(); }
             return respObj;
         }
 
@@ -160,7 +250,7 @@ namespace TMC.DBConnections
                 ContactNumber = obj.ContactNumber,
                 DateCreated = DateTime.Now,
                 Email = obj.Email.Trim(),
-                RoleID = this.fn_SaveRole("Viewer").ID,
+                RoleID = (string.IsNullOrEmpty(obj.userrole) ? this.fn_SaveRole("Viewer").ID : this.fn_SaveRole(obj.userrole).ID),
                 UserName = obj.UserName.Trim(),
                 UserPassword = obj.Password.Trim(),
                 UserStatus = true
@@ -222,6 +312,8 @@ namespace TMC.DBConnections
             try
             {
                 respObj = this.Tbl_AccountMaster.Where(x => x.Email == Email).FirstOrDefault();
+                if (respObj == null)
+                    respObj = new Tbl_AccountMaster();
             }
             catch (Exception ex) { respObj = new Tbl_AccountMaster(); }
             return respObj;

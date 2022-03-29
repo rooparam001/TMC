@@ -8,5 +8,6 @@
         public string Password { get; set; }
         public bool UserStatus { get; set; }
         public string validationMessage { get; set; }
+        public string userrole { get; set; }
     }
 }

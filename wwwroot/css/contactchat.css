@@ -1,4 +1,9 @@
-﻿.chat-container, .users-container {
+﻿.chatContainerScroll {
+    height: 50vh;
+    overflow-y: auto;
+}
+
+.chat-container, .users-container {
     max-height: 70vh;
     overflow-y: auto;
 }
@@ -159,6 +164,7 @@
         .users .person p.name-time {
             font-weight: 600;
             font-size: .85rem;
+            vertical-align: text-top;
             display: inline-block;
         }
 

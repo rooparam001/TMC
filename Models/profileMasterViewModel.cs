@@ -39,5 +39,6 @@ namespace TMC.Models
         public int USERAGE { get; set; }
         public string USERGENDER { get; set; }
         public string ImageURL { get; set; }
+        public int AccountID { get; set; }
     }
 }
