@@ -4,11 +4,15 @@
 
 .btn {
     /*padding: 30%;*/
-    margin-left:3%;
+    margin-left: 3%;
 }
 
 .card-img-top {
     height: 15em;
+}
+
+.card-text {
+    height: 200px;
 }
 
 .card-body {

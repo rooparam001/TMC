@@ -22,7 +22,7 @@ _allPlaysMaster = {
                 }
                 var colcount = 3; var rowcount = 0; var innerhtml = '';
                 $(data.data).each(function (index, relationModelObj) {
-                    
+
                     if (colcount == 3) {
                         if (rowcount == 0)
                             innerhtml += '<div class="carousel-item active"><div class="row">';
@@ -30,8 +30,12 @@ _allPlaysMaster = {
                             innerhtml += '<div class="carousel-item"><div class="row">';
                     }
 
-                    innerhtml += ('<div class="col-md-4 mb-3"><div class="card"><img class="img-fluid" ' +
-                        'src="/Blogs/Plays/' + relationModelObj.thumbnailUrl + '"><div class="card-body"><a href="/home/plays?objToken=' + relationModelObj.tokenID + '"><h4 class="card-title">' + relationModelObj.title + '</h4>' +
+                    //innerhtml += ('<div class="col-md-4 mb-3"><div class="card"><img class="img-fluid" ' +
+                    //    'src="/Blogs/Plays/' + relationModelObj.thumbnailUrl + '"><div class="card-body"><a href="/home/plays?objToken=' + relationModelObj.tokenID + '"><h4 class="card-title">' + relationModelObj.title + '</h4>' +
+                    //    '</a><p class="card-text">' + relationModelObj.about + '</p></div></div></div>');
+
+                    innerhtml += ('<div class="col-md-4 mb-3"><div class="card">' +
+                        '<div class="background-image-contain" style="background-image: url(\'../../Blogs/Plays/' + relationModelObj.thumbnailUrl + '\')"></div><div class="card-body"><a href="/home/plays?objToken=' + relationModelObj.tokenID + '"><h4 class="card-title">' + relationModelObj.title + '</h4>' +
                         '</a><p class="card-text">' + relationModelObj.about + '</p></div></div></div>');
 
                     colcount--;
