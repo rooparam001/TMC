@@ -68,13 +68,13 @@ namespace TMC.AppRepository
             return respObj;
         }
 
-        public static List<ChatServiceMessageListModel> GetGroupChat(int GroupID, int UserID)
+        public static List<ChatServiceMessageListModel> GetGroupChat(int GroupID, int UserID, int LastMsgID = 0)
         {
             var _db = new TMCDBContext();
             var respObj = new List<ChatServiceMessageListModel>();
             try
             {
-                respObj = _db.fn_GetAllChatByGroupID(GroupID, UserID);
+                respObj = _db.fn_GetAllChatByGroupID(GroupID, UserID, LastMsgID);
             }
             catch { }
             return respObj;

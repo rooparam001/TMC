@@ -3,6 +3,7 @@
     userPic: '',
     groupHostObj: '',
     contactArr: [],
+    LastMsgID: 0,
     fnloadContactData: function () {
         $.ajax({
             url: '/Account/GetAllContactList',
@@ -40,32 +41,40 @@
         });
     },
     fnloadChatData: function () {
-
+        const messagesDiv = document.getElementsByClassName('chatContainerScroll');
         $.ajax({
             url: '/Account/GetAllChat',
             dataType: "json",
-            data: { 'groupID': chatService.groupID },
+            data: { 'groupID': chatService.groupID, 'LastMsgID': chatService.LastMsgID },
             method: 'GET',
             success: function (data) {
-                var playdataTable = $('.chatContainerScroll');
-                playdataTable.empty();
-                var groupPartyObj = chatService.fnfinditemFromContactList(chatService.contactArr, 'groupID', chatService.groupID);
-                $('.name').html(groupPartyObj[0].contactName);
-                $(data.data).each(function (index, relationModelObj) {
-                    if (relationModelObj.isSenderSelfAccount) {
-                        var ppic = (chatService.groupHostObj.contactPic ? '/Blogs/ProfileData/' + relationModelObj.contactPic : 'https://www.bootdey.com/img/Content/avatar/avatar3.png');
-                        playdataTable.append('<li class="chat-right"><div class="chat-hour">' + relationModelObj.dateCreated + '</div><div class="chat-text">' + relationModelObj.chatMessage + '</div>' +
-                            '<div class="chat-avatar"><img src="' + ppic + '" alt="Retail Admin">' +
-                            '<div class="chat-name">' + chatService.groupHostObj.contactName + '</div></div></li>');
-                    }
-                    else {
-                        var ppic = (groupPartyObj[0].contactPic ? '/Blogs/ProfileData/' + groupPartyObj[0].contactPic : 'https://www.bootdey.com/img/Content/avatar/avatar3.png');
-                        playdataTable.append('<li class="chat-left"><div class="chat-avatar"><img src="' + ppic + '">' +
-                            '<div class="chat-name">' + groupPartyObj[0].contactName + '</div></div><div class="chat-text">' + relationModelObj.chatMessage + '</div>' +
-                            ' <div class="chat-hour">' + relationModelObj.dateCreated + '</div></li>');
-                    }
-                });
+                if (data.data.length > 0) {
+                    var playdataTable = $('.chatContainerScroll');
+                    if (chatService.LastMsgID == 0)
+                        playdataTable.empty();
 
+                    var groupPartyObj = chatService.fnfinditemFromContactList(chatService.contactArr, 'groupID', chatService.groupID);
+                    $('.name').html(groupPartyObj[0].contactName);
+                    $(data.data).each(function (index, relationModelObj) {
+
+                        if (relationModelObj.isSenderSelfAccount) {
+                            var ppic = (chatService.groupHostObj.contactPic ? '/Blogs/ProfileData/' + chatService.groupHostObj.contactPic : 'https://www.bootdey.com/img/Content/avatar/avatar3.png');
+                            playdataTable.append('<li class="chat-right"><div class="chat-hour">' + relationModelObj.dateCreated + '</div><div class="chat-text">' + relationModelObj.chatMessage + '</div>' +
+                                '<div class="chat-avatar"><img src="' + ppic + '" alt="Retail Admin">' +
+                                '<div class="chat-name">' + chatService.groupHostObj.contactName + '</div></div></li>');
+                        }
+                        else {
+                            var ppic = (groupPartyObj[0].contactPic ? '/Blogs/ProfileData/' + groupPartyObj[0].contactPic : 'https://www.bootdey.com/img/Content/avatar/avatar3.png');
+                            playdataTable.append('<li class="chat-left"><div class="chat-avatar"><img src="' + ppic + '">' +
+                                '<div class="chat-name">' + groupPartyObj[0].contactName + '</div></div><div class="chat-text">' + relationModelObj.chatMessage + '</div>' +
+                                ' <div class="chat-hour">' + relationModelObj.dateCreated + '</div></li>');
+                        }
+
+                        chatService.LastMsgID = relationModelObj.msgID;
+                    });
+
+                    messagesDiv[0].scrollTop = messagesDiv[0].scrollHeight;
+                }
             },
             error: function (err) {
                 alert(err.statusText);
@@ -73,6 +82,7 @@
         });
     },
     fnfinditemFromContactList: function (obj, key, val) {
+
         var objects = [];
         for (var i in obj) {
             if (!obj.hasOwnProperty(i)) continue;

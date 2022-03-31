@@ -152,20 +152,21 @@ namespace TMC.DBConnections
             return respObj;
         }
 
-        public List<ChatServiceMessageListModel> fn_GetAllChatByGroupID(int GroupID, int HostID)
+        public List<ChatServiceMessageListModel> fn_GetAllChatByGroupID(int GroupID, int HostID, int LastMsgID = 0)
         {
             var respObj = new List<ChatServiceMessageListModel>();
             try
             {
                 using (var context = new TMCDBContext())
                 {
-                    respObj = context.TBL_CHATMESSAGEMASTER.Where(x => x.CHATMASTERID == GroupID).Select(y => new ChatServiceMessageListModel()
+                    respObj = context.TBL_CHATMESSAGEMASTER.Where(x => x.CHATMASTERID == GroupID && (LastMsgID == 0 ? true : x.ID > LastMsgID)).Select(y => new ChatServiceMessageListModel()
                     {
                         GroupID = GroupID,
                         SenderID = y.SENDERID,
                         ChatMessage = y.CHATMESSAGE,
                         isSenderSelfAccount = (y.SENDERID == HostID ? true : false),
-                        DateCreated = y.DATECREATED.ToString("HH:mm")
+                        DateCreated = y.DATECREATED.ToString("HH:mm"),
+                        MsgID = y.ID
                     }).ToList();
                 }
             }

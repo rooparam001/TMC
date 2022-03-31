@@ -49,6 +49,24 @@
 
         return resp;
     };
+
+    function fnValidatefileSize(objSize, objType) {
+        debugger;
+        var twoMB = 2048;
+        switch (objType) {
+            case 'pdf': {
+                if (Math.round((objSize / 1024)) > twoMB)
+                    return false;
+                break;
+            }
+            case 'image': {
+                if (Math.round((objSize / 1024)) > twoMB)
+                    return false;
+                break;
+            }
+        }
+        return true;
+    }
 });
 
 // Read a page's GET URL variables and return them as an associative array.

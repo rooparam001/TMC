@@ -33,7 +33,8 @@
                 alert("FormData is not supported.");
             }
         });
-        setTimeout(function () {
+        
+        window.setInterval(function () {
             chatService.fnloadContactData();
         }, 2000);
     });

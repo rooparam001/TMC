@@ -37,7 +37,8 @@ namespace TMC.AppRepository
                             PROFILETYPEOF = obj.PROFILETYPEOF,
                             USERGENDER = obj.USERGENDER,
                             USERAGE = obj.USERAGE,
-                            PROFILEPICTURE = obj.ImageURL
+                            PROFILEPICTURE = obj.ImageURL,
+                            ACCOUNTID=obj.AccountID
                         };
 
                         //setting user's languages

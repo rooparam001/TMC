@@ -660,6 +660,9 @@ namespace TMC.Controllers
                     }
                     else
                     {
+
+                        inputProfileObj.AccountID = AppUsers.fn_GetUserByEmail(outputModelData.Email).ID;
+
                         //saving user's degree(s)
                         foreach (var currFile in fuDegree)
                         {
@@ -1152,11 +1155,11 @@ namespace TMC.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetAllChat(int groupID)
+        public JsonResult GetAllChat(int groupID, int LastMsgID = 0)
         {
             var resp = new ajaxResponse()
             {
-                data = ChatService.GetGroupChat(groupID, _getuserLoggedinID()),
+                data = ChatService.GetGroupChat(groupID, _getuserLoggedinID(), LastMsgID),
                 respstatus = ResponseStatus.success
             };
             return Json(resp);
