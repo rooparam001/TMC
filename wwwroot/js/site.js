@@ -5,7 +5,25 @@
         return new bootstrap.Tooltip(tooltipTriggerEl)
     });
 
-    /*// Install input filters.
+    // Restricts input for each element in the set of matched elements to the given inputFilter.
+    (function ($) {
+        $.fn.inputFilter = function (inputFilter) {
+            return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function () {
+                if (inputFilter(this.value)) {
+                    this.oldValue = this.value;
+                    this.oldSelectionStart = this.selectionStart;
+                    this.oldSelectionEnd = this.selectionEnd;
+                } else if (this.hasOwnProperty("oldValue")) {
+                    this.value = this.oldValue;
+                    this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+                } else {
+                    this.value = "";
+                }
+            });
+        };
+    }(jQuery));
+
+    // Install input filters.
     $(".for-int").inputFilter(function (value) {
         return /^-?\d*$/.test(value);
     });
@@ -23,7 +41,7 @@
     });
     $(".for-atoz").inputFilter(function (value) {
         return /^[a-z]*$/i.test(value);
-    });*/
+    });
 
     function fnValidateFormForNull() {
         var resp = true;
@@ -51,7 +69,7 @@
     };
 
     function fnValidatefileSize(objSize, objType) {
-        debugger;
+        
         var twoMB = 2048;
         switch (objType) {
             case 'pdf': {

@@ -54,6 +54,8 @@ namespace TMC.DBConnections
         public DbSet<TBL_CHATMESSAGEMASTER> TBL_CHATMESSAGEMASTER { get; set; }
         public DbSet<TBL_CHATGROUPMASTER> TBL_CHATGROUPMASTER { get; set; }
         public DbSet<ChatServiceContactModel> ChatServiceContactModel { get; set; }
+        public DbSet<TBL_DONATIONMASTER> TBL_DONATIONMASTER { get; set; }
+        public DbSet<TBL_ORDERGENERATORMASTER> TBL_ORDERGENERATORMASTER { get; set; }
 
         public TBL_CHATGROUPMASTER fn_CheckChatGroupExists(int partyID1, int partyID2)
         {
@@ -88,6 +90,50 @@ namespace TMC.DBConnections
                 }
             }
             catch { obj = new TBL_CHATGROUPMASTER(); }
+            return obj;
+        }
+
+        public bool fn_SaveOrder_Razorpay(TBL_ORDERGENERATORMASTER obj)
+        {
+            var respObj = false;
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    if (obj.ID == 0)
+                    {
+                        context.TBL_ORDERGENERATORMASTER.Add(obj);
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        context.TBL_ORDERGENERATORMASTER.Update(obj);
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch { respObj = false; }
+            return respObj;
+        }
+        public int fn_GetLastOrderID()
+        {
+            var resp = 0;
+            using (var context = new TMCDBContext())
+            {
+                context.SaveChanges();
+                if (context.TBL_ORDERGENERATORMASTER.Count() > 0)
+                    resp = context.TBL_ORDERGENERATORMASTER.Max(x => x.ID);
+                else
+                    resp = 010;
+            }
+            return resp;
+        }
+        public TBL_ORDERGENERATORMASTER fn_GetOrderbyOrderID(TBL_ORDERGENERATORMASTER obj)
+        {
+            using (var context = new TMCDBContext())
+            {
+                obj = context.TBL_ORDERGENERATORMASTER.Where(x => x.ORDERID == obj.ORDERID).FirstOrDefault();
+            }
             return obj;
         }
         public bool fn_SaveChat(TBL_CHATMESSAGEMASTER obj)
@@ -408,6 +454,23 @@ namespace TMC.DBConnections
                         context.TBL_PLAYSMASTER.Add(obj);
                     else
                         context.TBL_PLAYSMASTER.Update(obj);
+
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex) { }
+            return obj;
+        }
+        public TBL_DONATIONMASTER fn_SaveDonation(TBL_DONATIONMASTER obj)
+        {
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    if (obj.ID == 0)
+                        context.TBL_DONATIONMASTER.Add(obj);
+                    else
+                        context.TBL_DONATIONMASTER.Update(obj);
 
                     context.SaveChanges();
                 }

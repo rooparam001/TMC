@@ -1,7 +1,9 @@
 ﻿using EntitesInterfaces.AppModels;
 using EntitesInterfaces.DBEntities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -14,10 +16,12 @@ namespace TMC.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IConfiguration _config;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IConfiguration config)
         {
             _logger = logger;
+            _config = config;
         }
 
         public IActionResult Index()
@@ -30,6 +34,7 @@ namespace TMC.Controllers
         public IActionResult AllDirectors() => View();
         public IActionResult Giveaway() => View();
         public IActionResult Backstage() => View();
+        public IActionResult JoinTheRevolution() => View();
         public IActionResult Plays(int objToken)
         {
             if (objToken > 0)
@@ -133,23 +138,89 @@ namespace TMC.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveEnquiry(string name = "", string email = "", string subject = "", string message = "")
+        public JsonResult SaveDonation()
         {
-            var resp = new ajaxResponse()
+            var resp = new ajaxResponse();
+            var relationModelObj = new DonationAddModel();
+            try
             {
-                data = (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(message)) ? "" :
-                Enquiries.Save(new EntitesInterfaces.DBEntities.TBL_ENQUIRYMASTER()
+                resp.data = null;
+                decimal amtentered = 0;
+                decimal.TryParse(Request.Form["TOTAMOUNT"], out amtentered);
+                int ID = 0;
+                int.TryParse(Request.Form["ID"], out ID);
+                relationModelObj = new DonationAddModel()
                 {
-                    USERNAME = name.Trim(),
-                    DATECREATED = System.DateTime.Now,
-                    EMAILADD = email.Trim(),
-                    SEENSTATUS = false,
-                    USERMESSAGE = message.Trim(),
-                    USERSUBJECT = subject.Trim()
-                }),
-                respstatus = ResponseStatus.success
-            };
-            return View("Index");
+                    CITY = Request.Form["CITY"],
+                    CONTACTNUMBER = Request.Form["CONTACTNUMBER"],
+                    EMAILID = Request.Form["EMAILID"],
+                    FULLNAME = Request.Form["FULLNAME"],
+                    ID = ID,
+                    TOTAMOUNT = amtentered
+                };
+
+                if (string.IsNullOrEmpty(relationModelObj.CITY) || string.IsNullOrEmpty(relationModelObj.CONTACTNUMBER) || string.IsNullOrEmpty(relationModelObj.EMAILID) || string.IsNullOrEmpty(relationModelObj.FULLNAME) || amtentered == 0)
+                {
+                    resp = new ajaxResponse()
+                    {
+                        data = null,
+                        respmessage = "Every field is necessary and the amount should be greater than 0.",
+                        respstatus = ResponseStatus.error
+                    };
+                }
+                else
+                {
+                    relationModelObj = Donation.Save(relationModelObj);
+                    if (relationModelObj != null)
+                    {
+                        if (relationModelObj.ID > 0)
+                        {
+                            relationModelObj.PKey = Donation.GenerateOrder(_config.GetValue<string>("AppSettingParams:RazorPay:SandboxID"), _config.GetValue<string>("AppSettingParams:RazorPay:SandboxKey"), relationModelObj);
+                            relationModelObj.PID = _config.GetValue<string>("AppSettingParams:RazorPay:SandboxID");
+                            resp = new ajaxResponse()
+                            {
+                                data = relationModelObj,
+                                respmessage = "Donation saved",
+                                respstatus = ResponseStatus.success
+                            };
+                        }
+                        else
+                            resp = new ajaxResponse()
+                            {
+                                data = null,
+                                respmessage = "Something went wrong.",
+                                respstatus = ResponseStatus.error
+                            };
+                    }
+                    else
+                        resp = new ajaxResponse()
+                        {
+                            data = null,
+                            respmessage = "Something went wrong.",
+                            respstatus = ResponseStatus.error
+                        };
+                }
+            }
+            catch (Exception ex)
+            {
+                resp = new ajaxResponse()
+                {
+                    data = null,
+                    respmessage = "Something went wrong.",
+                    respstatus = ResponseStatus.error
+                };
+
+            }
+
+            return Json(resp);
+        }
+
+        [HttpPost]
+        public JsonResult SavePayment(string razorpay_payment_id = "", string razorpay_signature = "", string code = "", string description = "", string source = "", string step = "", string reason = "", string order_id = "", string payment_id = "")
+        {
+            var resp = new ajaxResponse();
+
+            return Json(resp);
         }
 
         [HttpGet]

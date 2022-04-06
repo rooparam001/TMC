@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
-
+    _listyourprofileMaster.togglepages();
+    $('#btnNextPrevForm').click(function () { _listyourprofileMaster.togglepages(); });
     $("#btnUpload").click(function () {
         _listyourprofileMaster.roleID = $('[name="selectUserRole"] option:selected').val();
         _listyourprofileMaster.fullname = $('[name="txtFullName"]').val();
@@ -108,7 +109,7 @@
                                 dataType: 'json',
                                 data: fileData,
                                 success: function (result) {
-                                    
+
                                     if (result) {
                                         if (result.respstatus == 1) {
                                             alert(result.respmessage);
@@ -153,6 +154,7 @@ var _listyourprofileMaster = {
     password: '',
     confirmpassword: '',
     contactNumber: '',
+    pageno_selected: -1,
     validatePassword: function (cPassword) {
         var resp = true;
         if (cPassword.length == '') {
@@ -181,5 +183,34 @@ var _listyourprofileMaster = {
             }
         }
         return resp;
+    },
+    togglepages: function () {
+        
+        if (_listyourprofileMaster.pageno_selected == 0) {
+            _listyourprofileMaster.pageno_selected = 1;
+            $('.step2').show();
+            $('.step1').hide();
+            $('.step3').hide();
+            $('#btnUpload').show();
+            $('#btnNextPrevForm').val('Previous');
+            return;
+        }
+        if (_listyourprofileMaster.pageno_selected == 1) {
+            _listyourprofileMaster.pageno_selected = 0;
+            $('.step2').hide();
+            $('.step1').show();
+            $('.step3').show();
+            $('#btnUpload').hide();
+            $('#btnNextPrevForm').val('Next');
+            return;
+        }
+        if (_listyourprofileMaster.pageno_selected == -1) {
+            _listyourprofileMaster.pageno_selected = 0;
+            $('.step2').hide();
+            $('.step1').show();
+            $('.step3').show();
+            $('#btnUpload').hide();
+            $('#btnNextPrevForm').val('Next');
+        }
     }
 };
