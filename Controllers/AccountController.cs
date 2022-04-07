@@ -1282,7 +1282,8 @@ namespace TMC.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
-            return RedirectToAction(nameof(Verify));
+            return RedirectToAction("Index", "Home");
+            //return RedirectToAction(nameof(Index));
         }
 
         public int _getuserLoggedinID()

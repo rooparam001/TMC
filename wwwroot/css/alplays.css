@@ -48,7 +48,8 @@ i {
     padding: 6%;
 }
 
-    .filter-area .filter-item-td:hover {
+    /*.filter-area .filter-item-td*/
+    .filter-item:hover {
         border-radius: 7%;
         background-color: #ffc7c761;
     }

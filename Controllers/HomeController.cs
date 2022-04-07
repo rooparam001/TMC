@@ -155,7 +155,6 @@ namespace TMC.Controllers
                     CONTACTNUMBER = Request.Form["CONTACTNUMBER"],
                     EMAILID = Request.Form["EMAILID"],
                     FULLNAME = Request.Form["FULLNAME"],
-                    ID = ID,
                     TOTAMOUNT = amtentered
                 };
 
@@ -177,12 +176,33 @@ namespace TMC.Controllers
                         {
                             relationModelObj.PKey = Donation.GenerateOrder(_config.GetValue<string>("AppSettingParams:RazorPay:SandboxID"), _config.GetValue<string>("AppSettingParams:RazorPay:SandboxKey"), relationModelObj);
                             relationModelObj.PID = _config.GetValue<string>("AppSettingParams:RazorPay:SandboxID");
-                            resp = new ajaxResponse()
+                            relationModelObj = Donation.Save(relationModelObj);
+                            if (relationModelObj != null)
                             {
-                                data = relationModelObj,
-                                respmessage = "Donation saved",
-                                respstatus = ResponseStatus.success
-                            };
+                                if (relationModelObj.ID > 0)
+                                {
+                                    resp = new ajaxResponse()
+                                    {
+                                        data = relationModelObj,
+                                        respmessage = "Donation saved",
+                                        respstatus = ResponseStatus.success
+                                    };
+                                }
+                                else
+                                    resp = new ajaxResponse()
+                                    {
+                                        data = null,
+                                        respmessage = "Something went wrong.",
+                                        respstatus = ResponseStatus.error
+                                    };
+                            }
+                            else
+                                resp = new ajaxResponse()
+                                {
+                                    data = null,
+                                    respmessage = "Something went wrong.",
+                                    respstatus = ResponseStatus.error
+                                };
                         }
                         else
                             resp = new ajaxResponse()
@@ -216,10 +236,38 @@ namespace TMC.Controllers
         }
 
         [HttpPost]
-        public JsonResult SavePayment(string razorpay_payment_id = "", string razorpay_signature = "", string code = "", string description = "", string source = "", string step = "", string reason = "", string order_id = "", string payment_id = "")
+        public JsonResult SavePayment()
         {
-            var resp = new ajaxResponse();
+            string razorpay_payment_id = "", razorpay_signature = "", code = "", description = "", source = "", step = "", reason = "", order_id = "";
+            razorpay_payment_id = Request.Form["razorpay_payment_id"];
+            razorpay_signature = Request.Form["razorpay_signature"];
+            code = Request.Form["code"];
+            description = Request.Form["description"];
+            source = Request.Form["source"];
+            step = Request.Form["step"];
+            reason = Request.Form["reason"];
+            order_id = Request.Form["razorpay_order_id"];
 
+            var resp = new ajaxResponse();
+            var isSave = false;
+            if (!string.IsNullOrEmpty(razorpay_payment_id))
+                isSave = Donation.SavePaymentOrder(new TBL_ORDERGENERATORMASTER()
+                {
+                    RAZORPAY_CODE = code,
+                    RAZORPAY_DESCRIPTION = description,
+                    RAZORPAY_PAYMENT_ID = razorpay_payment_id,
+                    RAZORPAY_REASON = reason,
+                    RAZORPAY_SIGNATURE = razorpay_signature,
+                    RAZORPAY_SOURCE = source,
+                    RAZORPAY_STEP = step,
+                    ORDERID = order_id
+                });
+            resp = new ajaxResponse()
+            {
+                data = null,
+                respmessage = (isSave ? "Payment received" : "Something went wrong"),
+                respstatus = (isSave ? ResponseStatus.success : ResponseStatus.error),
+            };
             return Json(resp);
         }
 

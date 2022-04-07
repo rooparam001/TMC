@@ -65,7 +65,7 @@
     });
 
     $(document).on('click', '#formLogin button[type=button]', function (e) {
-        
+
         if (accountMaster.emailError || accountMaster.passwordError) {
             alert('Please complete the form');
             e.preventDefault();
@@ -78,9 +78,16 @@
                 contentType: "application/json; charset=utf-8",
                 data: { Email: $('input[name="mail"]').val(), UPassword: $('input[name="UPassword"]').val() },
                 success: function (result) {
-                    
+
                     if (result.respstatus == 0) {
-                        window.location.href = '/Home/Index/';
+                        
+                        var retUrl = fngetUrlVars("returnurl").ReturnUrl;
+                        if (retUrl) {
+                            retUrl = retUrl.replaceAll('%2F', '/');
+                            window.location.href = retUrl;
+                        }
+                        else
+                            window.location.href = '/Home/Index/';
                     }
                     else
                         alert(result.respmessage);

@@ -22,7 +22,6 @@
                         fileData.append('TOTAMOUNT', _jointherevolution.varamt);
                         fileData.append('FULLNAME', _jointherevolution.varfullname);
                         fileData.append('EMAILID', _jointherevolution.varemailid);
-                        fileData.append('ID', $('#hdID').val());
 
                         $.ajax({
                             url: '/Home/SaveDonation',
@@ -46,9 +45,7 @@
                                             "image": "https://www.theatremanagementcompany.com/TMC/Images/White%20logo.png",
                                             "order_id": _jointherevolution.pKey, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
                                             "handler": function (response) {
-                                                alert(response.razorpay_payment_id);
-                                                alert(response.razorpay_order_id);
-                                                alert(response.razorpay_signature)
+                                                _jointherevolution.fnSaveSuccess_Razorpay(response);
                                             },
                                             "prefill": {
                                                 "name": _jointherevolution.varfullname,
@@ -64,13 +61,7 @@
                                         };
                                         var rzp1 = new Razorpay(options);
                                         rzp1.on('payment.failed', function (response) {
-                                            alert(response.error.code);
-                                            alert(response.error.description);
-                                            alert(response.error.source);
-                                            alert(response.error.step);
-                                            alert(response.error.reason);
-                                            alert(response.error.metadata.order_id);
-                                            alert(response.error.metadata.payment_id);
+                                            _jointherevolution.fnSaveError_Razorpay(response.error);
                                         });
                                         rzp1.open();
                                     }
@@ -152,10 +143,84 @@ var _jointherevolution = {
             }
         }
     },
-    fnSaveSuccess_Razorpay: function (razorpay_payment_id, razorpay_order_id, razorpay_signature) {
+    fnSaveSuccess_Razorpay: function (response) {
+        
+        // Create FormData object
+        var fileData = new FormData();
 
+        // Adding one more key to FormData object
+        fileData.append('razorpay_payment_id', response.razorpay_payment_id);
+        fileData.append('razorpay_signature', response.razorpay_signature);
+        fileData.append('razorpay_order_id', response.razorpay_order_id);
+
+        $.ajax({
+            url: '/Home/SavePayment',
+            type: "post",
+            contentType: false, // Not to set any content header
+            processData: false, // Not to process data
+            dataType: 'json',
+            data: fileData,
+            success: function (result) {
+
+                $('.pay-area').hide();
+                var dispresult = false;
+                if (result) {
+                    if (result.respstatus == 0) {
+                        dispresult = true;
+                    }
+                }
+
+                if (dispresult)
+                    $('.pay-success').show();
+                else
+                    $('.pay-failure').show();
+
+            },
+            error: function (err) {
+                returnObj = '';
+            }
+        });
     },
-    fnErrorSuccess_Razorpay: function (error) {
+    fnSaveError_Razorpay: function (error) {
 
+        // Create FormData object
+        var fileData = new FormData();
+
+        // Adding one more key to FormData object
+        fileData.append('code', error.code);
+        fileData.append('description', error.description);
+        fileData.append('source', error.source);
+        fileData.append('step', error.step);
+        fileData.append('reason', error.reason);
+        fileData.append('razorpay_order_id', error.metadata.order_id);
+        fileData.append('razorpay_payment_id', error.metadata.payment_id);
+
+        $.ajax({
+            url: '/Home/SavePayment',
+            type: "post",
+            contentType: false, // Not to set any content header
+            processData: false, // Not to process data
+            dataType: 'json',
+            data: fileData,
+            success: function (result) {
+
+                $('.pay-area').hide();
+                var dispresult = false;
+                if (result) {
+                    if (result.respstatus == 0) {
+                        dispresult = true;
+                    }
+                }
+
+                if (dispresult)
+                    $('.pay-success').show();
+                else
+                    $('.pay-failure').show();
+
+            },
+            error: function (err) {
+                returnObj = '';
+            }
+        });
     }
 };

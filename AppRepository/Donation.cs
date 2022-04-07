@@ -22,7 +22,8 @@ namespace TMC.AppRepository
                     FULLNAME = model.FULLNAME.Trim(),
                     ISPAID = false,
                     TOTAMOUNT = model.TOTAMOUNT,
-                    ID = model.ID
+                    ID = model.ID,
+                    RAZORPAYORDER = model.PKey
                 };
                 obj = new TMCDBContext().fn_SaveDonation(obj);
                 model.ID = obj.ID;
@@ -74,6 +75,7 @@ namespace TMC.AppRepository
                     modelObj.RAZORPAY_SOURCE = model.RAZORPAY_SOURCE;
                     modelObj.RAZORPAY_STEP = model.RAZORPAY_STEP;
                     new TMCDBContext().fn_SaveOrder_Razorpay(modelObj);
+                    resp = true;
                 }
             }
             return resp;

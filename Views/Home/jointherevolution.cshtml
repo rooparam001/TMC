@@ -10,6 +10,57 @@
         background-color: white;
         padding: 2%;
     }
+
+    .pay-success, .pay-failure {
+        background-color: white;
+        display: none;
+    }
+
+        .pay-success h1 {
+            color: #88B04B;
+            font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+            font-weight: 900;
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .pay-success p {
+            color: #404F5E;
+            font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+            font-size: 20px;
+            margin: 0;
+            margin-bottom: 9%;
+        }
+
+        .pay-success .checkmark {
+            color: #9ABC66;
+            font-size: 100px;
+            line-height: 200px;
+            margin-left: -15px;
+        }
+
+        .pay-failure h1 {
+            color: #c73949;
+            font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+            font-weight: 900;
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .pay-failure p {
+            color: #404F5E;
+            font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+            font-size: 20px;
+            margin: 0;
+            margin-bottom: 9%;
+        }
+
+        .pay-failure .checkmark {
+            color: #c73949;
+            font-size: 100px;
+            line-height: 200px;
+            margin-left: -15px;
+        }
 </style>
 <main role="main">
     <section class="jumbotron text-center">
@@ -679,6 +730,24 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-center pay-success">
+                    <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
+                        <i class="checkmark">✓</i>
+                    </div>
+                    <h1>Success</h1>
+                    <p>We received your purchase request;<br /> we'll be in touch shortly!</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-center pay-failure">
+                    <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
+                        <i class="checkmark">X</i>
+                    </div>
+                    <h1>Failure</h1>
+                    <p>Something must have went sideways;<br /> you could always try again!</p>
                 </div>
             </div>
         </div>
