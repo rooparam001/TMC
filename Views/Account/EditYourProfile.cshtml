@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Profile";
 }
-<script src="~/js/listyourprofile.js"></script>
+<script src="~/js/edityourprofile.js"></script>
 <style type="text/css">
     form {
         margin-top: 2%;
@@ -767,26 +767,79 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="steps step3">
+                        <div class="steps step2">
                             <div class="row">
-                                <div class="col-lg-12 col-sm-12 col-12">
+                                <div class="col-lg-6 col-sm-6 col-12">
                                     <div class="form-group">
-                                        <label class="text-inverse" for="txtPassword">Password</label>
-                                        <input type="password" class="form-control form-control-sm" placeholder="Password" name="txtPassword" required />
+                                        <label class="text-inverse" for="fuDegree">Degree</label>
+                                        <input class="form-control form-control-sm" type="file" name="fuDegree" accept="application/pdf" multiple>
+                                        <p name="profile_degree"></p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label class="text-inverse" for="fuLetterofRef">Letter Of References</label>
+                                        <input class="form-control form-control-sm" type="file" name="fuLetterofRef" accept="application/pdf">
+                                        <p name="profile_letterofref"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label class="text-inverse" for="txtFieldExcellence">Field of Excellence</label>
+                                        <textarea class="form-control form-control-sm" name="txtFieldExcellence" placeholder="field of excellence"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label class="text-inverse" for="txtPrevWorkDet">Previous Work Details</label>
+                                        <textarea class="form-control form-control-sm" name="txtPrevWorkDet" placeholder="previous work details"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label class="text-inverse" for="fuCertificates">Add certification(s) if any</label>
+                                        <input class="form-control form-control-sm" type="file" name="fuCertificates" accept="application/pdf" multiple>
+                                        <p name="profile_certification"></p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label class="text-inverse" for="fuAwardsAchiev">Award/Achievements</label>
+                                        <input class="form-control form-control-sm" type="file" name="fuAwardsAchiev" accept="application/pdf" multiple>
+                                        <p name="profile_awards"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label class="text-inverse" for="txtLanguages">Language(s) known</label>
+                                        <input type="text" class="form-control form-control-sm" name="txtLanguages" placeholder="language(s)" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label class="text-inverse" for="txtExpYrs">Experience in years</label>
+                                        <input type="text" class="form-control form-control-sm" name="txtExpYrs" placeholder="total experience" required>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-12 col-sm-12 col-12">
                                     <div class="form-group">
-                                        <label class="text-inverse" for="txtConfirmPassword">Confirm Password</label>
-                                        <input type="password" class="form-control form-control-sm" placeholder="Password" name="txtConfirmPassword" required />
+                                        <label class="text-inverse" for="fuUploadWork">Upload Your Work</label>
+                                        <input class="form-control form-control-sm" type="file" name="fuUploadWork" accept="application/pdf" multiple>
+                                        <p name="profile_work"></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <input type="button" class="btn btn-sm btn-outline-primary form-control form-control-sm" value="Create" id="btnUpload" />
+                            <input type="button" class="btn btn-sm btn-outline-primary form-control form-control-sm" value="Save" id="btnUpload" />
                         </div>
                     </form>
                 </div>

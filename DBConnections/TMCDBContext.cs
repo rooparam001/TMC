@@ -365,9 +365,9 @@ namespace TMC.DBConnections
             catch (Exception ex) { respObj = new Tbl_AccountMaster(); }
             return respObj;
         }
-        public TBL_PLAYSMASTER fn_GetSinglePlayByID(int ID)
+        public TBL_PLAYSMASTER fn_GetSinglePlayByID(int ID, int UserID)
         {
-            return this.TBL_PLAYSMASTER.Where(x => x.ID == ID && x.ISENABLE).FirstOrDefault();
+            return this.TBL_PLAYSMASTER.Where(x => x.ID == ID && x.ISENABLE && x.CREATEDBY == UserID).FirstOrDefault();
         }
         public TBL_GENREMASTER fn_GetSingleGenreByID(int ID)
         {
@@ -584,12 +584,12 @@ namespace TMC.DBConnections
             catch { outputObj = new List<TBL_CITYMASTER>(); }
             return outputObj;
         }
-        public List<TBL_PLAYSMASTER> fn_GetAllExistingPlays()
+        public List<TBL_PLAYSMASTER> fn_GetAllExistingPlays(int UserID)
         {
             var respList = new List<TBL_PLAYSMASTER>();
             try
             {
-                respList = this.TBL_PLAYSMASTER.Where(x => x.ISENABLE).OrderBy(y => y.ID).ToList();
+                respList = this.TBL_PLAYSMASTER.Where(x => x.ISENABLE && (UserID == 0 ? true : x.CREATEDBY == UserID)).OrderBy(y => y.ID).ToList();
             }
             catch (Exception ex) { respList = new List<TBL_PLAYSMASTER>(); }
             return respList;
@@ -737,8 +737,16 @@ namespace TMC.DBConnections
             {
                 using (var context = new TMCDBContext())
                 {
-                    context.TBL_PROFILESMASTER.Add(obj);
-                    context.SaveChanges();
+                    if (obj.ID == 0)
+                    {
+                        context.TBL_PROFILESMASTER.Add(obj);
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        context.TBL_PROFILESMASTER.Update(obj);
+                        context.SaveChanges();
+                    }
                 }
                 resp = true;
             }
@@ -785,6 +793,16 @@ namespace TMC.DBConnections
                 outputObj = this.TBL_PROFILESMASTER.Where(x => (ID == 0 ? true : x.ID == ID) && x.ISENABLE).ToList();
             }
             catch (Exception ex) { outputObj = new List<TBL_PROFILESMASTER>(); }
+            return outputObj;
+        }
+        public TBL_PROFILESMASTER fn_getProfile_ByAccountID(int ID)
+        {
+            var outputObj = new TBL_PROFILESMASTER();
+            try
+            {
+                outputObj = this.TBL_PROFILESMASTER.Where(x => x.ACCOUNTID == ID && x.ISENABLE).FirstOrDefault();
+            }
+            catch (Exception ex) { outputObj = new TBL_PROFILESMASTER(); }
             return outputObj;
         }
         public TBL_GIVEAWAYMASTER fn_SaveGiveaway(TBL_GIVEAWAYMASTER obj)

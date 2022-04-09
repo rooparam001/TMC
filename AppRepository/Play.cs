@@ -98,7 +98,7 @@ namespace TMC.AppRepository
                 if (obj.ID > 0)
                 {
                     if (string.IsNullOrEmpty(obj.IMAGEURL))
-                        obj.IMAGEURL = new TMCDBContext().fn_GetSinglePlayByID(obj.ID).IMAGEURL;
+                        obj.IMAGEURL = new TMCDBContext().fn_GetSinglePlayByID(obj.ID, obj.CREATEDBY).IMAGEURL;
                 }
 
                 resp = new TMCDBContext().fn_SavePlay(obj);
@@ -106,13 +106,13 @@ namespace TMC.AppRepository
 
             return resp;
         }
-        public static ViewSinglePlayModel fn_GetSinglePlayByID(int ID)
+        public static ViewSinglePlayModel fn_GetSinglePlayByID(int ID, int UserID)
         {
             var respObj = new ViewSinglePlayModel();
             if (ID > 0)
             {
                 var playObj = new TBL_PLAYSMASTER();
-                playObj = new TMCDBContext().fn_GetSinglePlayByID(ID);
+                playObj = new TMCDBContext().fn_GetSinglePlayByID(ID, UserID);
                 if (playObj != null)
                     if (playObj.ID > 0)
                     {
@@ -217,10 +217,10 @@ namespace TMC.AppRepository
         {
             return new TMCDBContext().fn_DeleteAllExistingPlays();
         }
-        public static List<TBL_PLAYSMASTER> fn_GetAllExistingPlays(string _genres = "", string _langs = "", string _cities = "")
+        public static List<TBL_PLAYSMASTER> fn_GetAllExistingPlays(int UserID, string _genres = "", string _langs = "", string _cities = "")
         {
             var obj = new List<TBL_PLAYSMASTER>();
-            obj = new TMCDBContext().fn_GetAllExistingPlays();
+            obj = new TMCDBContext().fn_GetAllExistingPlays(UserID);
             var outputObj = new List<TBL_PLAYSMASTER>();
 
             if (!string.IsNullOrEmpty(_genres))

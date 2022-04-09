@@ -1,71 +1,17 @@
-﻿@{
-    ViewData["Title"] = "Join the Revolution";
-}
-
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script src="~/js/jointherevolution.js"></script>
-
+﻿<script src="~/js/accountedityourplay.js"></script>
 <style type="text/css">
-    .pay-area {
-        background-color: white;
-        padding: 2%;
+    form {
+        margin-top: 2%;
     }
 
-    .pay-success, .pay-failure {
-        background-color: white;
-        display: none;
+    label {
+        color: #ffe1e6;
     }
-
-        .pay-success h1 {
-            color: #88B04B;
-            font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-            font-weight: 900;
-            font-size: 40px;
-            margin-bottom: 10px;
-        }
-
-        .pay-success p {
-            color: #404F5E;
-            font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-            font-size: 20px;
-            margin: 0;
-            margin-bottom: 9%;
-        }
-
-        .pay-success .checkmark {
-            color: #9ABC66;
-            font-size: 100px;
-            line-height: 200px;
-            margin-left: -15px;
-        }
-
-        .pay-failure h1 {
-            color: #c73949;
-            font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-            font-weight: 900;
-            font-size: 40px;
-            margin-bottom: 10px;
-        }
-
-        .pay-failure p {
-            color: #404F5E;
-            font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-            font-size: 20px;
-            margin: 0;
-            margin-bottom: 9%;
-        }
-
-        .pay-failure .checkmark {
-            color: #c73949;
-            font-size: 100px;
-            line-height: 200px;
-            margin-left: -15px;
-        }
 </style>
 <main role="main">
     <section class="jumbotron text-center">
         <div class="container">
-            <h1 class="jumbotron-heading">join the revolution</h1>
+            <h1 class="jumbotron-heading">upload play</h1>
         </div>
     </section>
 
@@ -73,34 +19,116 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="col-md-6 pay-area">
+                    <input type="hidden" id="HFID" />
+                    <hr />
+                    <form style="width:100%;">
                         <div class="row">
                             <div class="col-lg-12 col-sm-12 col-12">
                                 <div class="form-group">
-                                    <label class="text-inverse" for="txtdonateamt">Contribute</label>
-                                    <input type="text" class="form-control form-control-sm required for-currency" name="txtdonateamt" placeholder="enter amount">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12 col-sm-12 col-12 text-center">
-                                <div class="form-group">
-                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                        <input type="button" class="form-control-sm btn" value="₹ 500" onclick="_jointherevolution.fnappendAmt(500)" />
-                                        <input type="button" class="form-control-sm btn" value="₹ 1000" onclick="_jointherevolution.fnappendAmt(1000)" />
-                                        <input type="button" class="form-control-sm btn" value="₹ 1500" onclick="_jointherevolution.fnappendAmt(1500)" />
-                                        <input type="button" class="form-control-sm btn" value="₹ 2000" onclick="_jointherevolution.fnappendAmt(2000)" />
-                                        <input type="button" class="form-control-sm btn" value="₹ 2500" onclick="_jointherevolution.fnappendAmt(2500)" />
-                                        <input type="button" class="form-control-sm btn" value="₹ 3000" onclick="_jointherevolution.fnappendAmt(3000)" />
-                                    </div>
+                                    <label class="text-inverse" for="txtplaytitle">Title</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtplaytitle" placeholder="play's title" required>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12 col-sm-12 col-12">
                                 <div class="form-group">
-                                    <label class="text-inverse" for="ddlCity">Where do you live?</label>
-                                    <select class="form-control form-control-sm" id="ddlCity">
+                                    <label class="text-inverse" for="txtgrouptitle">Group Title</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtgrouptitle" placeholder="group's title" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label class="text-inverse" for="txtplayactor">Actor(s)</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtplayactor" placeholder="play's actor(s)" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label class="text-inverse" for="txtplaywriter">Writer</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtplaywriter" placeholder="play's writer" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label class="text-inverse" for="txtplaydirector">Director</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtplaydirector" placeholder="play's director" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label class="text-inverse" for="txtnumberofshow">Number of show(s)</label>
+                                    <input type="number" class="form-control form-control-sm" id="txtnumberofshow" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label class="text-inverse" for="txtplaydate">First Show</label>
+                                    <input type="date" class="form-control form-control-sm" id="txtplaydate" placeholder="play's first show" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label class="text-inverse" for="txtplaytrailerlink">Upload HD trailer of your play/link of your play</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtplaytrailerlink" placeholder="play's link" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label class="text-inverse" for="txtplaytrailerlink">Link of your full play</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtplaylink" placeholder="play's link" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label class="text-inverse" for="txtplaygenre">Genre</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtplaygenre" placeholder="play's genre" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label class="text-inverse" for="txtplaylanguage">Language(s)</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtplaylanguage" placeholder="play's language" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label class="text-inverse" for="txtplaycastncredit">Cast &amp; Credit</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtplaycastncredit" placeholder="play's cast-n-credit" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-sm-4 col-12">
+                                <div class="form-group">
+                                    <label class="text-inverse" for="txtplayage">Suitable for age(s)</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtplayage" placeholder="suitable age" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-sm-4 col-12">
+                                <div class="form-group">
+                                    <label class="text-inverse" for="txtplayduration">Duration of play</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtplayduration" placeholder="play's duration" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-sm-4 col-12">
+                                <div class="form-group">
+                                    <label class="text-inverse" for="txtplaycity">City</label>
+                                    <select class="form-control form-control-sm" id="ddlplaycity">
                                         <option>Adilabad</option>
                                         <option>Agra</option>
                                         <option>Ahmedabad</option>
@@ -699,58 +727,84 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-12 col-sm-12 col-12">
+                            <div class="col-lg-4 col-sm-4 col-12">
                                 <div class="form-group">
-                                    <label class="text-inverse" for="txtfullname">Your full name</label>
-                                    <input type="text" class="form-control form-control-sm required" name="txtfullname" placeholder="enter your name">
+                                    <label class="text-inverse" for="txtfacebook">Facebook</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtfacebook" placeholder="facebook's handle" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-sm-4 col-12">
+                                <div class="form-group">
+                                    <label class="text-inverse" for="txttwitter">Twitter</label>
+                                    <input type="text" class="form-control form-control-sm" id="txttwitter" placeholder="twitter's handle" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-sm-4 col-12">
+                                <div class="form-group">
+                                    <label class="text-inverse" for="txtinstagram">Instagram</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtinstagram" placeholder="instagram's handle" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label class="text-inverse" for="txtareasynopsisSocialHandles">Synopsis for social handles</label>
+                                    <textarea id="txtareasynopsisSocialHandles" class="form-control form-control-sm" placeholder="play's synopsis" rows="4" required></textarea>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label class="text-inverse" for="txtareagroupinfo">Group's Info</label>
+                                    <textarea id="txtareagroupinfo" class="form-control form-control-sm" placeholder="group's info" rows="4" required></textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12 col-sm-12 col-12">
                                 <div class="form-group">
-                                    <label class="text-inverse" for="txtemailid">Your email</label>
-                                    <input type="text" class="form-control form-control-sm required" name="txtemailid" placeholder="enter your email-id">
+                                    <label class="text-inverse" for="txtareasynopsis">Synopsis</label>
+                                    <textarea id="txtareasynopsis" class="form-control form-control-sm" placeholder="play's synopsis" rows="4" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label for="formFile" class="form-label">Censor Certificate</label>
+                                    <input class="form-control form-control-sm" type="file" id="fucensorcertificate" accept="image/*">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label for="formFile" class="form-label">Banner Image</label>
+                                    <input class="form-control form-control-sm" type="file" id="fubannerimage" accept="image/*">
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12 col-sm-12 col-12">
                                 <div class="form-group">
-                                    <label class="text-inverse" for="txtcontactnumber">Your contact number</label>
-                                    <input type="text" class="form-control form-control-sm required" name="txtcontactnumber" placeholder="enter your contact number">
+                                    <label for="fuTechRider" class="form-label">Tech Rider(Set(Photo), Light(No. of lights), Sound(Basic Requirements)</label>
+                                    <input class="form-control form-control-sm" type="file" multiple id="fuTechRider" accept="image/*">
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12 col-sm-12 col-12">
                                 <div class="form-group">
-                                    <input type="button" class="form-control form-control-sm btn" name="btnSubmit" value="Contribute" />
+                                    <label for="sliderFile" class="form-label">HD Pictures /Posters of your Play</label>
+                                    <input class="form-control form-control-sm" type="file" multiple id="fusliderFile" accept="image/*">
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 text-center pay-success">
-                    <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
-                        <i class="checkmark">✓</i>
-                    </div>
-                    <h1>Success</h1>
-                    <p>We received your purchase request;<br /> we'll be in touch shortly!</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 text-center pay-failure">
-                    <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
-                        <i class="checkmark">X</i>
-                    </div>
-                    <h1>Failure</h1>
-                    <p>Something must have went sideways;<br /> you could always try again!</p>
+                        <div class="row">
+                            <input type="button" id="btnUpload" class="btn btn-sm btn-outline-primary form-control form-control-sm" value="Save" />
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-    <input type="hidden" name="hdID" />
+
 </main>

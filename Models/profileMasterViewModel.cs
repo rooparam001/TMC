@@ -40,5 +40,6 @@ namespace TMC.Models
         public string USERGENDER { get; set; }
         public string ImageURL { get; set; }
         public int AccountID { get; set; }
+        public string ContactNumber { get; set; }
     }
 }

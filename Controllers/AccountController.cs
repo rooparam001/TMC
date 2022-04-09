@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -109,7 +108,7 @@ namespace TMC.Controllers
 
         [Authorize(Roles = "ADMINISTRATOR")]
         public ActionResult UpComingPlays() => View();
-        [Authorize(Roles = "ADMINISTRATOR")]
+        [Authorize]
         public ActionResult Plays() => View();
         [Authorize(Roles = "ADMINISTRATOR")]
         public ActionResult Profiles() => View();
@@ -121,6 +120,10 @@ namespace TMC.Controllers
         public ActionResult Tickets() => View();
         [Authorize]
         public ActionResult ListYourPlay() => View();
+        [Authorize]
+        public ActionResult EditYourPlay() => View();
+        [Authorize]
+        public ActionResult EditYourProfile() => View();
         public ActionResult ListYourProfile() => View();
         [Authorize]
         public ActionResult ListYourGiveAway() => View();
@@ -268,7 +271,7 @@ namespace TMC.Controllers
         {
             var resp = new ajaxResponse()
             {
-                data = Play.fn_GetAllExistingPlays().Select(x => new accountPlayModel()
+                data = Play.fn_GetAllExistingPlays((_iscurrentuserAdmin() ? 0 : _getuserLoggedinID())).Select(x => new accountPlayModel()
                 {
                     id = x.ID,
                     Actor = x.ACTOR,
@@ -288,7 +291,7 @@ namespace TMC.Controllers
         {
             var resp = new ajaxResponse()
             {
-                data = Play.fn_GetSinglePlayByID(objID),
+                data = Play.fn_GetSinglePlayByID(objID, (_iscurrentuserAdmin() ? 0 : _getuserLoggedinID())),
                 respstatus = ResponseStatus.success
             };
             return Json(resp);
@@ -311,6 +314,7 @@ namespace TMC.Controllers
         public async Task<JsonResult> SavePlay(List<IFormFile> thumbnailfiles, List<IFormFile> sliderfiles, List<IFormFile> censorcertificate, List<IFormFile> techrider)
         {
             var resp = new ajaxResponse();
+
             var relationModelObj = new TBL_PLAYSMASTER();
             try
             {
@@ -343,7 +347,8 @@ namespace TMC.Controllers
                     GROUPINSTAGARAM_HANDLEURL = (string.IsNullOrEmpty(Request.Form["INSTAGRAMHANDLEURL"]) ? "" : Request.Form["INSTAGRAMHANDLEURL"].ToString()),
                     GROUPINFO = (string.IsNullOrEmpty(Request.Form["GROUPINFO"]) ? "" : Request.Form["GROUPINFO"].ToString()),
                     GROUPTITLE = (string.IsNullOrEmpty(Request.Form["GROUPTITLE"]) ? "" : Request.Form["GROUPTITLE"].ToString()),
-                    PLAYLINK = (string.IsNullOrEmpty(Request.Form["PLAYLINK"]) ? "" : Request.Form["PLAYLINK"].ToString())
+                    PLAYLINK = (string.IsNullOrEmpty(Request.Form["PLAYLINK"]) ? "" : Request.Form["PLAYLINK"].ToString()),
+                    CREATEDBY = (_iscurrentuserAdmin() ? 0 : _getuserLoggedinID())
                 };
 
 
@@ -453,6 +458,7 @@ namespace TMC.Controllers
                                 }
                             }
 
+                            resp.data = relationModelObj.ID;
                             resp.respmessage = "Play saved";
                             resp.respstatus = ResponseStatus.success;
                         }
@@ -616,6 +622,7 @@ namespace TMC.Controllers
         public async Task<JsonResult> SaveProfile(List<IFormFile> fuDegree, List<IFormFile> fuLetterofRef, List<IFormFile> fuCertificates, List<IFormFile> fuAwardsAchiev, List<IFormFile> fuUploadWork, List<IFormFile> fuProfilePicture)
         {
             var resp = new ajaxResponse();
+            var isUserAuth = _iscurrentuserAuth();
             try
             {
                 var inputProfileObj = new profileMasterViewModel()
@@ -646,10 +653,14 @@ namespace TMC.Controllers
 
                 try
                 {
-                    //adding new account based on the information
-                    outputModelData = AppUsers.Save(outputModelData);
+                    if (!isUserAuth)
+                    {
+                        //adding new account based on the information
+                        outputModelData = AppUsers.Save(outputModelData);
+                    }
 
-                    if (!outputModelData.UserStatus)
+
+                    if (!outputModelData.UserStatus && !isUserAuth)
                     {
                         resp = new ajaxResponse()
                         {
@@ -661,8 +672,8 @@ namespace TMC.Controllers
                     else
                     {
 
-                        inputProfileObj.AccountID = AppUsers.fn_GetUserByEmail(outputModelData.Email).ID;
-
+                        inputProfileObj.AccountID = (isUserAuth ? _getuserLoggedinID() : AppUsers.fn_GetUserByEmail(outputModelData.Email).ID);
+                        inputProfileObj.ID = (isUserAuth ? AppProfiles.GetSingleProfile_ByAccountID(inputProfileObj.AccountID).ID : 0);
                         //saving user's degree(s)
                         foreach (var currFile in fuDegree)
                         {
@@ -806,6 +817,25 @@ namespace TMC.Controllers
             var resp = new ajaxResponse()
             {
                 data = AppProfiles.GetSingleProfile_ByID(objID),
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
+        }
+
+        [HttpGet]
+        public JsonResult GetProfileEdit_ByID(int objID)
+        {
+            if (objID == 0)
+            {
+                try
+                {
+                    objID = AppProfiles.GetSingleProfile_ByAccountID(_getuserLoggedinID()).ID;
+                }
+                catch { objID = 0; }
+            }
+            var resp = new ajaxResponse()
+            {
+                data = AppProfiles.GetSingleEditProfile_ByID(objID),
                 respstatus = ResponseStatus.success
             };
             return Json(resp);
@@ -1291,6 +1321,20 @@ namespace TMC.Controllers
             var userID = 0;
             int.TryParse(User.FindFirst("UserID").Value, out userID);
             return userID;
+        }
+
+        public bool _iscurrentuserAdmin()
+        {
+            var resp = false;
+            resp = User.IsInRole("ADMINISTRATOR");
+            return resp;
+        }
+
+        public bool _iscurrentuserAuth()
+        {
+            var resp = false;
+            resp = User.Identity.IsAuthenticated;
+            return resp;
         }
     }
 }

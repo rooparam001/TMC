@@ -85,7 +85,7 @@
                             <div class="dropdown-menu" aria-labelledby="navbarAccount">
                                 @if (User.Identity.IsAuthenticated)
                                 {
-                                    <a class="dropdown-item" href="#">My Account</a>
+                                    <a class="dropdown-item" href="/account/EditYourProfile">My Account</a>
                                     <a class="dropdown-item" href="/account/Logout">Logout</a>
                                     @if (this.User.IsInRole("ADMINISTRATOR"))
                                     {

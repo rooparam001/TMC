@@ -123,7 +123,7 @@ namespace TMC.Controllers
         {
             var resp = new ajaxResponse()
             {
-                data = Play.fn_GetAllExistingPlays(genres, languages, cities).Select(x => new playHomePageListDisplaymodel()
+                data = Play.fn_GetAllExistingPlays(0, genres, languages, cities).Select(x => new playHomePageListDisplaymodel()
                 {
                     TokenID = x.ID,
                     DateCreated = x.DATECREATED.ToString("dddd dd MMMM", CultureInfo.CreateSpecificCulture("en-US")),
@@ -276,7 +276,7 @@ namespace TMC.Controllers
         {
             var resp = new ajaxResponse()
             {
-                data = Play.fn_GetSinglePlayByID(obj),
+                data = Play.fn_GetSinglePlayByID(obj, 0),
                 respstatus = ResponseStatus.success
             };
             return Json(resp);
@@ -319,6 +319,20 @@ namespace TMC.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public int _getuserLoggedinID()
+        {
+            var userID = 0;
+            int.TryParse(User.FindFirst("UserID").Value, out userID);
+            return userID;
+        }
+
+        public bool _iscurrentuserAdmin()
+        {
+            var resp = false;
+            resp = User.IsInRole("ADMINISTRATOR");
+            return resp;
         }
     }
 }

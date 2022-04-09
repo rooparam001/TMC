@@ -213,9 +213,9 @@ var _jointherevolution = {
                 }
 
                 if (dispresult)
-                    $('.pay-success').show();
-                else
                     $('.pay-failure').show();
+                else
+                    $('.pay-success').show();
 
             },
             error: function (err) {

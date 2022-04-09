@@ -38,7 +38,8 @@ namespace TMC.AppRepository
                             USERGENDER = obj.USERGENDER,
                             USERAGE = obj.USERAGE,
                             PROFILEPICTURE = obj.ImageURL,
-                            ACCOUNTID=obj.AccountID
+                            ACCOUNTID = obj.AccountID,
+                            ID = obj.ID
                         };
 
                         //setting user's languages
@@ -146,7 +147,6 @@ namespace TMC.AppRepository
             catch (Exception ex) { resp = new List<profileMasterViewModel>(); }
             return resp;
         }
-
         public static profileMasterViewModel GetSingleProfile_ByID(int ID)
         {
             var resp = new profileMasterViewModel();
@@ -210,6 +210,79 @@ namespace TMC.AppRepository
             }
             catch { resp = new profileMasterViewModel(); }
             return resp;
+        }
+        public static profileMasterViewModel GetSingleEditProfile_ByID(int ID)
+        {
+            var resp = new profileMasterViewModel();
+            var languageList = "";
+            var cityID = 0;
+            try
+            {
+
+                resp = new TMCDBContext().fn_getallProfiles(ID).Select(x => new profileMasterViewModel()
+                {
+                    ID = x.ID,
+                    DATECREATED = x.DATECREATED.Value.ToString("dddd dd MMMM", CultureInfo.CreateSpecificCulture("en-US")),
+                    USERCITY = x.USERCITYID.Value.ToString(),
+                    USEREMAIL = x.USEREMAIL,
+                    USERLANGUAGES = x.USERLANGUAGES,
+                    USERROLE = new TMCDBContext().fn_GetRoleByID(x.USERROLE),
+                    USERTOTALEXPINYEARS = x.USERTOTALEXPINYEARS,
+                    USERAWARDS = x.USERAWARDS,
+                    USERCERTIFICATES = x.USERCERTIFICATES,
+                    USERDEGREEURL = x.USERDEGREEURL,
+                    USERFLDOFEXCELLENCE = x.USERFLDOFEXCELLENCE,
+                    USERLETTEROFREF = x.USERLETTEROFREF,
+                    USERPRVWORKEXP = x.USERPRVWORKEXP,
+                    USERTITLE = x.USERTITLE,
+                    USERUPLOADEDWORK = x.USERUPLOADEDWORK,
+                    PROFILETYPEOF = x.PROFILETYPEOF,
+                    ImageURL = x.PROFILEPICTURE,
+                    USERAGE = x.USERAGE.Value,
+                    AccountID = x.ACCOUNTID,
+                    USERGENDER = x.USERGENDER
+                }).FirstOrDefault();
+
+                resp.ContactNumber = new TMCDBContext().fn_GetUserByID(resp.AccountID).ContactNumber;
+
+                if (!string.IsNullOrEmpty(resp.USERCITY.Trim()))
+                {
+                    int.TryParse(resp.USERCITY.Trim(), out cityID);
+                    if (cityID > 0)
+                    {
+                        resp.USERCITY = new TMCDBContext().fn_GetSingleCityByID(cityID).CITY;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(resp.USERLANGUAGES))
+                {
+                    foreach (var currLang in resp.USERLANGUAGES.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        if (!string.IsNullOrEmpty(currLang))
+                        {
+                            var objID = 0;
+                            int.TryParse(currLang, out objID);
+                            if (objID > 0)
+                            {
+                                languageList += "," + new TMCDBContext().fn_GetSingleLanguageByID(objID).LANGUAGEVAL;
+                            }
+
+                        }
+                    }
+                    if (languageList.StartsWith(","))
+                        languageList = languageList.Substring(1, languageList.Length - 1);
+                    while (languageList.EndsWith(","))
+                        languageList = languageList.Substring(0, languageList.Length - 1);
+                }
+                if (!string.IsNullOrEmpty(languageList))
+                    resp.USERLANGUAGES = languageList;
+            }
+            catch { resp = new profileMasterViewModel(); }
+            return resp;
+        }
+        public static TBL_PROFILESMASTER GetSingleProfile_ByAccountID(int ID)
+        {
+            return new TMCDBContext().fn_getProfile_ByAccountID(ID);
         }
     }
 }
