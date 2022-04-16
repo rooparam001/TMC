@@ -38,7 +38,7 @@
 
                                         var options = {
                                             "key": _jointherevolution.pID, // Enter the Key ID generated from the Dashboard
-                                            "amount": _jointherevolution.fnappendAmt, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                                            "amount": _jointherevolution.fnappendAmt * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
                                             "currency": "INR",
                                             "name": _jointherevolution.varfullname,
                                             "description": "Test Transaction",
@@ -144,7 +144,7 @@ var _jointherevolution = {
         }
     },
     fnSaveSuccess_Razorpay: function (response) {
-        
+
         // Create FormData object
         var fileData = new FormData();
 

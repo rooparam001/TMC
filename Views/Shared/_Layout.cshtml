@@ -87,10 +87,10 @@
                                 {
                                     <a class="dropdown-item" href="/account/EditYourProfile">My Account</a>
                                     <a class="dropdown-item" href="/account/Logout">Logout</a>
+                                    <a class="dropdown-item" href="/account/Plays">Plays</a>
                                     @if (this.User.IsInRole("ADMINISTRATOR"))
                                     {
                                         <a class="dropdown-item" href="/account/UpComingPlays">Upcoming Plays</a>
-                                        <a class="dropdown-item" href="/account/Plays">Plays</a>
                                         <a class="dropdown-item" href="/account/Profiles">Profiles</a>
                                         <a class="dropdown-item" href="/account/GiveAway">GiveAway</a>
                                         <a class="dropdown-item" href="/account/Directors">Directors</a>
@@ -113,6 +113,9 @@
                                 <a class="nav-link" href="/home/Giveaway">Giveaways</a>
                             </li>
                         }
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/jointherevolution">Join the revolution</a>
+                        </li>
                     </ul>
                     <form class="form-inline">
                         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" style="display:none;" />

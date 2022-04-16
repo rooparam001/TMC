@@ -367,7 +367,7 @@ namespace TMC.DBConnections
         }
         public TBL_PLAYSMASTER fn_GetSinglePlayByID(int ID, int UserID)
         {
-            return this.TBL_PLAYSMASTER.Where(x => x.ID == ID && x.ISENABLE && x.CREATEDBY == UserID).FirstOrDefault();
+            return this.TBL_PLAYSMASTER.Where(x => x.ID == ID && x.ISENABLE && (UserID == 0 ? true : x.CREATEDBY == UserID)).FirstOrDefault();
         }
         public TBL_GENREMASTER fn_GetSingleGenreByID(int ID)
         {

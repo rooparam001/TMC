@@ -52,6 +52,6 @@ _playsMaster = {
         }
     },
     fnEditData_ID: function (ID) {
-        window.location.href = ('/account/ListYourPlay/?editobj=' + ID);
+        window.location.href = ('/account/editYourPlay/?editobj=' + ID);
     }
 };

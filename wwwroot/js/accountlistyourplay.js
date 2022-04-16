@@ -1,5 +1,7 @@
 ﻿$(document).ready(function () {
 
+
+
     $('#btnUpload').click(function () {
 
         // Checking whether FormData is available in browser

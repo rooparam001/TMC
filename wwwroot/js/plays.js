@@ -11,26 +11,31 @@ _playsMaster = {
             dataType: "json",
             method: 'GET',
             success: function (data) {
-
+                
                 $('.lbltitle').html(data.data.title);
                 $('.lbladdedondate').html((data.data.datecreated ? data.data.datecreated : '') + (data.data.duration ? ' - ' + data.data.duration : ''));
 
-                var genreList = data.data.genre.toString().split(",");
-                for (let index = 0; index < genreList.length; ++index) {
-                    $('.lblgenre').append(genreList[index]);
+                if (data.data.genre) {
+                    var genreList = data.data.genre.toString().split(",");
+                    for (let index = 0; index < genreList.length; ++index) {
+                        $('.lblgenre').append(genreList[index]);
+                    }
+                }
+                if (data.data.langauage) {
+                    var languageList = data.data.langauage.toString().split(",");
+                    for (let index = 0; index < languageList.length; ++index) {
+                        $('.lblLanguage').append(languageList[index]);
+                    }
                 }
 
-                var languageList = data.data.langauage.toString().split(",");
-                for (let index = 0; index < languageList.length; ++index) {
-                    $('.lblLanguage').append(languageList[index]);
-                }
-
-                var sliderList = data.data.imageurl.toString().split(",");
-                for (let index = 0; index < sliderList.length; ++index) {
-                    if (index == 0)
-                        $('.carousel-inner').append('<div class="carousel-item active"><img class="d-block w-100" src ="/Blogs/Plays/' + sliderList[index] + '" alt ="First slide"></div>');
-                    else
-                        $('.carousel-inner').append('<div class="carousel-item"><img class="d-block w-100" src ="/Blogs/Sliders/' + sliderList[index] + '" alt ="Sliders"></div>');
+                if (data.data.imageurl) {
+                    var sliderList = data.data.imageurl.toString().split(",");
+                    for (let index = 0; index < sliderList.length; ++index) {
+                        if (index == 0)
+                            $('.carousel-inner').append('<div class="carousel-item active"><img class="d-block w-100" src ="/Blogs/Plays/' + sliderList[index] + '" alt ="First slide"></div>');
+                        else
+                            $('.carousel-inner').append('<div class="carousel-item"><img class="d-block w-100" src ="/Blogs/Sliders/' + sliderList[index] + '" alt ="Sliders"></div>');
+                    }
                 }
 
                 $('label[name="lblwriter"]').html(data.data.writer);
