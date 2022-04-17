@@ -12,7 +12,6 @@
     }
 
     .pay-success, .pay-failure {
-        background-color: white;
         display: none;
     }
 
@@ -25,7 +24,7 @@
         }
 
         .pay-success p {
-            color: #404F5E;
+            color: #ffe1e6;
             font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
             font-size: 20px;
             margin: 0;
@@ -48,7 +47,7 @@
         }
 
         .pay-failure p {
-            color: #404F5E;
+            color: #ffe1e6;
             font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
             font-size: 20px;
             margin: 0;
@@ -70,11 +69,11 @@
     }
 </style>
 <main role="main">
-    <section class="jumbotron text-center">
+    @*<section class="jumbotron text-center">
         <div class="container">
-            <h1 class="jumbotron-heading">join the revolution</h1>
+        <h1 class="jumbotron-heading">join the revolution</h1>
         </div>
-    </section>
+        </section>*@
 
     <div class="album py-5">
         <div class="container">
@@ -742,7 +741,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row justify-content-md-center">
                 <div class="col-md-4 text-center pay-success">
                     <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
                         <i class="checkmark">✓</i>
@@ -751,13 +750,13 @@
                     <p>We received your purchase request;<br /> we'll be in touch shortly!</p>
                 </div>
             </div>
-            <div class="row">
+            <div class="row justify-content-md-center">
                 <div class="col-md-4 text-center pay-failure">
                     <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
                         <i class="checkmark">X</i>
                     </div>
                     <h1>Failure</h1>
-                    <p>Something must have went sideways;<br /> you could always try again!</p>
+                    <p>Something must have went sideways;<br /> click <a href="/home/jointherevolution">retry</a> to try again.</p>
                 </div>
             </div>
         </div>

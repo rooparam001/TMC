@@ -175,7 +175,7 @@ namespace TMC.Controllers
                         if (relationModelObj.ID > 0)
                         {
                             relationModelObj.PKey = Donation.GenerateOrder(_config.GetValue<string>("AppSettingParams:RazorPay:LiveID"), _config.GetValue<string>("AppSettingParams:RazorPay:LiveKey"), relationModelObj);
-                            relationModelObj.PID = _config.GetValue<string>("AppSettingParams:RazorPay:SandboxID");
+                            relationModelObj.PID = _config.GetValue<string>("AppSettingParams:RazorPay:LiveID");
                             relationModelObj = Donation.Save(relationModelObj);
                             if (relationModelObj != null)
                             {

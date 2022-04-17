@@ -1,11 +1,12 @@
 ﻿$(document).ready(function () {
+
     $('input[name="btnSubmit"]').click(function () {
         _jointherevolution.varamt = $('input[name="txtdonateamt"]').val();
         _jointherevolution.varcityid = $('#ddlCity option:selected').val();
         _jointherevolution.varfullname = $('input[name="txtfullname"]').val();
         _jointherevolution.varemailid = $('input[name="txtemailid"]').val();
         _jointherevolution.varcontactnumber = $('input[name="txtcontactnumber"]').val();
-
+        _jointherevolution.varamt = (_jointherevolution.varamt * 100);
         if (_jointherevolution.validateUserEmail(_jointherevolution.varemailid)) {
             if (_jointherevolution.validateUserName(_jointherevolution.varfullname)) {
                 if (_jointherevolution.validateUserNumber(_jointherevolution.varcontactnumber)) {
@@ -33,12 +34,13 @@
                             success: function (result) {
                                 if (result.respstatus == 0) {
                                     if (result.data.id > 0) {
+                                        debugger;
                                         _jointherevolution.pKey = result.data.pKey;
                                         _jointherevolution.pID = result.data.pid;
 
                                         var options = {
                                             "key": _jointherevolution.pID, // Enter the Key ID generated from the Dashboard
-                                            "amount": _jointherevolution.fnappendAmt * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                                            "amount": _jointherevolution.varamt, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
                                             "currency": "INR",
                                             "name": _jointherevolution.varfullname,
                                             "description": "Test Transaction",
@@ -97,11 +99,6 @@ var _jointherevolution = {
     varcontactnumber: '',
     pID: '',
     pKey: '',
-    fnappendAmt: function (amt) {
-        if (!isNaN(amt)) {
-            $('input[name="txtdonateamt"]').val(amt);
-        }
-    },
     validateUserName: function (name) {
 
         if (name.length == '') {
@@ -163,6 +160,7 @@ var _jointherevolution = {
             success: function (result) {
 
                 $('.pay-area').hide();
+                $('.content-area').hide();
                 var dispresult = false;
                 if (result) {
                     if (result.respstatus == 0) {
@@ -205,6 +203,7 @@ var _jointherevolution = {
             success: function (result) {
 
                 $('.pay-area').hide();
+                $('.content-area').hide();
                 var dispresult = false;
                 if (result) {
                     if (result.respstatus == 0) {
