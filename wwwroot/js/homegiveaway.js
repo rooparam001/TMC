@@ -48,7 +48,9 @@ _allGiveawayMaster = {
                     }
 
                     htmlStr += '</div><a class="carousel-control-prev" href="#divCarousel' + cnt + '" role="button" data-slide="prev"><i class="fas fa-angle-left"></i></a><a class="carousel-control-next" href="#divCarousel' + cnt + '" role="button" data-slide="next"><i class="fas fa-angle-right"></i></a></div>';
-                    htmlStr += '<div class="card-body"><p class="card-text">' + (relationModelObj.objtitle ? relationModelObj.objtitle : '') + '</p><div class="d-flex justify-content-between align-items-center">' +
+                    htmlStr += '<div class="card-body"><p class="card-text">' + (relationModelObj.objtitle ? relationModelObj.objtitle : '') + '</p>' +
+                        (relationModelObj.creditstitle && relationModelObj.creditslink ? '<p class="card-text"><b>Credits: </b><a href="' + (relationModelObj.creditslink ? relationModelObj.creditslink : '#') + '">' + (relationModelObj.creditstitle ? relationModelObj.creditstitle : 'link') + '<a></p>' : '') +
+                        '<div class="d-flex justify-content-between align-items-center">' +
                         '<small class="text-muted">' + (relationModelObj.city ? relationModelObj.city : '') + '</small></div></div>';
 
                     sliderdataTable.append(htmlStr);

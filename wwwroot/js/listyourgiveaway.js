@@ -14,7 +14,7 @@ var _giveawayMaster = {
                 playdataTable.empty();
                 var rowCount = 0;
                 $(data.data).each(function (index, relationModelObj) {
-
+                    
                     rowCount++;
                     playdataTable.append('<tr><td>' + rowCount + '</td><td>' +
                         relationModelObj.objtitle + '</td><td>' + relationModelObj.city + '</td><td>' +

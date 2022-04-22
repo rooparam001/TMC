@@ -936,7 +936,9 @@ namespace TMC.Controllers
                     OBJCONTACTDETAILS = (string.IsNullOrEmpty(Request.Form["CONTACTDETAILS"]) ? "" : Request.Form["CONTACTDETAILS"].ToString()),
                     ISACCEPTED = false,
                     ISENABLE = true,
-                    isPDF = isPDF
+                    isPDF = isPDF,
+                    CREDITSLINK = (string.IsNullOrEmpty(Request.Form["CREDITSLINK"]) ? "" : Request.Form["CREDITSLINK"].ToString()),
+                    CREDITSTITLE = (string.IsNullOrEmpty(Request.Form["CREDITSTITLE"]) ? "" : Request.Form["CREDITSTITLE"].ToString()),
                 };
 
 

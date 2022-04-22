@@ -24,7 +24,9 @@ namespace TMC.AppRepository
                     OBJCONTACTDETAILS = obj.OBJCONTACTDETAILS.Trim(),
                     OBJTITLE = obj.OBJTITLE.Trim(),
                     ID = obj.ID,
-                    ISPDF = obj.isPDF
+                    ISPDF = obj.isPDF,
+                    CREDITSLINK = obj.CREDITSLINK.Trim(),
+                    CREDITSTITLE = obj.CREDITSTITLE.Trim()
                 });
             }
 
@@ -64,7 +66,9 @@ namespace TMC.AppRepository
                     ID = x.ID,
                     ISACCEPTED = x.ISACCEPTED,
                     OBJTITLE = x.OBJTITLE,
-                    OBJPICTURES = Slider.GetCommaSeparated(x.ID, SliderObjectType.GiveAway)
+                    CREDITSLINK = x.CREDITSLINK,
+                    CREDITSTITLE = x.CREDITSTITLE,
+                    OBJPICTURES = Slider.GetCommaSeparated(x.ID, SliderObjectType.GiveAway),
                 }).ToList();
             }
             catch { respObj = new List<giveawayViewModel>(); }
@@ -87,6 +91,8 @@ namespace TMC.AppRepository
                     OBJAVAILABILITY = x.OBJAVAILABILITY,
                     OBJCONTACTDETAILS = x.OBJCONTACTDETAILS,
                     OBJTITLE = x.OBJTITLE,
+                    CREDITSLINK = x.CREDITSLINK,
+                    CREDITSTITLE = x.CREDITSTITLE,
                     OBJPICTURES = Slider.GetCommaSeparated(ID, SliderObjectType.GiveAway)
                 }).FirstOrDefault();
             }

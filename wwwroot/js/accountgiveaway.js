@@ -5,6 +5,8 @@
         _giveawayMaster.availability = $('#txtAvailability').val();
         _giveawayMaster.city = $('#ddlplaycity option:selected').val();
         _giveawayMaster.contactdetails = $('#txtContactDet').val();
+        _giveawayMaster.credits = $('#txtCredit').val();
+        _giveawayMaster.creditslink = $('#txtCreditLink').val();
 
         // Checking whether FormData is available in browser
         if (window.FormData !== undefined) {
@@ -25,6 +27,8 @@
             fileData.append('CITY', _giveawayMaster.city);
             fileData.append('AVAILABILITY', _giveawayMaster.availability);
             fileData.append('CONTACTDETAILS', _giveawayMaster.contactdetails);
+            fileData.append('CREDITSTITLE', _giveawayMaster.credits);
+            fileData.append('CREDITSLINK', _giveawayMaster.creditslink);
 
             $.ajax({
                 url: '/Account/SaveGiveaway',
@@ -49,5 +53,7 @@ var _giveawayMaster = {
     title: '',
     city: '',
     availability: '',
-    contactdetails: ''
+    contactdetails: '',
+    credits: '',
+    creditslink: ''
 };
