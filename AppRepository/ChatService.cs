@@ -28,7 +28,8 @@ namespace TMC.AppRepository
                             CHATMASTERID = model.GroupID,
                             CHATMESSAGE = model.ChatMessage.Trim(),
                             DATECREATED = DateTime.Now,
-                            SENDERID = model.SenderID
+                            SENDERID = model.SenderID,
+                            ISUNREAD = true
                         });
                     }
                 }
@@ -63,6 +64,18 @@ namespace TMC.AppRepository
             try
             {
                 respObj = _db.fn_GetAllChatContactsByUserID(sourceID);
+            }
+            catch { }
+            return respObj;
+        }
+
+        public static List<ChatServiceMessageListModel> GetUnReadChat(int GroupID, int UserID)
+        {
+            var _db = new TMCDBContext();
+            var respObj = new List<ChatServiceMessageListModel>();
+            try
+            {
+                respObj = _db.fn_GetAllUnReadChatByGroupID(GroupID, UserID);
             }
             catch { }
             return respObj;

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,17 +16,20 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TMC.AppRepository;
+using TMC.DBConnections;
 using TMC.Models;
+
 
 namespace TMC.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
-
+        
         public AccountController(IWebHostEnvironment webHostEnvironment)
         {
             _webHostEnvironment = webHostEnvironment;
+            
         }
         public IActionResult Verify() => View();
         public ActionResult login() => View();
@@ -50,6 +54,9 @@ namespace TMC.Controllers
             };
             return Json(resp);
         }
+
+       
+
         [HttpGet]
         public JsonResult login(string Email, string UPassword)
         {
@@ -70,13 +77,13 @@ namespace TMC.Controllers
                     {
                         var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
                         identity.AddClaim(new Claim(ClaimTypes.Name, _accountObj.UserName));
-                        identity.AddClaim(new Claim(ClaimTypes.Role, _accountObj.Role));
+                        identity.AddClaim(new Claim(ClaimTypes.Role, _accountObj.Role));                      
                         identity.AddClaim(new Claim("UserID", _accountObj.ID.ToString()));
 
                         var authProperties = new AuthenticationProperties
                         {
                             AllowRefresh = true,
-                            ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30),
+                            //ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30),
                             IsPersistent = true
                         };
 
@@ -638,7 +645,8 @@ namespace TMC.Controllers
                     USERTOTALEXPINYEARS = Request.Form["EXPYRS"],
                     PROFILETYPEOF = Request.Form["PROFILETYPEOF"],
                     USERAGE = (string.IsNullOrEmpty(Request.Form["USERAGE"]) ? 0 : Convert.ToInt32(Request.Form["USERAGE"].ToString())),
-                    USERGENDER = Request.Form["USERGENDER"]
+                    USERGENDER = Request.Form["USERGENDER"],
+                    WORKPROFILE = Request.Form["WORKPROFILE"]
                 };
 
                 var outputModelData = new registerloginUserViewModel()
@@ -1170,20 +1178,32 @@ namespace TMC.Controllers
         #endregion
 
         #region Chat region
-
+       
         [HttpGet]
         public JsonResult LoadNewGroup(int userID)
         {
-            var resp = new ajaxResponse()
+            var senderID = _getuserLoggedinID();
+            if (senderID != 0)
             {
-                data = ChatService.SaveGroup(new ChatServiceMessageListModel()
+                var resp = new ajaxResponse()
                 {
-                    SenderID = _getuserLoggedinID(),
-                    UserID = userID
-                }),
-                respstatus = ResponseStatus.success
-            };
-            return Json(resp);
+                    data = ChatService.SaveGroup(new ChatServiceMessageListModel()
+                    {
+                        SenderID = _getuserLoggedinID(),
+                        UserID = userID
+                    }),
+                    respstatus = ResponseStatus.success
+                };
+                return Json(resp);
+            }
+            else
+            {
+                var resp = new ajaxResponse()
+                {
+                    respstatus = ResponseStatus.success
+                };
+                return Json(resp);
+            }
         }
 
         [HttpGet]
@@ -1194,6 +1214,26 @@ namespace TMC.Controllers
                 data = ChatService.GetGroupChat(groupID, _getuserLoggedinID(), LastMsgID),
                 respstatus = ResponseStatus.success
             };
+            return Json(resp);
+        }
+
+        [HttpGet]
+        public JsonResult GetAllUnReadChat()
+        {
+            List<ChatServiceContactModel> data = ChatService.GetAll(_getuserLoggedinID());
+           var filteredData = data.Where(x=>x.isSelfAccount != true);
+           var result = new List<ChatServiceMessageListModel>();
+           foreach(var model in filteredData)
+            {
+                result.AddRange(ChatService.GetUnReadChat(model.GroupID, _getuserLoggedinID()));
+            }
+            var resp = new ajaxResponse()
+            {
+                data = result.Count,
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
+
             return Json(resp);
         }
 
@@ -1318,10 +1358,120 @@ namespace TMC.Controllers
             //return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ForgotPassword(ForgotPasswordModel forgotPasswordModel)
+        {
+            EmailManager emailManager = new EmailManager();
+            if (!ModelState.IsValid)
+                return View(forgotPasswordModel);
+            var modelDetails = AppUsers.FindUserByEmail(forgotPasswordModel.Email);
+            if (modelDetails.Email == null || modelDetails.UserStatus == false)
+                return RedirectToAction(nameof(ForgotPasswordConfirmation));            
+            var callback = Url.Action(nameof(ResetPassword), "Account", new { token=modelDetails.Token, email = modelDetails.Email }, Request.Scheme);
+            emailManager.SendEmail("Reset Password Link", "<b> Please find the Password Reset Link. </b ><br/>" + callback,modelDetails.Email);
+            return RedirectToAction(nameof(ForgotPasswordConfirmation));
+        }
+
+        public IActionResult ResetLinkExpired()
+        {
+            return View();
+        }
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+        [Authorize]
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string token, string email)
+        {
+            var model = new ResetPasswordModel { Token = token, Email = email };
+            var modelDetails = AppUsers.GetUserByEmail(email);
+            if (modelDetails != null && modelDetails.Token == token && modelDetails.TokenExpireDate > DateTime.Now)
+            {
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction(nameof(ResetLinkExpired));
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ResetPassword(ResetPasswordModel resetPasswordModel)
+        {
+            if (!ModelState.IsValid)
+                return View(resetPasswordModel);
+
+            var user = AppUsers.GetUserByEmail(resetPasswordModel.Email);
+            if (user == null)
+                RedirectToAction(nameof(ResetPasswordConfirmation));
+
+            var resetPassResult = AppUsers.ResetPassword(user, resetPasswordModel.Token, resetPasswordModel.Password);
+            if (!resetPassResult.UserStatus)
+            {                
+                ModelState.TryAddModelError("403","Error updating password");
+                return View();
+            }
+            return RedirectToAction(nameof(ResetPasswordConfirmation));
+        }
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ChangePassword(ChangePasswordModel changePasswordModel)
+        {
+            if (!ModelState.IsValid)
+                return View(changePasswordModel);
+            var user = AppUsers.GetUserByID(User.FindFirst("UserID").Value);
+            if (user == null)
+                return View();
+
+            var resetPassResult = AppUsers.ChangePassword(user, changePasswordModel.Password);
+            if (!resetPassResult.UserStatus)
+            {
+                ModelState.TryAddModelError("403", "Error updating password");
+                return View();
+            }
+            return RedirectToAction(nameof(ChangePasswordConfirmation)); 
+        }
+        [Authorize]
+        [HttpGet]
+        public IActionResult ChangePasswordConfirmation()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return View();
+        }
         public int _getuserLoggedinID()
         {
             var userID = 0;
-            int.TryParse(User.FindFirst("UserID").Value, out userID);
+            try
+            {
+                if (User.Identity.Name != null)
+                {
+                    int.TryParse(User.FindFirst("UserID").Value, out userID);
+                }
+            }
+            catch
+            {
+
+            }
             return userID;
         }
 

@@ -223,3 +223,25 @@ button {
     background-position-x: center;
     background-position-y: center;
 }
+
+.change-password{
+    margin:0 auto;
+    width:50%;
+}
+
+.change-password-p {
+    margin: 0 auto;
+    width: 50%;
+    font-size: large;
+    color: white;
+}
+.badge {
+    padding: 5px 10px;
+    border-radius: 50%;
+    background-color: red;
+    color: white;
+}
+
+.work-links{
+    display:block;
+}

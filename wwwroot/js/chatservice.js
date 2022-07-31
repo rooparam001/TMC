@@ -27,7 +27,7 @@
                             chatService.userPic = relationModelObj.contactPic;
                         }
                         var ppic = (relationModelObj.contactPic ? '/Blogs/ProfileData/' + relationModelObj.contactPic : 'https://www.bootdey.com/img/Content/avatar/avatar3.png');
-                        playdataTable.append('<li class="person" data-chat="person1"><div class="user"><img src="' + ppic + '" alt="' + relationModelObj.groupID + '">' +
+                        playdataTable.append('<li onclick="chatService.fnLoadSelectedChat(' + relationModelObj.groupID +');" class="person" data-chat="person1"><div class="user"><img src="' + ppic + '" alt="' + relationModelObj.groupID + '">' +
                             '</div><p class="name-time"><span class="name">' + relationModelObj.contactName + '</span><br /><span class="time">' + relationModelObj.lastDateTime + '</span></p></li>');
                     }
                     else
@@ -40,6 +40,10 @@
             }
         });
     },
+    fnLoadSelectedChat: function (groupId) {
+        chatService.groupID = groupId;
+        chatService.fnloadChatData();
+    },
     fnloadChatData: function () {
         const messagesDiv = document.getElementsByClassName('chatContainerScroll');
         $.ajax({
@@ -48,13 +52,14 @@
             data: { 'groupID': chatService.groupID, 'LastMsgID': chatService.LastMsgID },
             method: 'GET',
             success: function (data) {
+                $('toName').html("");
                 if (data.data.length > 0) {
                     var playdataTable = $('.chatContainerScroll');
                     if (chatService.LastMsgID == 0)
                         playdataTable.empty();
 
                     var groupPartyObj = chatService.fnfinditemFromContactList(chatService.contactArr, 'groupID', chatService.groupID);
-                    $('.name').html(groupPartyObj[0].contactName);
+                    $('#toName').html(groupPartyObj[0].contactName);
                     $(data.data).each(function (index, relationModelObj) {
 
                         if (relationModelObj.isSenderSelfAccount) {
@@ -70,10 +75,13 @@
                                 ' <div class="chat-hour">' + relationModelObj.dateCreated + '</div></li>');
                         }
 
-                        chatService.LastMsgID = relationModelObj.msgID;
+                      //  chatService.LastMsgID = relationModelObj.msgID;
                     });
 
                     messagesDiv[0].scrollTop = messagesDiv[0].scrollHeight;
+                }
+                else if (chatService.LastMsgID == 0){
+                    $('.chatContainerScroll').empty()
                 }
             },
             error: function (err) {
@@ -94,6 +102,26 @@
         }
         return objects;
     },
+    fnloadUnreadChat: function () {
+        $.ajax({
+            url: '/Account/GetAllUnReadChat',
+            dataType: "json",
+            method: 'GET',
+            success: function (data) {
+                if (data.data > 0) {
+                    $('#count').html(data.data);
+                    $("#count").css("display", "inline-block");
+                }
+                else {
+                    $("#count").css("display", "none");
+                }
+                
+            },
+            error: function (err) {
+                alert(err.statusText);
+            }
+        });
+    },
     fnloadnewgroup: function (userid) {
         $.ajax({
             url: '/Account/LoadNewGroup',
@@ -101,7 +129,10 @@
             data: { 'userID': userid },
             method: 'GET',
             success: function (data) {
-                if (data.data.groupname != null) {
+                if (data.data == null) {
+                    window.location.href = '/Account/Verify';
+                }                
+                else if (data.data.groupname != null) {
                     window.location.href = '/Account/Message/';
                 }
             },

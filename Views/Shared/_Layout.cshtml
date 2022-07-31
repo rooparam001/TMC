@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/css/loadingcurtain.css" rel="stylesheet" />
-
+    <script src="~/js/chatservice.js"></script>
     <script src="~/js/popper.min.js"></script>
     <script src="https://kit.fontawesome.com/c4bda478c8.js" crossorigin="anonymous"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -16,6 +16,14 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.1/font/bootstrap-icons.css">
     <script src="~/js/loadingcurtain.js"></script>
+    <script>
+        $(document).ready(function () {
+            chatService.fnloadUnreadChat();
+            window.setInterval(function () {
+                chatService.fnloadUnreadChat();
+            }, 5000);
+        });
+    </script>
 </head>
 <body>
     <div class="loadingcurtain-main">
@@ -73,7 +81,10 @@
                                 Join Us
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarJoinUs">
-                                <a class="dropdown-item" href="/account/ListYourProfile/">List your Profile</a>
+                                @if (!User.Identity.IsAuthenticated)
+                                {
+                                    <a class="dropdown-item" href="/account/ListYourProfile/">List your Profile</a>
+                                }
                                 @if (User.Identity.IsAuthenticated)
                                 {
                                     <a class="dropdown-item" href="/account/ListYourPlay/">List your Play</a>
@@ -89,6 +100,7 @@
                                 @if (User.Identity.IsAuthenticated)
                                 {
                                     <a class="dropdown-item" href="/account/EditYourProfile">My Account</a>
+                                    <a class="dropdown-item" href="/account/ChangePassword">Change Password</a>
                                     <a class="dropdown-item" href="/account/Logout">Logout</a>
                                     <a class="dropdown-item" href="/account/Plays">Plays</a>
                                     @if (this.User.IsInRole("ADMINISTRATOR"))
@@ -107,18 +119,25 @@
                                 }
                             </div>
                         </li>
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" href="/home/Backstage/">Backstage</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/home/Giveaway">Giveaways</a>
-                            </li>
-                        }
+                        @*@if (User.Identity.IsAuthenticated)
+        {*@
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/Backstage/">Backstage</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/Giveaway">Giveaways</a>
+                        </li>
+                        @*}*@
                         <li class="nav-item">
                             <a class="nav-link" href="/home/jointherevolution">Join the revolution</a>
                         </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Account/Message">Chat
+                            <span id="count" class="badge"></span></a>
+                        </li>
+                        }
                     </ul>
                     <form class="form-inline">
                         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" style="display:none;" />

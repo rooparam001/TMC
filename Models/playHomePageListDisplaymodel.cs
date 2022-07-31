@@ -13,5 +13,6 @@ namespace TMC.Models
         public int TokenID { get; set; }
         public string DateCreated { get; set; }
         public string BookUrl { get; set; }
+        public int CreatedBy { get; set; }
     }
 }

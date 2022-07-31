@@ -198,6 +198,31 @@ namespace TMC.DBConnections
             return respObj;
         }
 
+        public List<ChatServiceMessageListModel> fn_GetAllUnReadChatByGroupID(int GroupID, int HostID)
+        {
+            var respObj = new List<ChatServiceMessageListModel>();
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    respObj = context.TBL_CHATMESSAGEMASTER.Where(x => x.CHATMASTERID == GroupID && x.ISUNREAD == true && x.SENDERID != HostID).Select(y => new ChatServiceMessageListModel()
+                    {
+                        GroupID = GroupID,
+                        SenderID = y.SENDERID,
+                        ChatMessage = y.CHATMESSAGE,
+                        isSenderSelfAccount = (y.SENDERID == HostID ? true : false),
+                        DateCreated = y.DATECREATED.ToString("HH:mm"),
+                        MsgID = y.ID,
+                        IsUnRead = y.ISUNREAD
+                    }).ToList();
+                    
+                }
+            }
+            catch(Exception ex) { respObj = new List<ChatServiceMessageListModel>(); }
+            return respObj;
+        }
+
+
         public List<ChatServiceMessageListModel> fn_GetAllChatByGroupID(int GroupID, int HostID, int LastMsgID = 0)
         {
             var respObj = new List<ChatServiceMessageListModel>();
@@ -206,17 +231,30 @@ namespace TMC.DBConnections
                 using (var context = new TMCDBContext())
                 {
                     respObj = context.TBL_CHATMESSAGEMASTER.Where(x => x.CHATMASTERID == GroupID && (LastMsgID == 0 ? true : x.ID > LastMsgID)).Select(y => new ChatServiceMessageListModel()
-                    {
+                    {                       
                         GroupID = GroupID,
                         SenderID = y.SENDERID,
                         ChatMessage = y.CHATMESSAGE,
                         isSenderSelfAccount = (y.SENDERID == HostID ? true : false),
                         DateCreated = y.DATECREATED.ToString("HH:mm"),
-                        MsgID = y.ID
+                        MsgID = y.ID,
+                        IsUnRead = y.ISUNREAD
                     }).ToList();
+
+                    var allMessage = context.TBL_CHATMESSAGEMASTER.Where(x => x.CHATMASTERID == GroupID && (LastMsgID == 0 ? true : x.ID > LastMsgID) && (x.SENDERID != HostID)).ToList();
+                   if (allMessage != null)
+                    {
+                        foreach (var Message in allMessage.Where(x=>x.ISUNREAD=true).ToList())
+                        {
+                            Message.ISUNREAD = false;
+                            context.TBL_CHATMESSAGEMASTER.Update(Message);
+                            context.SaveChanges();
+                        }
+                    }
+                  
                 }
             }
-            catch { respObj = new List<ChatServiceMessageListModel>(); }
+            catch(Exception ex) { respObj = new List<ChatServiceMessageListModel>(); }
             return respObj;
         }
 
@@ -290,6 +328,33 @@ namespace TMC.DBConnections
             catch (Exception ex) { respObj = new AccountMaster(); }
             return respObj;
         }
+
+        public registerloginUserViewModel fn_UpdateUser(registerloginUserViewModel obj)
+        {
+            Tbl_AccountMaster tblObj = new Tbl_AccountMaster();
+            tblObj = this.Tbl_AccountMaster.Where(x => x.Email == obj.Email).FirstOrDefault();
+            try
+            {
+                tblObj.Token = obj.Token;
+                tblObj.TokenExpireDate = obj.TokenExpireDate;
+                tblObj.ContactNumber = obj.ContactNumber;
+                tblObj.DateCreated = DateTime.Now;
+                tblObj.Email = obj.Email.Trim();
+                tblObj.UserName = obj.UserName.Trim();
+                tblObj.UserPassword = obj.Password.Trim();
+                tblObj.UserStatus = true;
+                tblObj.Token = obj.Token;
+                tblObj.TokenExpireDate = obj.TokenExpireDate;
+                using (var context = new TMCDBContext())
+                {
+                    context.Tbl_AccountMaster.Update(tblObj);
+                    context.SaveChanges();
+                    obj.UserStatus = true;
+                }
+            }
+            catch (Exception ex) { obj = new registerloginUserViewModel() { UserStatus = false }; }
+            return obj;
+        }
         public registerloginUserViewModel fn_SaveUser(registerloginUserViewModel obj)
         {
             var tblObj = new Tbl_AccountMaster()
@@ -300,7 +365,9 @@ namespace TMC.DBConnections
                 RoleID = (string.IsNullOrEmpty(obj.userrole) ? this.fn_SaveRole("Viewer").ID : this.fn_SaveRole(obj.userrole).ID),
                 UserName = obj.UserName.Trim(),
                 UserPassword = obj.Password.Trim(),
-                UserStatus = true
+                UserStatus = true,
+                Token=obj.Token,
+                TokenExpireDate=obj.TokenExpireDate
             };
             try
             {

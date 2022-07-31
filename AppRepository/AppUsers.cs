@@ -1,5 +1,6 @@
 ﻿using EntitesInterfaces.AppModels;
 using EntitesInterfaces.DBEntities;
+using System;
 using System.Collections.Generic;
 using TMC.DBConnections;
 using TMC.Models;
@@ -49,6 +50,139 @@ namespace TMC.AppRepository
             return obj;
         }
 
+        public static registerloginUserViewModel GetUserByEmail(string Email)
+        {
+            registerloginUserViewModel user = null;
+            if (!string.IsNullOrEmpty(Email))
+            {
+                var accObj = new Tbl_AccountMaster();
+                accObj = new TMCDBContext().fn_GetUserByEmail(Email.Trim());
+                if (accObj != null)
+                {
+                    user = new registerloginUserViewModel();
+                    user.Email = accObj.Email;
+                    user.ContactNumber = accObj.ContactNumber;
+                    user.Password = accObj.UserPassword;
+                    user.UserName = accObj.UserName;
+                    user.Token = accObj.Token;
+                    user.TokenExpireDate = accObj.TokenExpireDate;                    
+                }
+            }
+            return user;
+        }
+
+        public static registerloginUserViewModel GetUserByID(string ID)
+        {
+            registerloginUserViewModel user = null;
+            if (!string.IsNullOrEmpty(ID))
+            {
+                var accObj = new AccountMaster();
+                accObj = new TMCDBContext().fn_GetUserByID(Convert.ToInt32(ID));
+                if (accObj != null)
+                {
+                    user = new registerloginUserViewModel();
+                    user.Email = accObj.Email;
+                    user.ContactNumber = accObj.ContactNumber;
+                  //  user.Password = accObj.p;
+                    user.UserName = accObj.UserName;
+                    user.Token = accObj.Token;
+                    user.TokenExpireDate = accObj.TokenExpireDate;
+                }
+            }
+            return user;
+        }
+
+        public static registerloginUserViewModel FindUserByEmail(string Email)
+        {
+            registerloginUserViewModel user = null;
+            if (!string.IsNullOrEmpty(Email))
+            {
+                var accObj = new Tbl_AccountMaster();
+                accObj = new TMCDBContext().fn_GetUserByEmail(Email.Trim());
+                if (accObj != null && accObj.Email == Email)
+                {                    
+                    user = new registerloginUserViewModel();
+                    user.Email = accObj.Email;
+                    user.ContactNumber = accObj.ContactNumber;
+                    user.Password = accObj.UserPassword;
+                    user.UserName = accObj.UserName;
+                    user.Token = Guid.NewGuid().ToString();
+                    user.TokenExpireDate = DateTime.Now.AddDays(1);
+                    var saveObj = new TMCDBContext().fn_UpdateUser(user);
+                    user.UserStatus = saveObj.UserStatus;
+                    
+                }
+            }
+            return user;
+        }
+
+        public static registerloginUserViewModel ResetPassword(registerloginUserViewModel user, string token, string password)
+        {
+            registerloginUserViewModel saveObj = null;
+            if (!string.IsNullOrEmpty(password))
+            {
+                var accObj = new Tbl_AccountMaster();
+                accObj = new TMCDBContext().fn_GetUserByEmail(user.Email.Trim());
+                if (accObj != null && accObj.Email == user.Email && accObj.Token == token)
+                {
+                    user.Password = password;
+                    user.Token = "";
+                    user.TokenExpireDate = DateTime.MinValue;
+                    saveObj = new TMCDBContext().fn_UpdateUser(user);
+                    if(saveObj.UserStatus)
+                    {
+                        saveObj.validationMessage = "Password updated successfully";
+                    }
+                    else
+                    {
+                        saveObj.validationMessage = "Password has not been updated";
+                    }
+                }
+                else
+                {
+                    saveObj = new registerloginUserViewModel()
+                    {
+                        UserStatus = false,
+                        validationMessage = "Password has not been updated"
+                    };
+                }
+            }
+            return saveObj;
+        }
+
+        public static registerloginUserViewModel ChangePassword(registerloginUserViewModel user, string password)
+        {
+            registerloginUserViewModel saveObj = null;
+            if (!string.IsNullOrEmpty(password))
+            {
+                var accObj = new Tbl_AccountMaster();
+                accObj = new TMCDBContext().fn_GetUserByEmail(user.Email.Trim());
+                if (accObj != null && accObj.Email == user.Email)
+                {
+                    user.Password = password;
+                    user.Token = "";
+                    user.TokenExpireDate = DateTime.MinValue;
+                    saveObj = new TMCDBContext().fn_UpdateUser(user);
+                    if (saveObj.UserStatus)
+                    {
+                        saveObj.validationMessage = "Password updated successfully";
+                    }
+                    else
+                    {
+                        saveObj.validationMessage = "Password has not been updated";
+                    }
+                }
+                else
+                {
+                    saveObj = new registerloginUserViewModel()
+                    {
+                        UserStatus = false,
+                        validationMessage = "Password has not been updated"
+                    };
+                }
+            }
+            return saveObj;
+        }
         public static registerloginUserViewModel GetUserByEmailPassword(registerloginUserViewModel obj)
         {
 

@@ -130,7 +130,8 @@ namespace TMC.Controllers
                     ThumbnailUrl = x.IMAGEURL,
                     Title = x.TITLE,
                     About = (x.SYNOPSIS.Length > 100 ? x.SYNOPSIS.Substring(0, 100) : x.SYNOPSIS),
-                    BookUrl = x.TRAILERLINK
+                    BookUrl = x.TRAILERLINK,
+                    CreatedBy = x.CREATEDBY
                 }).ToList(),
                 respstatus = ResponseStatus.success
             };
@@ -233,6 +234,11 @@ namespace TMC.Controllers
             }
 
             return Json(resp);
+        }
+
+        public IActionResult BackstageProfile()
+        {
+            return View();
         }
 
         [HttpPost]

@@ -14,6 +14,7 @@
         _listyourprofileMaster.age = $('[name="txtAge"]').val();
         _listyourprofileMaster.gender = $('[name="selectGender"]').val();
         _listyourprofileMaster.contactNumber = $('[name="txtContactNumber"]').val();
+        _listyourprofileMaster.workProfile = $('[name="txtWorkProfile"]').val();
 
         if (_listyourprofileMaster.typeOf == null || _listyourprofileMaster.typeOf == '') {
             alert("Type of can't be empty.");
@@ -94,7 +95,7 @@
                 fileData.append('USERGENDER', _listyourprofileMaster.gender);
 
                 fileData.append('CONTACTNUMBER', _listyourprofileMaster.contactNumber);
-
+                fileData.append('WORKPROFILE', _listyourprofileMaster.workProfile)
                 $.ajax({
                     url: '/Account/SaveProfile',
                     type: "post",
@@ -179,7 +180,7 @@ var _listyourprofileMaster = {
                 $('[name="txtExpYrs"]').html(data.data.usertotalexpinyears);
                 $('[name="txtContactNumber"]').html(data.data.contactNumber);
                 $('[name="txtLanguages"]').html(data.data.userlanguages);
-
+                $('[name="txtWorkProfile"]').html(data.data.workprofile);
                 var htmlStr = '';
                 var arrayOfFiles = [];
                 if (data.data.userdegreeurl) {

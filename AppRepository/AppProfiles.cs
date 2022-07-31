@@ -39,7 +39,8 @@ namespace TMC.AppRepository
                             USERAGE = obj.USERAGE,
                             PROFILEPICTURE = obj.ImageURL,
                             ACCOUNTID = obj.AccountID,
-                            ID = obj.ID
+                            ID = obj.ID,
+                            WORKPROFILE = obj.WORKPROFILE
                         };
 
                         //setting user's languages
@@ -127,6 +128,7 @@ namespace TMC.AppRepository
                         USERTITLE = x.USERTITLE,
                         PROFILETYPEOF = x.PROFILETYPEOF,
                         ImageURL = x.PROFILEPICTURE,
+                        USERLANGUAGES = x.USERLANGUAGES,
                         AccountID = new TMCDBContext().fn_GetUserByEmail(x.USEREMAIL).ID
                     }).ToList();
 
@@ -135,7 +137,7 @@ namespace TMC.AppRepository
                 {
                     foreach (var currProfile in respCopy)
                     {
-                        if (currProfile.USERLANGUAGES.Split(',').Contains(language))
+                        if (currProfile.USERLANGUAGES != null && currProfile.USERLANGUAGES.Split(',').Contains(language))
                             resp.Add(currProfile);
                     }
                 }
@@ -173,7 +175,8 @@ namespace TMC.AppRepository
                     USERTITLE = x.USERTITLE,
                     USERUPLOADEDWORK = x.USERUPLOADEDWORK,
                     PROFILETYPEOF = x.PROFILETYPEOF,
-                    ImageURL = x.PROFILEPICTURE
+                    ImageURL = x.PROFILEPICTURE,
+                    WORKPROFILE = x.WORKPROFILE
                 }).FirstOrDefault();
 
                 if (!string.IsNullOrEmpty(resp.USERCITY.Trim()))
@@ -240,7 +243,8 @@ namespace TMC.AppRepository
                     ImageURL = x.PROFILEPICTURE,
                     USERAGE = x.USERAGE.Value,
                     AccountID = x.ACCOUNTID,
-                    USERGENDER = x.USERGENDER
+                    USERGENDER = x.USERGENDER,
+                    WORKPROFILE = x.WORKPROFILE
                 }).FirstOrDefault();
 
                 resp.ContactNumber = new TMCDBContext().fn_GetUserByID(resp.AccountID).ContactNumber;

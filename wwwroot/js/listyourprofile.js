@@ -10,6 +10,7 @@
         _listyourprofileMaster.password = $('[name="txtPassword"]').val();
         _listyourprofileMaster.confirmpassword = $('[name="txtConfirmPassword"]').val();
         _listyourprofileMaster.contactNumber = $('[name="txtContactNumber"]').val();
+        _listyourprofileMaster.workProfile = $('[name="txtWorkProfile"]').val();
 
         if (_listyourprofileMaster.typeOf == null || _listyourprofileMaster.typeOf == '') {
             alert("Type of can't be empty.");
@@ -50,7 +51,7 @@
 
                             fileData.append('PASSWORD', _listyourprofileMaster.password);
                             fileData.append('CONTACTNUMBER', _listyourprofileMaster.contactNumber);
-
+                            fileData.append('WORKPROFILE', _listyourprofileMaster.workProfile)
                             $.ajax({
                                 url: '/Account/SaveProfile',
                                 type: "post",
