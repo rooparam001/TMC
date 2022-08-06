@@ -20,8 +20,9 @@
 
                 $(data.data).each(function (index, relationModelObj) {
 
+
                     if (!relationModelObj.isSelfAccount) {
-                        if (isFirst) {
+                        if (isFirst && (chatService.groupID == null || chatService.groupID == 0)) {
                             isFirst = false;
                             chatService.groupID = relationModelObj.groupID;
                             chatService.userPic = relationModelObj.contactPic;
