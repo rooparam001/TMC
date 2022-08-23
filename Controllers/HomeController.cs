@@ -33,6 +33,7 @@ namespace TMC.Controllers
         public IActionResult AllPlays() => View();
         public IActionResult AllDirectors() => View();
         public IActionResult Giveaway() => View();
+        public IActionResult Script() => View();
         public IActionResult Backstage() => View();
         public IActionResult JoinTheRevolution() => View();
         public IActionResult Plays(int objToken)
@@ -64,6 +65,17 @@ namespace TMC.Controllers
             var resp = new ajaxResponse()
             {
                 data = GiveAways.getAll(ID, city, searchTxt, giveawayType),
+                respstatus = ResponseStatus.success
+            };
+            return Json(resp);
+        }
+
+        [HttpGet]
+        public JsonResult GetAllScripts(int ID = 0, int city = 0, string searchTxt = "", int giveawayType = 0)
+        {
+            var resp = new ajaxResponse()
+            {
+                data = Scripts.getAll(ID, city, searchTxt, giveawayType),
                 respstatus = ResponseStatus.success
             };
             return Json(resp);

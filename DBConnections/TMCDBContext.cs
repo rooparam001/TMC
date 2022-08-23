@@ -50,6 +50,7 @@ namespace TMC.DBConnections
         public DbSet<TBL_ENQUIRYMASTER> TBL_ENQUIRYMASTER { get; set; }
         public DbSet<TBL_PROFILESMASTER> TBL_PROFILESMASTER { get; set; }
         public DbSet<TBL_GIVEAWAYMASTER> TBL_GIVEAWAYMASTER { get; set; }
+        public DbSet<TBL_SCRIPTSMASTER> TBL_SCRIPTSMASTER { get; set; }
         public DbSet<TBL_HOMEPAGESETTINGS> TBL_HOMEPAGESETTINGS { get; set; }
         public DbSet<TBL_CHATMESSAGEMASTER> TBL_CHATMESSAGEMASTER { get; set; }
         public DbSet<TBL_CHATGROUPMASTER> TBL_CHATGROUPMASTER { get; set; }
@@ -937,6 +938,60 @@ namespace TMC.DBConnections
                     {
                         relationObj.ISACCEPTED = true;
                         this.TBL_GIVEAWAYMASTER.Update(relationObj);
+                        this.SaveChanges();
+                        resp = true;
+                    }
+            }
+            catch { resp = false; }
+            return resp;
+        }
+
+        public TBL_SCRIPTSMASTER fn_SaveScripts(TBL_SCRIPTSMASTER obj)
+        {
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    if (obj.ID > 0)
+                    {
+                        context.TBL_SCRIPTSMASTER.Update(obj);
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        context.TBL_SCRIPTSMASTER.Add(obj);
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex) { obj.ID = 0; }
+            return obj;
+        }
+        public List<TBL_SCRIPTSMASTER> fn_getallScripts(int ID = 0, int city = 0, string searchTxt = "", int isPDF = 0)
+        {
+            var respObj = new List<TBL_SCRIPTSMASTER>();
+            try
+            {
+                using (var context = new TMCDBContext())
+                {
+                    respObj = context.TBL_SCRIPTSMASTER.Where(x => (isPDF == 0 ? true : (isPDF == 1 ? x.ISPDF : !x.ISPDF)) && (ID > 0 ? x.ID == ID : true) && (city == 0 ? true : x.CITY == city) && (string.IsNullOrEmpty(searchTxt) ? true : x.OBJTITLE.Contains(searchTxt)) && x.ISENABLE).ToList();
+                }
+            }
+            catch { respObj = new List<TBL_SCRIPTSMASTER>(); }
+            return respObj;
+        }
+        public bool fn_DeleteScripts(int objID)
+        {
+            var resp = false;
+            try
+            {
+                var relationObj = new TBL_SCRIPTSMASTER();
+                relationObj = this.TBL_SCRIPTSMASTER.Where(x => x.ID == objID && x.ISENABLE).FirstOrDefault();
+                if (relationObj != null)
+                    if (relationObj.ID > 0)
+                    {
+                        relationObj.ISENABLE = false;
+                        this.TBL_SCRIPTSMASTER.Update(relationObj);
                         this.SaveChanges();
                         resp = true;
                     }

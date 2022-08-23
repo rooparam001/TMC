@@ -134,6 +134,8 @@ namespace TMC.Controllers
         public ActionResult ListYourProfile() => View();
         [Authorize]
         public ActionResult ListYourGiveAway() => View();
+        [Authorize]
+        public ActionResult ListYourScript() => View();
         [Authorize(Roles = "ADMINISTRATOR")]
         public ActionResult HomePageSettings() => View();
         [Authorize]
@@ -1029,7 +1031,123 @@ namespace TMC.Controllers
 
             return Json(resp);
         }
-        #endregion
+
+        [HttpPost]
+        public async Task<JsonResult> SaveScript(List<IFormFile> thumbnailfiles)
+        {
+            var resp = new ajaxResponse();
+            var relationModelObj = new scriptsViewModel();
+            var scriptModelObj = new TBL_SCRIPTSMASTER();
+            var isPDF = false;
+            try
+            {
+                resp.data = null;
+              //  int.TryParse(Request.Form["NUMBER_OF_SHOWS"], out int _noofshows);
+
+                if (thumbnailfiles != null)
+                {
+                    if (thumbnailfiles.Count > 0)
+                    {
+                        foreach (IFormFile currsource in thumbnailfiles)
+                        {
+                            string filename = ContentDispositionHeaderValue.Parse(currsource.ContentDisposition).FileName.Trim('"');
+                            if (filename.Contains(".pdf"))
+                                isPDF = true;
+                        }
+                    }
+                }
+
+                relationModelObj = new scriptsViewModel()
+                {
+                    OBJTITLE = (string.IsNullOrEmpty(Request.Form["TITLE"]) ? "" : Request.Form["TITLE"].ToString()),
+                    CITY = (string.IsNullOrEmpty(Request.Form["CITY"]) ? "" : Request.Form["CITY"].ToString()),                  
+                    ISENABLE = true,
+                    isPDF = isPDF,
+                    CREDITSLINK = (string.IsNullOrEmpty(Request.Form["CREDITSLINK"]) ? "" : Request.Form["CREDITSLINK"].ToString()),
+                    CREDITSTITLE = (string.IsNullOrEmpty(Request.Form["CREDITSTITLE"]) ? "" : Request.Form["CREDITSTITLE"].ToString()),
+                };
+
+
+                try
+                {
+                    scriptModelObj = Scripts.Save(relationModelObj);
+                    if (scriptModelObj != null)
+                    {
+                        if (scriptModelObj.ID > 0)
+                        {
+                            if (thumbnailfiles != null)
+                            {
+                                if (thumbnailfiles.Count > 0)
+                                {
+                                    if (Slider.Delete_ByObjectID(scriptModelObj.ID))
+                                    {
+                                        //saving play's slider images
+                                        foreach (IFormFile currsource in thumbnailfiles)
+                                        {
+                                            string filename = ContentDispositionHeaderValue.Parse(currsource.ContentDisposition).FileName.Trim('"');
+                                            filename = this.EnsureCorrectFilename(filename);
+                                            using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename, "sliders")))
+                                            {
+                                                await currsource.CopyToAsync(output);
+                                                Slider.Save(new slider_inputoutputmodel()
+                                                {
+                                                    OBJECTID = scriptModelObj.ID,
+                                                    ObjectType = SliderObjectType.Scripts,
+                                                    SliderLst = new List<sliderViewModel>() { new sliderViewModel() {
+                                                    Description="",
+                                                    SliderImgURL=filename
+                                                    }}
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            resp.respmessage = "Script saved";
+                            resp.respstatus = ResponseStatus.success;
+                        }
+                        else
+                            resp = new ajaxResponse()
+                            {
+                                data = null,
+                                respmessage = "Something went wrong.",
+                                respstatus = ResponseStatus.error
+                            };
+                    }
+                    else
+                        resp = new ajaxResponse()
+                        {
+                            data = null,
+                            respmessage = "Something went wrong.",
+                            respstatus = ResponseStatus.error
+                        };
+
+                }
+                catch (Exception ex)
+                {
+                    resp = new ajaxResponse()
+                    {
+                        data = null,
+                        respmessage = ex.Message.ToString(),
+                        respstatus = ResponseStatus.error
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                resp = new ajaxResponse()
+                {
+                    data = null,
+                    respmessage = ex.Message.ToString(),
+                    respstatus = ResponseStatus.error
+                };
+
+            }
+
+            return Json(resp);
+        }
+#endregion
 
         #region Home Page Settings
         [HttpGet]

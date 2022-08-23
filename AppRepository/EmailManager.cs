@@ -31,7 +31,7 @@ namespace TMC.AppRepository
             smtp.Host = configuration.GetSection("EmailSettings:Smtp").Value;
             smtp.Port = Convert.ToInt16(configuration.GetSection("EmailSettings:Port").Value);
             smtp.Credentials = new NetworkCredential(UserId, Password);
-            smtp.EnableSsl = true;
+          //  smtp.EnableSsl = true;
             smtp.Send(mail);
         }
         

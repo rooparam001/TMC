@@ -55,6 +55,15 @@
                         <li class="nav-item"><a class="nav-link px-2" href="https://www.linkedin.com/in/theatre-management-company-215574226/"><span class="fa fa-linkedin"></span></a></li>
                         <li class="nav-item"><a class="nav-link px-2" href="https://youtube.com/channel/UC9CmVldnVYc4Cz7XJt1hr1g"><span class="fa fa-youtube"></span></a></li>
                         <li class="nav-item"><a class="nav-link px-2" href="https://instagram.com/theatremanagementcompany"><span class="fa fa-instagram"></span></a></li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link px-2" href="/Account/Message">
+                                    <img src="~/TMC/Images/chat.ico"/>
+                                    <span id="count" class="badge"></span>
+                                </a>
+                            </li>
+                        }
                     </ul>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
@@ -67,31 +76,32 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/home/allplays/">Plays</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/Backstage/">Backstage</a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarJoinUs" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Scripts
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarJoinUs">
+                                <a class="dropdown-item" href="/home/Script">Scripts</a>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <a class="dropdown-item" href="/account/ListYourScript">List your Scripts</a>
+                                }
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/Giveaway">Giveaways</a>
+                        </li>
                         <li class="nav-item" style="display:none">
                             <a class="nav-link" href="/home/alldirectors/">Directors</a>
                         </li>
                         <li class="nav-item" style="display:none">
                             <a class="nav-link" href="/home/index#divAboutUs">About Us</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/home/index#divContactUs">Contact Us</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarJoinUs" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Join Us
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarJoinUs">
-                                @if (!User.Identity.IsAuthenticated)
-                                {
-                                    <a class="dropdown-item" href="/account/ListYourProfile/">List your Profile</a>
-                                }
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                    <a class="dropdown-item" href="/account/ListYourPlay/">List your Play</a>
-                                    <a class="dropdown-item" href="/account/ListYourGiveAway/">List your Giveaway</a>
-                                }
-                            </div>
-                        </li>
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarAccount" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Account
@@ -119,25 +129,38 @@
                                 }
                             </div>
                         </li>
-                        @*@if (User.Identity.IsAuthenticated)
-        {*@
-                        <li class="nav-item">
-                            <a class="nav-link" href="/home/Backstage/">Backstage</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarJoinUs" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Join Us
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarJoinUs">
+
+                                @if (!User.Identity.IsAuthenticated)
+                                {
+                                    <!-- <a class="dropdown-item" href="/account/ListYourProfile/">List your Profile</a>-->
+                                }
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <a class="dropdown-item" href="/account/ListYourPlay/">List your Play</a>
+                                    <a class="dropdown-item" href="/account/ListYourGiveAway/">List your Giveaway</a>
+                                }
+                                <a class="dropdown-item" href="/home/index#divContactUs">Contact Us</a>
+                            </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/home/Giveaway">Giveaways</a>
-                        </li>
-                        @*}*@
+
+
                         <li class="nav-item">
                             <a class="nav-link" href="/home/jointherevolution">Join the revolution</a>
                         </li>
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Account/Message">Chat
-                            <span id="count" class="badge"></span></a>
-                        </li>
-                        }
+                        @*    @if (User.Identity.IsAuthenticated)
+        {
+            <li class="nav-item">
+                <a class="nav-link" href="/Account/Message">
+                    Chat
+                    <span id="count" class="badge"></span>
+                </a>
+            </li>
+        }*@
                     </ul>
                     <form class="form-inline">
                         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" style="display:none;" />

@@ -229,7 +229,7 @@ namespace TMC.AppRepository
                 {
                     foreach (var currGenre in _genres.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries))
                     {
-                        if (currPlay.Genre.Contains(currGenre))
+                        if (currPlay.Genre.Split(",").Contains(currGenre))
                             if ((outputObj.Where(x => x.ID == currPlay.ID).ToList().Count) == 0)
                                 outputObj.Add(currPlay);
                     }
@@ -246,7 +246,7 @@ namespace TMC.AppRepository
                     var isTrue = false;
                     foreach (var currLang in _langs.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries))
                     {
-                        if (currPlay.LANGAUAGE.Contains(currLang))
+                        if (currPlay.LANGAUAGE.Split(",").Contains(currLang))
                         {
                             isTrue = true;
                         }
