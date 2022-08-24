@@ -4,7 +4,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] || TMC</title>
-
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/css/loadingcurtain.css" rel="stylesheet" />
@@ -20,7 +19,7 @@
         $(document).ready(function () {
             chatService.fnloadUnreadChat();
             window.setInterval(function () {
-                chatService.fnloadUnreadChat();
+                //chatService.fnloadUnreadChat();
             }, 5000);
         });
     </script>
@@ -59,7 +58,7 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link px-2" href="/Account/Message">
-                                    <img src="~/TMC/Images/chat.ico"/>
+                                    <img src="~/TMC/Images/chat.ico" width="20" height="20"/>
                                     <span id="count" class="badge"></span>
                                 </a>
                             </li>

@@ -1341,18 +1341,22 @@ namespace TMC.Controllers
             List<ChatServiceContactModel> data = ChatService.GetAll(_getuserLoggedinID());
            var filteredData = data.Where(x=>x.isSelfAccount != true);
            var result = new List<ChatServiceMessageListModel>();
-           foreach(var model in filteredData)
+           IDictionary<string, string> finalResult = new Dictionary<string, string>();
+            foreach (var model in filteredData)
             {
-                result.AddRange(ChatService.GetUnReadChat(model.GroupID, _getuserLoggedinID()));
+                var groupChat = ChatService.GetUnReadChat(model.GroupID, _getuserLoggedinID());
+                result.AddRange(groupChat);
+                finalResult.Add(new KeyValuePair<string, string>(model.GroupID.ToString(), groupChat.Count.ToString()));
             }
+            finalResult.Add(new KeyValuePair<string, string>("total", result.Count.ToString()));
             var resp = new ajaxResponse()
-            {
-                data = result.Count,
+            {                
+                data = finalResult,
                 respstatus = ResponseStatus.success
             };
             return Json(resp);
 
-            return Json(resp);
+         //   return Json(resp);
         }
 
         [HttpGet]

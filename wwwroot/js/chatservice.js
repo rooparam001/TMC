@@ -29,7 +29,7 @@
                         }
                         var ppic = (relationModelObj.contactPic ? '/Blogs/ProfileData/' + relationModelObj.contactPic : 'https://www.bootdey.com/img/Content/avatar/avatar3.png');
                         playdataTable.append('<li onclick="chatService.fnLoadSelectedChat(' + relationModelObj.groupID +');" class="person" data-chat="person1"><div class="user"><img src="' + ppic + '" alt="' + relationModelObj.groupID + '">' +
-                            '</div><p class="name-time"><span class="name">' + relationModelObj.contactName + '</span><br /><span class="time">' + relationModelObj.lastDateTime + '</span></p></li>');
+                            '</div><p class="name-time"><span class="name">' + relationModelObj.contactName + '</span><br /><span class="time">' + relationModelObj.lastDateTime + '</span></p><span id="count_' + relationModelObj.groupID+'" class="badge" style="display:none"></span></li>');
                     }
                     else
                         chatService.groupHostObj = relationModelObj;
@@ -109,12 +109,21 @@
             dataType: "json",
             method: 'GET',
             success: function (data) {
-                if (data.data > 0) {
-                    $('#count').html(data.data);
+                if (parseInt(data.data.total) > 0) {
+                    $('#count').html(parseInt(data.data.total));
                     $("#count").css("display", "inline-block");
                 }
                 else {
                     $("#count").css("display", "none");
+                }
+                for (var groupData in data.data) {
+                    if ($("#count_" + groupData).length > 0 && parseInt(data.data[groupData])>0) {
+                        $("#count_" + groupData).html(parseInt(data.data[groupData]));
+                        $("#count_" + groupData).css("display", "inline-block");
+                    }
+                    else {
+                        $("#count_" + groupData).css("display", "none");
+                    }
                 }
                 
             },

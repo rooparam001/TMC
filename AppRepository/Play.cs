@@ -271,7 +271,7 @@ namespace TMC.AppRepository
                     var isTrue = false;
                     foreach (var currCity in _cities.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries))
                     {
-                        if (currPlay.CITY.Contains(currCity))
+                        if (currPlay.CITY.Split(",").Contains(currCity))
                         {
                             isTrue = true;
                         }
