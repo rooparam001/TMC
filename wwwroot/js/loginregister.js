@@ -193,9 +193,9 @@ var accountMaster = {
             $('#errPassword').html("field can't be empty.");
             this.passwordError = true;
         }
-        else if ((cPassword.length < 3) || (cPassword.length > 10)) {
+        else if ((cPassword.length < 3)) {
             $('#errPassword').show();
-            $('#errPassword').html("length of password must be between 3 and 10");
+            $('#errPassword').html("length of password must be greater than 3");
             this.passwordError = true;
         }
         else {

@@ -109,14 +109,14 @@
                                 @if (User.Identity.IsAuthenticated)
                                 {
                                     <a class="dropdown-item" href="/account/EditYourProfile">My Account</a>
+                                    <a class="dropdown-item" href="/account/Plays">Plays</a>
+                                    <a class="dropdown-item" href="/account/GiveAway">GiveAway</a>
                                     <a class="dropdown-item" href="/account/ChangePassword">Change Password</a>
                                     <a class="dropdown-item" href="/account/Logout">Logout</a>
-                                    <a class="dropdown-item" href="/account/Plays">Plays</a>
                                     @if (this.User.IsInRole("ADMINISTRATOR"))
                                     {
                                         <a class="dropdown-item" href="/account/UpComingPlays">Upcoming Plays</a>
                                         <a class="dropdown-item" href="/account/Profiles">Profiles</a>
-                                        <a class="dropdown-item" href="/account/GiveAway">GiveAway</a>
                                         <a class="dropdown-item" href="/account/Directors">Directors</a>
                                         <a class="dropdown-item" href="/account/Tickets">Tickets</a>
                                         <a class="dropdown-item" href="/account/HomePageSettings">HomePage Settings</a>
@@ -136,14 +136,17 @@
 
                                 @if (!User.Identity.IsAuthenticated)
                                 {
+                                    <a class="dropdown-item" href="/account/verify">Login</a>
+                                    <a class="dropdown-item" href="/account/ListYourProfile">SignUp</a>
                                     <!-- <a class="dropdown-item" href="/account/ListYourProfile/">List your Profile</a>-->
                                 }
                                 @if (User.Identity.IsAuthenticated)
                                 {
                                     <a class="dropdown-item" href="/account/ListYourPlay/">List your Play</a>
                                     <a class="dropdown-item" href="/account/ListYourGiveAway/">List your Giveaway</a>
+                                    <a class="dropdown-item" href="/home/index#divContactUs">Contact Us</a>
                                 }
-                                <a class="dropdown-item" href="/home/index#divContactUs">Contact Us</a>
+
                             </div>
                         </li>
 
