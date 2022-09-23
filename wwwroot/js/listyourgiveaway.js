@@ -1,5 +1,4 @@
 ﻿$(document).ready(function () {
-    //load data on the page load
     _giveawayMaster.fnloadData();
 });
 var _giveawayMaster = {
@@ -22,8 +21,8 @@ var _giveawayMaster = {
                         (relationModelObj.isaccepted ? '' : '<span onclick="_giveawayMaster.fnAcceptData_ID(' + relationModelObj.id + ')"><i class="fas fa-check-circle" name="btnAccept" style="cursor:pointer;" data-bs-toggle="tooltip" title="Accept"></i></span>') +
                         '&nbsp<span onclick="_giveawayMaster.fnDelData_ID(' + relationModelObj.id + ')">' +
                         '<i class="fas fa-trash-alt" name="btnDelete" style="cursor:pointer;" data-bs-toggle="tooltip" title="Deactivate"></i>' +
-                        '</span>&nbsp<span onclick="_giveawayMaster.fnViewGiveAway_ID(' + relationModelObj.id + ')">' +
-                        '&nbsp<i class="fas fa-eye" name="btnEdit" style="cursor:pointer;" data-bs-toggle="tooltip" title="View"></i>' +
+                        '</span>&nbsp<span onclick="_giveawayMaster.fnEditGiveAway_ID(' + relationModelObj.id + ')">' +
+                        '&nbsp<i class="bi bi-pencil-square" name="btnEdit" style="cursor:pointer;" data-bs-toggle="tooltip" title="Edit"></i>' +
                         '</span></td></tr>');
                 });
 
@@ -109,6 +108,8 @@ var _giveawayMaster = {
                 alert(err.statusText);
             }
         });
-
-    }
+    },
+    fnEditGiveAway_ID: function (ID) {
+        window.location.href = ('/account/editYourGiveAway/?editobj=' + ID);
+    }    
 };

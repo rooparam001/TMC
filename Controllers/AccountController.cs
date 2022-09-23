@@ -121,6 +121,10 @@ namespace TMC.Controllers
         public ActionResult Profiles() => View();
         [Authorize(Roles = "ADMINISTRATOR")]
         public ActionResult GiveAway() => View();
+
+        [Authorize(Roles = "ADMINISTRATOR")]
+        public ActionResult EditYourGiveAway() => View();
+
         [Authorize(Roles = "ADMINISTRATOR")]
         public ActionResult Directors() => View();
         [Authorize(Roles = "ADMINISTRATOR")]
@@ -1065,6 +1069,7 @@ namespace TMC.Controllers
                     isPDF = isPDF,
                     CREDITSLINK = (string.IsNullOrEmpty(Request.Form["CREDITSLINK"]) ? "" : Request.Form["CREDITSLINK"].ToString()),
                     CREDITSTITLE = (string.IsNullOrEmpty(Request.Form["CREDITSTITLE"]) ? "" : Request.Form["CREDITSTITLE"].ToString()),
+                    WRITERNAME = (string.IsNullOrEmpty(Request.Form["WRITERNAME"]) ? "" : Request.Form["WRITERNAME"].ToString()),
                 };
 
 
@@ -1095,7 +1100,7 @@ namespace TMC.Controllers
                                                     ObjectType = SliderObjectType.Scripts,
                                                     SliderLst = new List<sliderViewModel>() { new sliderViewModel() {
                                                     Description="",
-                                                    SliderImgURL=filename
+                                                    SliderImgURL=filename                                                    
                                                     }}
                                                 });
                                             }

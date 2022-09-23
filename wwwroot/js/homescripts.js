@@ -35,21 +35,32 @@ _allScriptsMaster = {
 
                     htmlStr = '<div class="col-md-4"><div class="card mb-4 box-shadow"><div id="divCarousel' + cnt + '" class="carousel slide" data-ride="carousel"><div class="carousel-inner">';
                     arrayOfFiles = relationModelObj.objpictures.split(",");
+                    if (arrayOfFiles.length == 2) {
+                        var pdfFile = arrayOfFiles[1]
+                        var imageFile = arrayOfFiles[0]
+                        if (arrayOfFiles[0].indexOf(".pdf") > 0) {
+                            pdfFile = arrayOfFiles[0]
+                            imageFile = arrayOfFiles[i]
+                        }
 
-                    for (i = 0; i < arrayOfFiles.length; i++) {
+                        htmlStr += '<div class="carousel-item active"><a href="/Blogs/Sliders/' + pdfFile + ' " target="_blank""><img class="d-block card-img-top" src="/Blogs/Sliders/' + imageFile + '"/></a></div>';
+                    }
+                    else {
+                        for (i = 0; i < arrayOfFiles.length; i++) {
+                            if (arrayOfFiles[i]) {
+                                if (arrayOfFiles[i].indexOf('.pdf') > 0)
+                                    htmlStr += '<div class="carousel-item ' + (i == 0 ? 'active' : '') + '"><a href="/Blogs/Sliders/' + arrayOfFiles[i] + ' " target="_blank""><img class="d-blockcard-img-top" src="/TMC/Images/blue-circle-document-file.png""/></a></div>';
+                                else
+                                    htmlStr += '<div class="carousel-item ' + (i == 0 ? 'active' : '') + '"><img class="d-block card-img-top" src="/Blogs/Sliders/' + arrayOfFiles[i] + '" alt="First slide"></div>';
 
-                        if (arrayOfFiles[i]) {
-                            if (arrayOfFiles[i].indexOf('.pdf') > 0)
-                                htmlStr += '<div class="carousel-item ' + (i == 0 ? 'active' : '') + '"><a href="/Blogs/Sliders/' + arrayOfFiles[i] + ' " target="_blank""><img class="d-blockcard-img-top" src="/TMC/Images/blue-circle-document-file.png""/></a></div>';
-                            else
-                                htmlStr += '<div class="carousel-item ' + (i == 0 ? 'active' : '') + '"><img class="d-block card-img-top" src="/Blogs/Sliders/' + arrayOfFiles[i] + '" alt="First slide"></div>';
-
+                            }
                         }
                     }
 
                     htmlStr += '</div><a class="carousel-control-prev" href="#divCarousel' + cnt + '" role="button" data-slide="prev"><i class="fas fa-angle-left"></i></a><a class="carousel-control-next" href="#divCarousel' + cnt + '" role="button" data-slide="next"><i class="fas fa-angle-right"></i></a></div>';
                     htmlStr += '<div class="card-body"><p class="card-text">' + (relationModelObj.objtitle ? relationModelObj.objtitle : '') + '</p>' +
                         (relationModelObj.creditstitle && relationModelObj.creditslink ? '<p class="card-text"><b>Credits: </b><a href="' + (relationModelObj.creditslink ? relationModelObj.creditslink : '#') + '">' + (relationModelObj.creditstitle ? relationModelObj.creditstitle : 'link') + '<a></p>' : '') +
+                        (relationModelObj.writername ? '<p class="card-text"><b>Writer Name: </b>'+relationModelObj.writername:'')+
                         '<div class="d-flex justify-content-between align-items-center">' +
                         '<small class="text-muted">' + (relationModelObj.city ? relationModelObj.city : '') + '</small></div></div>';
 

@@ -26,7 +26,8 @@ namespace TMC.AppRepository
                     ID = obj.ID,
                     ISPDF = obj.isPDF,
                     CREDITSLINK = obj.CREDITSLINK.Trim(),
-                    CREDITSTITLE = obj.CREDITSTITLE.Trim()
+                    CREDITSTITLE = obj.CREDITSTITLE.Trim(),
+                    WRITERNAME = obj.WRITERNAME.Trim()
                 });
             }
 
@@ -61,6 +62,7 @@ namespace TMC.AppRepository
                     CREDITSLINK = x.CREDITSLINK,
                     CREDITSTITLE = x.CREDITSTITLE,
                     OBJPICTURES = Slider.GetCommaSeparated(x.ID, SliderObjectType.Scripts),
+                    WRITERNAME = x.WRITERNAME
                 }).ToList();
             }
             catch { respObj = new List<scriptsViewModel>(); }
@@ -82,7 +84,8 @@ namespace TMC.AppRepository
                     OBJTITLE = x.OBJTITLE,
                     CREDITSLINK = x.CREDITSLINK,
                     CREDITSTITLE = x.CREDITSTITLE,
-                    OBJPICTURES = Slider.GetCommaSeparated(ID, SliderObjectType.Scripts)
+                    OBJPICTURES = Slider.GetCommaSeparated(ID, SliderObjectType.Scripts),
+                    WRITERNAME = x.WRITERNAME
                 }).FirstOrDefault();
             }
             catch { respObj = new scriptsViewModel(); }

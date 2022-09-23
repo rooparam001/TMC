@@ -68,7 +68,7 @@ namespace TMC.AppRepository
                     OBJTITLE = x.OBJTITLE,
                     CREDITSLINK = x.CREDITSLINK,
                     CREDITSTITLE = x.CREDITSTITLE,
-                    OBJPICTURES = Slider.GetCommaSeparated(x.ID, SliderObjectType.GiveAway),
+                    OBJPICTURES = Slider.GetCommaSeparated(x.ID, SliderObjectType.GiveAway)
                 }).ToList();
             }
             catch { respObj = new List<giveawayViewModel>(); }

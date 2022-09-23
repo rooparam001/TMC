@@ -5,11 +5,13 @@
         _scriptMaster.city = $('#ddlplaycity option:selected').val();      
         _scriptMaster.credits = $('#txtCredit').val();
         _scriptMaster.creditslink = $('#txtCreditLink').val();
+        _scriptMaster.writerName = $('#txtWriterName').val();
 
         // Checking whether FormData is available in browser
         if (window.FormData !== undefined) {
 
             var fileUpload = $("#fuUploadPdf").get(0);
+            var imgUpload = $("#fuUploadImage").get(0);
             var files = fileUpload.files;
 
             // Create FormData object
@@ -20,11 +22,18 @@
                 fileData.append('thumbnailfiles', files[i]);
             }
 
+            var files = imgUpload.files;
+            // Looping over all files and add it to FormData object
+            for (var i = 0; i < files.length; i++) {
+                fileData.append('thumbnailfiles', files[i]);
+            }
+
             // Adding one more key to FormData object
             fileData.append('TITLE', _scriptMaster.title);
             fileData.append('CITY', _scriptMaster.city);           
             fileData.append('CREDITSTITLE', _scriptMaster.credits);
             fileData.append('CREDITSLINK', _scriptMaster.creditslink);
+            fileData.append('WRITERNAME', _scriptMaster.writerName);
 
             $.ajax({
                 url: '/Account/SaveScript',
