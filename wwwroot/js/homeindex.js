@@ -1,5 +1,63 @@
 ﻿$(document).ready(function () {
     _allPlaysMaster.fnloadData();
+    // Checking whether FormData is available in browser
+    $('#contactUsSendMsg').click(function () {
+        var validate = true
+        if ($('#name').val() == "") {
+            $("#form-message-warning").html("Kindly enter your name")
+            $("#form-message-warning").show()
+            validate = false
+        }
+        else if ($('#email').val() == "") {
+            $("#form-message-warning").html("Kindly enter your email adress")
+            $("#form-message-warning").show()
+            validate = false
+        }
+        else if ($('#subject').val() == "") {
+            $("#form-message-warning").html("Kindly enter the subject")
+            $("#form-message-warning").show()
+            validate = false
+        }
+        else if ($('#message').val() == "") {
+            $("#form-message-warning").html("Kindly enter the message")
+            $("#form-message-warning").show()
+            validate = false
+        }
+        if (validate) {
+            $("#form-message-warning").html("")
+            $("#form-message-warning").hide()
+            if (window.FormData !== undefined) {
+                // Create FormData object
+                var fileData = new FormData();
+                // Adding one more key to FormData object
+                fileData.append('UserName', $('#name').val());
+                fileData.append('EmailAdd', $('#email').val());
+                fileData.append('UserSubject', $('#subject').val());
+                fileData.append('UserMessage', $('#message').val());
+
+                $.ajax({
+                    url: '/Account/SaveEnquiry',
+                    type: "post",
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    dataType: 'json',
+                    data: fileData,
+                    success: function (result) {
+                        $('#name').val("")
+                        $('#email').val("")
+                        $('#subject').val("")
+                        $('#message').val("")
+                        $("#form-message-success").show()
+                    },
+                    error: function (err) {
+                        alert(err.statusText);
+                    }
+                });
+            } else {
+                alert("FormData is not supported.");
+            }
+        }
+    });
 });
 
 _allPlaysMaster = {

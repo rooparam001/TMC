@@ -40,7 +40,7 @@ _allScriptsMaster = {
                         var imageFile = arrayOfFiles[0]
                         if (arrayOfFiles[0].indexOf(".pdf") > 0) {
                             pdfFile = arrayOfFiles[0]
-                            imageFile = arrayOfFiles[i]
+                            imageFile = arrayOfFiles[1]
                         }
 
                         htmlStr += '<div class="carousel-item active"><a href="/Blogs/Sliders/' + pdfFile + ' " target="_blank""><img class="d-block card-img-top" src="/Blogs/Sliders/' + imageFile + '"/></a></div>';

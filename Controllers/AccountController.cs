@@ -119,10 +119,10 @@ namespace TMC.Controllers
         public ActionResult Plays() => View();
         [Authorize(Roles = "ADMINISTRATOR")]
         public ActionResult Profiles() => View();
-        [Authorize(Roles = "ADMINISTRATOR")]
+        
         public ActionResult GiveAway() => View();
 
-        [Authorize(Roles = "ADMINISTRATOR")]
+      
         public ActionResult EditYourGiveAway() => View();
 
         [Authorize(Roles = "ADMINISTRATOR")]
@@ -1376,6 +1376,44 @@ namespace TMC.Controllers
         }
 
         [HttpPost]
+        public JsonResult SaveEnquiry()
+        {
+            var resp = new ajaxResponse();
+           
+            try
+            {
+                resp.data = null;
+                
+
+                var Tbl_EnquiryMaster = new TBL_ENQUIRYMASTER()
+                {
+                     USERNAME= Request.Form["UserName"],
+                     EMAILADD = Request.Form["EmailAdd"],
+                    USERSUBJECT = Request.Form["UserSubject"],                  
+                    USERMESSAGE = Request.Form["UserMessage"],
+                    DATECREATED = DateTime.Now
+                };
+                Enquiries.Save(Tbl_EnquiryMaster);
+                resp = new ajaxResponse()
+                {
+                    data = null,
+                    respmessage = "Contact Saved Successfully",
+                    respstatus = ResponseStatus.error
+                };
+            }
+            catch(Exception ex)
+            {
+                resp = new ajaxResponse()
+                {
+                    data = null,
+                    respmessage = ex.Message.ToString(),
+                    respstatus = ResponseStatus.error
+                };
+            }
+            return Json(resp);
+        }
+
+                [HttpPost]
         public JsonResult SaveChat()
         {
             var resp = new ajaxResponse();
