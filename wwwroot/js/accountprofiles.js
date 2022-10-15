@@ -22,7 +22,7 @@ var _profileMaster = {
                         + relationModelObj.datecreated + '</td><td>' +
                         '<span onclick="_profileMaster.fnDelData_ID(' + relationModelObj.id + ')">' +
                         '<i class="bi bi-person-x-fill" name="btnDelete" style="cursor:pointer;" data-bs-toggle="tooltip" title="Deactivate"></i>' +
-                        '</span><span onclick="_profileMaster.fnViewProfile_ID(' + relationModelObj.id + ')">' +
+                        '</span><span onclick="_profileMaster.fnViewProfile_ID(' + relationModelObj.id + ',' + relationModelObj.usertitle +')">' +
                         '&nbsp <i class="bi bi-eye-fill" name="btnEdit" style="cursor:pointer;" data-bs-toggle="tooltip" title="View"></i>' +
                         '</span></td></tr>');
                 });
@@ -51,8 +51,8 @@ var _profileMaster = {
             });
         }
     },
-    fnViewProfile_ID: function (ID) {
-        window.location.href = "/Home/BackStageProfile?ProfileId=" + ID;
+    fnViewProfile_ID: function (ID, name) {
+        window.location.href = "/Home/BackStageProfile?ProfileId=" + ID + "&ProfileName=" + name;
     }
     
 };

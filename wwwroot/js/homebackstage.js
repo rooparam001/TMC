@@ -55,7 +55,7 @@ var _profileMaster = {
                         '<div class="card-img-top background-image-contain" style="background-image: url(\'' + currProfilePic + '\')" alt="backstage crew Image" alt-id=' + relationModelObj.id + '></div>' +
                         '<div class="card-body"><p class="card-text">' + relationModelObj.usertitle + '</p><p style="display:none;" alt-id=' + relationModelObj.id + '>' + relationModelObj.userrole + '</p>' +
                         '<div class="d-flex justify-content-between align-items-center">' +
-                        '<button type="button" class="btn btn-sm btn-outline-primary" onclick="_profileMaster.fnViewProfile_ID(' + relationModelObj.id + ')">'
+                        '<button type="button" class="btn btn-sm btn-outline-primary" onclick="_profileMaster.fnViewProfile_ID(' + relationModelObj.id + ',\'' + relationModelObj.usertitle + '\')">'
                         + '<i class="fas fa-eye"></i> View</button><button type="button" onclick="chatService.fnloadnewgroup(' + relationModelObj.accountID + ')" class="btn btn-sm btn-outline-warning">'
                         + '<i class="far fa-comments"></i> Contact</button></div></div></div></div>');
                 });
@@ -124,7 +124,7 @@ var _profileMaster = {
             }
         });
     },
-    fnViewProfile_ID: function (ID) {
-        window.location.href = "/Home/BackStageProfile?ProfileId=" + ID;
+    fnViewProfile_ID: function (ID, Name) {
+        window.location.href = "/Home/BackStageProfile?ProfileId=" + ID + "&ProfileName=" + Name;
     }
 };

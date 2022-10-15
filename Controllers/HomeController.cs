@@ -290,11 +290,11 @@ namespace TMC.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetPlayByID(int obj)
+        public JsonResult GetPlayByID(int obj,string objName)
         {
             var resp = new ajaxResponse()
             {
-                data = Play.fn_GetSinglePlayByID(obj, 0),
+                data = Play.fn_GetSinglePlayByID(obj, 0,objName),
                 respstatus = ResponseStatus.success
             };
             return Json(resp);

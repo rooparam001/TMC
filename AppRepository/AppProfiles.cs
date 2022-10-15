@@ -149,7 +149,7 @@ namespace TMC.AppRepository
             catch (Exception ex) { resp = new List<profileMasterViewModel>(); }
             return resp;
         }
-        public static profileMasterViewModel GetSingleProfile_ByID(int ID)
+        public static profileMasterViewModel GetSingleProfile_ByID(int ID,string objName)
         {
             var resp = new profileMasterViewModel();
             var languageList = "";
@@ -210,6 +210,10 @@ namespace TMC.AppRepository
                 }
                 if (!string.IsNullOrEmpty(languageList))
                     resp.USERLANGUAGES = languageList;
+                if(resp.USERTITLE != System.Web.HttpUtility.UrlDecode(objName))
+                {
+                    resp = new profileMasterViewModel();
+                }
             }
             catch { resp = new profileMasterViewModel(); }
             return resp;

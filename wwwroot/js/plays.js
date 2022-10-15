@@ -5,9 +5,10 @@
 _playsMaster = {
     fnloadData: function () {
         var objID = fngetUrlVars()["objToken"];
+        var objName = fngetUrlVars()["objName"];
         $.ajax({
             url: '/Home/GetPlayByID',
-            data: { 'obj': objID },
+            data: { 'obj': objID, 'objName': objName },
             dataType: "json",
             method: 'GET',
             success: function (data) {

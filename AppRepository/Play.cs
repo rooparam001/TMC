@@ -106,14 +106,14 @@ namespace TMC.AppRepository
 
             return resp;
         }
-        public static ViewSinglePlayModel fn_GetSinglePlayByID(int ID, int UserID)
+        public static ViewSinglePlayModel fn_GetSinglePlayByID(int ID, int UserID,string playName)
         {
             var respObj = new ViewSinglePlayModel();
             if (ID > 0)
             {
                 var playObj = new TBL_PLAYSMASTER();
                 playObj = new TMCDBContext().fn_GetSinglePlayByID(ID, UserID);
-                if (playObj != null)
+                if (playObj != null && ((playName != null && playObj.TITLE == System.Web.HttpUtility.UrlDecode(playName)) || playName == null))
                     if (playObj.ID > 0)
                     {
                         var genreList = ""; var languageList = ""; var sliderList = "";

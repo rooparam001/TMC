@@ -93,7 +93,7 @@ _allPlaysMaster = {
                     //    '</a><p class="card-text">' + relationModelObj.about + '</p></div></div></div>');
 
                     innerhtml += ('<div class="col-md-4 mb-3"><div class="card">' +
-                        '<div class="background-image-contain" style="background-image: url(\'../../Blogs/Plays/' + relationModelObj.thumbnailUrl + '\')"></div><div class="card-body"><a href="/home/plays?objToken=' + relationModelObj.tokenID + '"><h4 class="card-title">' + relationModelObj.title + '</h4>' +
+                        '<div class="background-image-contain" style="background-image: url(\'../../Blogs/Plays/' + relationModelObj.thumbnailUrl + '\')"></div><div class="card-body"><a href="/home/plays?objToken=' + relationModelObj.tokenID + '&objName=' + relationModelObj.title +'"><h4 class="card-title">' + relationModelObj.title + '</h4>' +
                         '</a><p class="card-text">' + relationModelObj.about + '</p></div></div></div>');
 
                     colcount--;

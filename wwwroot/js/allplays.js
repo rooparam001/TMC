@@ -40,7 +40,7 @@ _allPlaysMaster = {
                     playdataTable.append('<div class="col-md-4"><div class="card mb-4 box-shadow">' +
                         '<div class="card-img-top background-image-contain" style="background-image: url(\'../../Blogs/Plays/' + relationModelObj.thumbnailUrl + '\')"></div>' +
                         '<div class="card-body d-flex flex-column"><h5 class="card-title">' + relationModelObj.title + '</h5><p class="card-text  mt-3 mb-4">' + relationModelObj.about + '</p><div class="d-flex">' +
-                        '<a href="/home/plays?objToken=' + relationModelObj.tokenID + '" class="btn btn-sm btn-outline-secondary mt-auto btn-block">View</a>' +
+                        '<a href="/home/plays?objToken=' + relationModelObj.tokenID + '&objName=' + relationModelObj.title + '"class="btn btn-sm btn-outline-secondary mt-auto btn-block">View</a>' +
                         '<a onclick="chatService.fnloadnewgroup(' + relationModelObj.createdBy + ')" class="btn btn-sm btn-outline-warning"> Contact</a>' +
                         //'<a href="#" class="btn btn-sm mt-auto btn-block">Contact</a>' +
                         '</div></div></div></div>');

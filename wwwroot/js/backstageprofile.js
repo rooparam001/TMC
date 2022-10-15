@@ -17,16 +17,17 @@
 $(document).ready(function () {
     //load data on the page load
     var Id = getUrlParameter("ProfileId");
-    _backstageProfile.fnViewProfile_ID(Id);
+    var Name = getUrlParameter("ProfileName");
+    _backstageProfile.fnViewProfile_ID(Id,Name);
 });
 var _backstageProfile = {
-    fnViewProfile_ID: function (ID) {
+    fnViewProfile_ID: function (ID,Name) {
 
         $.ajax({
             url: '/Account/GetProfile_ByID',
             dataType: "json",
             method: 'GET',
-            data: { objID: ID },
+            data: { objID: ID, objName: Name },
             success: function (data) {
 
                 $('#heading').html(data.data.userrole);

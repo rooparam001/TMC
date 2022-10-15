@@ -304,7 +304,7 @@ namespace TMC.Controllers
         {
             var resp = new ajaxResponse()
             {
-                data = Play.fn_GetSinglePlayByID(objID, (_iscurrentuserAdmin() ? 0 : _getuserLoggedinID())),
+                data = Play.fn_GetSinglePlayByID(objID, (_iscurrentuserAdmin() ? 0 : _getuserLoggedinID()),null),
                 respstatus = ResponseStatus.success
             };
             return Json(resp);
@@ -826,11 +826,11 @@ namespace TMC.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetProfile_ByID(int objID)
+        public JsonResult GetProfile_ByID(int objID,string objName)
         {
             var resp = new ajaxResponse()
             {
-                data = AppProfiles.GetSingleProfile_ByID(objID),
+                data = AppProfiles.GetSingleProfile_ByID(objID,objName),
                 respstatus = ResponseStatus.success
             };
             return Json(resp);
