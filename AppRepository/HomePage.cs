@@ -1,4 +1,4 @@
-﻿using EntitesInterfaces.DBEntities;
+﻿using TMC.EntitesInterfaces.DBEntities;
 using TMC.DBConnections;
 
 namespace TMC.AppRepository

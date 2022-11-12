@@ -1,5 +1,5 @@
-﻿using EntitesInterfaces.AppModels;
-using EntitesInterfaces.DBEntities;
+﻿using TMC.EntitesInterfaces.AppModels;
+using TMC.EntitesInterfaces.DBEntities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
