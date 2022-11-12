@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EntitesInterfaces\EntitesInterfaces.csproj" />
+    <ProjectReference Include="..\EntitesInterfaces\TMC.EntitesInterfaces.csproj" />
   </ItemGroup>
 
 </Project>
