@@ -52,7 +52,8 @@ var _profileMaster = {
         }
     },
     fnViewProfile_ID: function (ID, name) {
-        window.location.href = "/Home/BackStageProfile?ProfileId=" + ID + "&ProfileName=" + name;
+       // window.location.href = "/Home/BackStageProfile?ProfileId=" + ID + "&ProfileName=" + name;
+        window.location.href = "/Home/BackStageProfile/"+ ID + "/" + name;
     }
     
 };

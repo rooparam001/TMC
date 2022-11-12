@@ -247,9 +247,12 @@ namespace TMC.Controllers
 
             return Json(resp);
         }
-
-        public IActionResult BackstageProfile()
+        [HttpGet]
+        
+        public IActionResult BackstageProfile(int id,string name)
         {
+            ViewData["Id"] = id;
+            ViewData["Name"] = name;
             return View();
         }
 
