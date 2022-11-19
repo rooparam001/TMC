@@ -1,5 +1,5 @@
 ﻿.lines {
-    margin: 8px 0px 3px 25px !important;
+    margin: 8px 0px 3px 0px !important;
     background-color: #deb400;
     height: 1px;
 }
@@ -107,9 +107,9 @@ input {
 
 .updates {
     height: 190px;
-    width:950px;
+    width: 950px;
     background: #C6E4FF;
-    margin: -55px 0px 85px 300px;
+    margin: -3% 0% 5% 28%;
 }
 
 .slider {
