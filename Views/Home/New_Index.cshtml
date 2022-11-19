@@ -1,0 +1,343 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<link href="~/css/Carousel.css" rel="stylesheet" />
+<link href="~/css/New_Index.css" rel="stylesheet" />
+<link href="~/css/img_slideshow.css" rel="stylesheet" />
+<script src="~/js/New_Index.js"></script>
+
+<div id="divCarousel" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img class="d-block w-100" src="~/Carousel/Image1.png" alt="First slide">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Heading 1</h5>
+                <p>The desciption will come here.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img class="d-block w-100" src="~/Carousel/Image2.png" alt="First slide">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Heading 1</h5>
+                <p>The desciption will come here.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img class="d-block w-100" src="~/Carousel/Image3.png" alt="First slide">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Heading 1</h5>
+                <p>The desciption will come here.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img class="d-block w-100" src="~/Carousel/Image4.png" alt="First slide">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Heading 1</h5>
+                <p>The desciption will come here.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img class="d-block w-100" src="~/Carousel/Image5.png" alt="First slide">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Heading 1</h5>
+                <p>The desciption will come here.</p>
+            </div>
+        </div>
+    </div>
+    <a class="carousel-control-prev" href="#divCarousel" role="button" data-slide="prev">
+        <i class="fas fa-angle-left"></i>
+    </a>
+    <a class="carousel-control-next" href="#divCarousel" role="button" data-slide="next">
+        <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+
+<div id="divExplainer" class="container main">
+    <div class="row divExplainer_header">
+        <div class="col-4 explainer_div">
+            <div class="col-8 lines">
+            </div>
+            <div class="col-8 lines">
+            </div>
+        </div>
+        <div class="col-4">
+            <h1 style="color:#faebd1;">Explainer Video</h1>
+        </div>
+        <div class="col-4 explainer_div">
+            <div class="col-8 lines">
+            </div>
+            <div class="col-8 lines">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="divExplainer_video col-6">
+            <iframe width="450" height="400"
+                    src="https://www.youtube.com/embed/tgbNymZ7vqY" style="margin: 5px 0px 0px 30px;">
+            </iframe>
+        </div>
+        <div class="divexplainer_text col-6">
+            <div class="divexplainer_text container">
+                <p style="font-size:40px; color:#faebd1;">Let's Change the Human mind. Minds will change human's Act'</p>
+            </div>
+            <div class="divexplainer_text container">
+                <div class="divexplainer_text">
+                    <p style="font-size:20px; color:#faebd1;">
+                        Let's Change the Human mind.Minds will change human's Act. Let's Change the Human mind.Minds
+                        will change human's Act. Let's Change the Human mind.Minds will change human's Act'
+                    </p>
+                </div>
+                <button class="read_More_btn" style="display:none;">Read More</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divUpcomingPlays" class="upcoming main container">
+    <div class="row divExplainer_header">
+        <div class="col-4 explainer_div">
+            <div class="col-8 lines">
+            </div>
+            <div class="col-8 lines">
+            </div>
+        </div>
+        <div class="col-4">
+            <h1 style="color:#faebd1;">Upcoming Plays</h1>
+        </div>
+        <div class="col-4 explainer_div">
+            <div class="col-8 lines">
+            </div>
+            <div class="col-8 lines">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="container">
+            <div class="slider">
+                <span id="slide-1"></span>
+                <span id="slide-2"></span>
+                <span id="slide-3"></span>
+                <div class="image-container">
+                    <img src="~/blogs/upcomingplays/intro_to_vedas.png" class="slide_12" width="500" height="300" />
+                    <img src="~/blogs/upcomingplays/insider.png" class="slide_12" width="500" height="300" />
+                    <img src="~/blogs/upcomingplays/storytelling.png" class="slide_12" width="500" height="300" />
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="buttons">
+                <a href="#slide-1"></a>
+                <a href="#slide-2"></a>
+                <a href="#slide-3"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="divAboutUs" class="container main">
+    <div class="row my-5">
+        <div class="col-6">
+            <div class="divexplainer_text container">
+                <p style="font-size:40px; color:#faebd1;">Know More about Us</p>
+            </div>
+            <div class="divexplainer_text container">
+                <div class="divexplainer_text">
+                    <p style="font-size:20px; color:#faebd1;">
+                        We believe that a play, if set right in motion, continues being in motion like a gradually increasing fireball that engulfs the souls, hearts and minds of people over generations by enduring through the harsh transformations of Time. But we also understand that our belief is basically your fantasy that you wish could turn true somehow. Well, we'd like to tell you that it can; with us, it can.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="container">
+                <img src="~/blogs/upcomingplays/637809232450808727vedic varna system otf 6 paytm insider.png" class="slide" width="450" height="300" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divSponsers" class="sponsers main container">
+</div>
+
+<div id="divLastPlayGallery" class="LastPlay main container">
+    <div class="row">
+        <div class="col-4">
+            <div class="container">
+                <img src="~/blogs/upcomingplays/2.png" class="slide" width="450" height="400" />
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="container">
+                <img src="~/blogs/upcomingplays/2.png" class="slide" width="450" height="400" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <div class="container">
+                <img src="~/blogs/upcomingplays/2.png" class="slide" width="450" height="400" />
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="container">
+                <img src="~/blogs/upcomingplays/2.png" class="slide" width="450" height="400" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divJoinUS" class="Join_Us main container">
+    <div class="row">
+        <h3 class="join-text" ;>Join Us Now</h3>
+    </div>
+    <div class="row">
+        <button class="register-bttn" style="color: white;">
+            Register
+        </button>
+    </div>
+</div>
+
+<div class="container updates">
+    <div class="row" style="margin-left: 183px;padding-top: 17px;">
+        <h2>Don’t miss our future updates</h2>
+    </div>
+    <div class="row">
+        <div class="col-8 offset-1" style="margin-top:20px;">
+            <input type="email" style="background:white;" placeholder="Input your email address in here" />
+        </div>
+        <div class="col-2" style="margin-top:27px;">
+            <button class="btn" style="width:-webkit-fill-available;">Send</button>
+        </div>
+    </div>
+</div>
+
+<div id="divContactUS" class="container">
+    <div class="row divExplainer_header">
+        <div class="col-4 explainer_div">
+            <div class="col-8 lines">
+            </div>
+            <div class="col-8 lines">
+            </div>
+        </div>
+        <div class="col-4">
+            <h1 style="color:#faebd1;">Contact Us</h1>
+        </div>
+        <div class="col-4 explainer_div">
+            <div class="col-8 lines">
+            </div>
+            <div class="col-8 lines">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-5">
+            <label class="input-wrapper" data-text="">
+                <input type="text" placeholder="Enter Your Name">
+            </label>
+        </div>
+        <div class="col-5 offset-2">
+            <label class="input-wrapper" data-text="">
+                <input type="text" placeholder="Enter Your Email">
+            </label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <label class="input-wrapper-full" data-text="">
+                <input type="text" placeholder="Enter Your Complaint">
+            </label>
+        </div>
+    </div>
+    <div class="row">
+        <button class="send_btn">Send</button>
+    </div>
+</div>
+
+<div id="divSuggestion" class="container">
+    <div class="row divExplainer_header">
+        <div class="col-4 explainer_div">
+            <div class="col-8 lines">
+            </div>
+            <div class="col-8 lines">
+            </div>
+        </div>
+        <div class="col-4">
+            <h1 style="color:#faebd1;">Kaizzen Change For betterment</h1>
+        </div>
+        <div class="col-4 explainer_div">
+            <div class="col-8 lines">
+            </div>
+            <div class="col-8 lines">
+            </div>
+        </div>
+    </div>
+    <div class="row divExplainer_header">
+        <div class="col-4 offset-5">
+            <h3 style="color:#faebd1;">Suggestion</h3>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-5">
+                <label class="input-wrapper" data-text="">
+                    <input type="text" placeholder="Enter Your Name">
+                </label>
+            </div>
+            <div class="col-5 offset-2">
+                <label class="input-wrapper" data-text="">
+                    <input type="text" placeholder="Enter Your Email">
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <label class="input-wrapper-full" data-text="">
+                    <input type="text" placeholder="Enter Your Message">
+                </label>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <button class="send_btn">Send</button>
+    </div>
+</div>
+
+<div id="divComplaint" class="container">
+    <div class="row divExplainer_header">
+        <div class="col-4 offset-5">
+            <h3 style="color:#faebd1;">Complaint</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-5">
+            <label class="input-wrapper" data-text="">
+                <input type="text" placeholder="Enter Your Name">
+            </label>
+        </div>
+        <div class="col-5 offset-2">
+            <label class="input-wrapper" data-text="">
+                <input type="text" placeholder="Enter Your Email">
+            </label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <label class="input-wrapper-full" data-text="">
+                <input type="text" placeholder="Enter Your Complaint">
+            </label>
+        </div>
+    </div>
+    <div class="row">
+        <button class="send_btn">Send</button>
+    </div>
+</div>
+
+<div id="divFooter" class="Footer_main">
+</div>
