@@ -34,13 +34,13 @@
 
 .input_box {
     background: none;
-    color:papayawhip;
+    color: papayawhip;
 }
 
 .input_lines {
     border-bottom: 1px solid #FAEBD1;
     margin: 10px 10px 10px 10px;
-    width:49%;
+    width: 49%;
 }
 
 
@@ -57,22 +57,22 @@
     position: relative;
 }
 
-    .input-wrapper::after {
-        content: attr(data-text);
-        font-size: 1.5rem;
-        line-height: 0;
-        height: 0;
-        max-width: 100%;
-        font-family: Roboto, Arial, sans-serif;
-        border-bottom: 3px solid #fff;
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        height: 3px;
-        overflow: hidden;
-        user-select: none;
-        color: transparent;
-    }
+.input-wrapper::after {
+    content: attr(data-text);
+    font-size: 1.5rem;
+    line-height: 0;
+    height: 0;
+    max-width: 100%;
+    font-family: Roboto, Arial, sans-serif;
+    border-bottom: 3px solid #fff;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    overflow: hidden;
+    user-select: none;
+    color: transparent;
+}
 
 input {
     color: #ddd;
@@ -89,27 +89,28 @@ input {
 }
 
 .Join_Us {
-    background: grey;
-    height:305px;
+    background: linear-gradient(to right,wheat,grey);
+    height: 240px;
 }
 
 .register-bttn {
     background: #E3010A;
     text-align: center;
-    margin: 55px 0px 0px 45%;
 }
 
 .join-text {
     text-align: center;
-    margin: 5% 0px 0px 42%;
-    color: white;
+    margin: 5% 0px 2% 42%;
+    color: black;
+    font-size: 222%;
 }
 
 .updates {
     height: 190px;
     width: 950px;
     background: #C6E4FF;
-    margin: -3% 0% 5% 28%;
+    margin-top: -3% !important;
+    margin-bottom: 3% !important;
 }
 
 .slider {
@@ -142,23 +143,23 @@ input {
     position: relative;
 }
 
-#slide-1:target ~ .image-container {
+#slide-11:target ~ .image-container {
     left: 0px;
 }
 
-#slide-2:target ~ .image-container {
+#slide-21:target ~ .image-container {
     left: -500px;
 }
 
-#slide-3:target ~ .image-container {
+#slide-31:target ~ .image-container {
     left: -1000px;
 }
 
 .buttons {
     /*position: relative;*/
     /*top: -20px;*/
-    margin-left:550px;
-    margin-top:15px;
+    margin-left: 550px;
+    margin-top: 15px;
 }
 
     .buttons a {
@@ -170,11 +171,69 @@ input {
     }
 
 .main {
-    margin-top:55px;
+    margin-top: 55px;
 }
 
 .Footer_main {
     background: #C6E4FF;
-    height: 250px;
+    height: 60px;
     margin-top: 75px;
 }
+
+.Footer_title {
+    height: 76px;
+}
+
+.Footer_below {
+    background: #C6E4FF;
+    height: 200px !important;
+}
+
+#ourclients {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    /*background: linear-gradient(wheat,lightgrey);*/
+    background: white;
+    padding-bottom: 30px;
+    height: 110px;
+}
+
+    #ourclients .clients-wrap {
+        display: block;
+        width: 95%;
+        margin: 0 auto;
+        overflow: hidden;
+    }
+
+        #ourclients .clients-wrap ul {
+            display: block;
+            list-style: none;
+            position: relative;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+            #ourclients .clients-wrap ul li {
+                display: block;
+                float: left;
+                position: relative;
+                width: 220px;
+                height: 100px;
+                line-height: 100px;
+                text-align: center;
+            }
+
+                #ourclients .clients-wrap ul li img {
+                    vertical-align: middle;
+                    max-width: 100%;
+                    width: 100px;
+                    max-height: 80%;
+                    -webkit-transition: 0 linear left;
+                    -moz-transition: 0 linear left;
+                    transition: 0 linear left;
+                }
+
+                a{
+                    color:black;
+                }
