@@ -1,5 +1,5 @@
-﻿using EntitesInterfaces.AppModels;
-using EntitesInterfaces.DBEntities;
+﻿using TMC.EntitesInterfaces.AppModels;
+using TMC.EntitesInterfaces.DBEntities;
 using Razorpay.Api;
 using System;
 using System.Collections.Generic;

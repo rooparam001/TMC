@@ -16,8 +16,10 @@
 
 $(document).ready(function () {
     //load data on the page load
-    var Id = getUrlParameter("ProfileId");
-    var Name = getUrlParameter("ProfileName");
+    //var Id = getUrlParameter("ProfileId");
+    //var Name = getUrlParameter("ProfileName");
+    var Id = $("#Id").val();
+    var Name = $("#Name").val();
     _backstageProfile.fnViewProfile_ID(Id,Name);
 });
 var _backstageProfile = {

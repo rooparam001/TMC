@@ -125,6 +125,7 @@ var _profileMaster = {
         });
     },
     fnViewProfile_ID: function (ID, Name) {
-        window.location.href = "/Home/BackStageProfile?ProfileId=" + ID + "&ProfileName=" + Name;
+      //  window.location.href = "/Home/BackStageProfile?ProfileId=" + ID + "&ProfileName=" + Name;
+        window.location.href = "/Home/BackStageProfile/" + ID + "/" + Name;
     }
 };

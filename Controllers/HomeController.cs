@@ -1,5 +1,5 @@
-﻿using EntitesInterfaces.AppModels;
-using EntitesInterfaces.DBEntities;
+﻿using TMC.EntitesInterfaces.AppModels;
+using TMC.EntitesInterfaces.DBEntities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -251,9 +251,12 @@ namespace TMC.Controllers
 
             return Json(resp);
         }
-
-        public IActionResult BackstageProfile()
+        [HttpGet]
+        
+        public IActionResult BackstageProfile(int id,string name)
         {
+            ViewData["Id"] = id;
+            ViewData["Name"] = name;
             return View();
         }
 

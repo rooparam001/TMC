@@ -1,5 +1,5 @@
-﻿using EntitesInterfaces.AppModels;
-using EntitesInterfaces.DBEntities;
+﻿using TMC.EntitesInterfaces.AppModels;
+using TMC.EntitesInterfaces.DBEntities;
 using System.Collections.Generic;
 using TMC.DBConnections;
 using System.Linq;
@@ -113,7 +113,7 @@ namespace TMC.AppRepository
             {
                 var playObj = new TBL_PLAYSMASTER();
                 playObj = new TMCDBContext().fn_GetSinglePlayByID(ID, UserID);
-                if (playObj != null && ((playName != null && playObj.TITLE == System.Web.HttpUtility.UrlDecode(playName)) || playName == null))
+                if (playObj != null && ((playName != null && playObj.TITLE.Trim() == System.Web.HttpUtility.UrlDecode(playName).Trim()) || playName == null))
                     if (playObj.ID > 0)
                     {
                         var genreList = ""; var languageList = ""; var sliderList = "";

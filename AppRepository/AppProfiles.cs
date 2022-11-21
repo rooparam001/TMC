@@ -1,5 +1,5 @@
-﻿using EntitesInterfaces.AppModels;
-using EntitesInterfaces.DBEntities;
+﻿using TMC.EntitesInterfaces.AppModels;
+using TMC.EntitesInterfaces.DBEntities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -149,7 +149,7 @@ namespace TMC.AppRepository
             catch (Exception ex) { resp = new List<profileMasterViewModel>(); }
             return resp;
         }
-        public static profileMasterViewModel GetSingleProfile_ByID(int ID,string objName)
+        public static profileMasterViewModel GetSingleProfile_ByID(int ID, string objName)
         {
             var resp = new profileMasterViewModel();
             var languageList = "";
@@ -210,7 +210,7 @@ namespace TMC.AppRepository
                 }
                 if (!string.IsNullOrEmpty(languageList))
                     resp.USERLANGUAGES = languageList;
-                if(resp.USERTITLE != System.Web.HttpUtility.UrlDecode(objName))
+                if (resp.USERTITLE.Trim() != System.Web.HttpUtility.UrlDecode(objName).Trim())
                 {
                     resp = new profileMasterViewModel();
                 }
