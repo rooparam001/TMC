@@ -30,6 +30,10 @@ namespace TMC.Controllers
             return View();
         }
 
+        public IActionResult New_Index()
+        {
+            return View();
+        }
         public IActionResult AllPlays() => View();
         public IActionResult AllDirectors() => View();
         public IActionResult Giveaway() => View();
