@@ -12,6 +12,10 @@
     margin: 25px 0px 25px 0px !important;
 }
 
+.divExplainer_video {
+    margin-top:3%;
+}
+
 .read_More_btn {
     background: none;
     border: 1px solid;
@@ -182,6 +186,7 @@ input {
 
 .Footer_title {
     height: 76px;
+    margin-left:43%;
 }
 
 .Footer_below {
@@ -234,6 +239,6 @@ input {
                     transition: 0 linear left;
                 }
 
-                a{
-                    color:black;
-                }
+a {
+    color: black;
+}
